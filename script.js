@@ -96,7 +96,9 @@ function initReveal() {
     const r = screen.getBoundingClientRect();
     const cs = getComputedStyle(screen);
     const vw = document.documentElement.clientWidth;
-    const vh = window.innerHeight;
+    // The hero is 100svh, so this stays put when a phone's address bar hides
+    // or shows (window.innerHeight would jump by the toolbar's height).
+    const vh = q("desk-bg").offsetHeight || window.innerHeight;
     const B = {
       left: r.left - stageRect.left,
       top: r.top - stageRect.top,
@@ -148,7 +150,7 @@ function initReveal() {
   // so the window onto the site can never drift away from the screen.
   function render() {
     if (!geo || !tl) return;
-    const { keys, B, zoom, baseRadius, border, vh, siteW, siteH } = geo;
+    const { keys, B, zoom, baseRadius, border, siteW, siteH } = geo;
     const { g1, g2, g3 } = state;
     let a = keys[0], b = keys[1], t = g1;
     if (g3 > 0) { a = keys[2]; b = keys[3]; t = g3; }
@@ -187,7 +189,9 @@ function initReveal() {
     // Edges past the viewport clamp to the site's own edges, so nothing gets
     // cut off when the pin releases. A corner keeps its rounding only while
     // both of its edges are on screen.
-    const cT = y1 <= 0, cL = x1 <= 0, cR = x2 >= siteW, cB = y2 >= vh;
+    // Live height here: with the toolbar hidden the screen is taller, and the
+    // bottom edge only counts as off-screen once it really is.
+    const cT = y1 <= 0, cL = x1 <= 0, cR = x2 >= siteW, cB = y2 >= window.innerHeight;
     const iT = cT ? 0 : y1;
     const iL = cL ? 0 : x1;
     const iR = cR ? 0 : siteW - x2;
@@ -254,6 +258,19 @@ function initReveal() {
     site.style.clipPath = "";
     spacer.style.height = pinLength() + "px";
   });
+  // ignoreMobileResize skips a full refresh when only the height changes (a
+  // phone's toolbar collapsing). Re-measure anyway so the frame and the site's
+  // clip keep using the same rect; on phones the svh-based geometry doesn't
+  // change, so nothing jumps.
+  let resizeFrame = 0;
+  window.addEventListener("resize", () => {
+    cancelAnimationFrame(resizeFrame);
+    resizeFrame = requestAnimationFrame(() => {
+      measure();
+      render();
+    });
+  });
+
   ScrollTrigger.addEventListener("refresh", () => {
     measure();
     render();
