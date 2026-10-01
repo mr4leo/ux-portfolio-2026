@@ -784,8 +784,10 @@ small {
 
 .project-visual {
   position: relative;
-  /* Full thumbnail at its natural shape, never cropped */
-  align-self: center;
+  /* Full thumbnail at its natural shape, never cropped. Bottom edge sits on the
+     CTA's bottom; when the card is wide enough (about 1180px+) the image is
+     the tallest item, so its top also meets the folder icon's top. */
+  align-self: end;
   overflow: hidden;
   background: var(--color-bg-dark);
 }
