@@ -51,7 +51,12 @@
             </h1>
 
             <a class="scroll-button" data-anim="hero-cta" href="#work">
-              <span aria-hidden="true">↓</span> Scroll Down
+              <svg class="scroll-button__icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M8.00065 13.3346V2.66797M12.6673 8.66797L8.00065 13.3346L3.33398 8.66797" stroke="currentColor" stroke-width="1.98741" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <!-- Touch devices get "Swipe Up"; see .scroll-button__label in styles.css -->
+              <span class="scroll-button__label">Scroll Down</span>
+              <span class="scroll-button__label scroll-button__label--touch">Swipe Up</span>
             </a>
 
             <!-- Solid layer the hero hands off to before the site shows through -->

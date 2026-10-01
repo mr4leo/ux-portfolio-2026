@@ -360,6 +360,35 @@ img {
   background: var(--white);
 }
 
+/* Drawn with currentColor, so it follows the text on hover */
+.scroll-button__icon {
+  flex: none;
+  width: 16px;
+  height: 16px;
+}
+
+.scroll-button__label--touch {
+  display: none;
+}
+
+/* Touch as the main input (phones, tablets): "Swipe Up" with the arrow
+   pointing up. Keyed to input, not width, so a narrow desktop window still
+   says "Scroll Down". display: none also drops the unused label for screen
+   readers. */
+@media (hover: none) and (pointer: coarse) {
+  .scroll-button__label {
+    display: none;
+  }
+
+  .scroll-button__label--touch {
+    display: inline;
+  }
+
+  .scroll-button__icon {
+    transform: rotate(180deg);
+  }
+}
+
 .hero__intro {
   margin: 48px 0 0;
   font-size: 1.25rem;
