@@ -517,15 +517,16 @@ img {
 
 .project-visual {
   position: relative;
-  min-height: 350px;
+  /* Full thumbnail at its natural shape, never cropped */
+  align-self: center;
   overflow: hidden;
   background: var(--surface-media);
 }
 
 .project-visual > img {
+  display: block;
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
 }
 
 .footer {
@@ -683,9 +684,6 @@ img {
     min-height: 0;
   }
 
-  .project-visual {
-    min-height: 300px;
-  }
 }
 
 @media (max-width: 520px) {
@@ -707,16 +705,6 @@ img {
   .case-study__rule,
   .case-study__copy > .case-study__metrics {
     margin: 0;
-  }
-
-  /* Full thumbnail at its natural shape, no cropping */
-  .project-visual {
-    min-height: 0;
-  }
-
-  .project-visual > img {
-    height: auto;
-    object-fit: initial;
   }
 
   /* Full-width CTA under the image */
@@ -779,76 +767,6 @@ img {
   .footer__social > div {
     justify-content: center;
     margin: -9.5px 0;
-  }
-}
-
-/* Phones turned sideways: the screen is wide but only ~390px tall, so each
-   card goes back to two columns and is sized to fit under the sticky nav,
-   clear of the notch and home bar. */
-@media (orientation: landscape) and (max-height: 500px) {
-  .work {
-    padding: 0 max(24px, env(safe-area-inset-right))
-      max(40px, env(safe-area-inset-bottom)) max(24px, env(safe-area-inset-left));
-  }
-
-  .project-nav {
-    margin-bottom: 24px;
-  }
-
-  .case-study {
-    min-height: 0;
-    grid-template-columns: minmax(220px, 280px) minmax(0, 1fr);
-    gap: 32px;
-    padding: 20px;
-    margin-bottom: 24px;
-    /* Sits just under the sticky nav when jumped to */
-    scroll-margin-top: 92px;
-  }
-
-  .case-study__copy {
-    display: flex;
-  }
-
-  /* The sticky nav already shows which project this is */
-  .case-study .archive-icon {
-    display: none;
-  }
-
-  .case-study h3 {
-    margin-bottom: 8px;
-    font-size: 1.25rem;
-  }
-
-  .case-study__copy > p {
-    font-size: 0.9375rem;
-  }
-
-  .case-study__rule {
-    margin: 12px 0;
-  }
-
-  .case-study__copy > .case-study__metrics {
-    margin-bottom: 12px;
-  }
-
-  .case-study__cta {
-    order: 0;
-    width: auto;
-    margin-top: auto;
-    padding: 8px 16px;
-  }
-
-  /* The image fills whatever height the copy needs instead of setting it,
-     so the card is never taller than its text. */
-  .project-visual {
-    min-height: 0;
-  }
-
-  .project-visual > img {
-    position: absolute;
-    inset: 0;
-    height: 100%;
-    object-fit: cover;
   }
 }
 
