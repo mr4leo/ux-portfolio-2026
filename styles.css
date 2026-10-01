@@ -770,6 +770,17 @@ img {
   }
 }
 
+/* Phones turned sideways (two-column cards): the thumbnail's top edge lines
+   up with the top of the title's lowercase letters. Offset = archive icon
+   (74px) + its margin (16px) + Poppins' x-height top within the title's
+   line box (0.294em of the 1.4375rem title). */
+@media (orientation: landscape) and (max-height: 500px) and (min-width: 801px) {
+  .project-visual {
+    align-self: start;
+    margin-top: calc(74px + 16px + 1.4375rem * 0.294);
+  }
+}
+
 /* ------------------------------------------------------------------
    Scroll reveal (see docs/hero-reveal.md)
    Only active when <html> has .has-reveal (JS + motion allowed).
