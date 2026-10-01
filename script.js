@@ -216,6 +216,11 @@ function initReveal() {
     },
   });
 
+  // The stroke color lives in CSS (--color-device-stroke); fade it to the same
+  // color at 0 alpha so it doesn't darken on the way out.
+  const transparentStroke = getComputedStyle(screen).borderTopColor
+    .replace(/^rgba?\(([^,]+),\s*([^,]+),\s*([^,)]+).*$/, "rgba($1, $2, $3, 0)");
+
   const at = ([start]) => start;
   const dur = ([, d]) => d;
 
@@ -240,7 +245,7 @@ function initReveal() {
     .fromTo(siteInner, { y: SITE_DRIFT }, { y: 0, duration: dur(T.drift), ease: "power1.out" }, at(T.drift))
     .to(state, { g3: 1, duration: dur(T.grow3), ease: "power2.in" }, at(T.grow3))
     .to([q("tablet-buttons"), q("tablet-shadow")], { opacity: 0, duration: dur(T.frameOut) }, at(T.frameOut))
-    .to(screen, { borderColor: "rgba(85, 89, 91, 0)", duration: dur(T.strokeOut) }, at(T.strokeOut))
+    .to(screen, { borderColor: transparentStroke, duration: dur(T.strokeOut) }, at(T.strokeOut))
     // Frame gone: stop it catching clicks or focus
     .set(tablet, { visibility: "hidden" }, 0.97)
     .to({}, { duration: 0.03 }, 0.97);

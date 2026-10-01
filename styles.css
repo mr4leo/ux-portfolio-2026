@@ -1,35 +1,144 @@
+/* ==========================================================================
+   Design system
+   --------------------------------------------------------------------------
+   Use these tokens and classes everywhere (home page and case studies).
+   Raw hex codes, px font sizes and one-off shadows belong here only.
+
+   COLOR (by role: never use a background token for text, or vice versa)
+     Backgrounds   --color-bg-white       bright white (button hover fills)
+                   --color-bg-paper       off-white page / hero desk
+                   --color-bg-dark        dark gray section background
+                   --color-bg-card        card panels on the dark section
+     Text          --color-text           black text on light backgrounds
+                   --color-text-inverse   white text on dark backgrounds
+                   --color-text-muted     secondary text on dark
+                   --color-link           links on dark
+                   --color-signature      handwritten signature
+     Borders       --color-border-subtle  card edges on dark
+                   --color-border         dividers and outlines on dark
+                   --color-border-strong  button outlines on dark
+     Accent        --color-accent, --color-accent-selection
+     Patterns      --color-dot-light, --color-dot-dark (dotted backgrounds)
+     Tablet        --color-device-body, --color-device-stroke,
+                   --gradient-device-screen, --effect-glow, --effect-glare
+
+   TYPE
+     Fonts         --font-sans (Poppins), --font-script (signature)
+     Sizes         --text-2xs 12 · --text-xs 14 · --text-base 16 ·
+                   --text-md 18 · --text-lg 20 · --text-xl 23 ·
+                   --text-2xl 30 · --text-3xl 38 · --text-display 75 (px)
+     Weights       --weight-regular 400 · -medium 500 · -semibold 600 · -bold 700
+     Line height   --leading-none 1 · -tight 1.1 · -snug 1.25 · -normal 1.5
+     Tracking      --tracking-tight · -tighter · -display
+
+     Elements      h1–h4, p and small get these by default.
+     Classes       .text-display .text-h1 .text-h2 .text-h3 .text-h4
+                   .text-lead .text-body .text-small .text-caption
+                   .text-muted — use these to give any element a role's look
+                   regardless of its tag (e.g. an h2 that looks like .text-h3).
+
+   SPACING         --space-1 4 · -2 8 · -3 12 · -4 16 · -5 20 · -6 24 ·
+                   -7 28 · -8 32 · -10 40 · -12 48 · -16 64 (px)
+
+   SHADOWS         --shadow-card, --shadow-device, --shadow-pen,
+                   --shadow-portrait
+   ========================================================================== */
 :root {
-  /* Light surfaces */
-  --paper: #f6f6f3;
-  --ink: #111314;
-  --white: #ffffff;
-  --dot-on-light: rgba(20, 22, 22, 0.16);
+  /* ---- Color: backgrounds ---- */
+  --color-bg-white: #ffffff;
+  --color-bg-paper: #f6f6f3;
+  --color-bg-dark: #1d1f20;
+  --color-bg-card: rgba(31, 34, 36, 0.92);
 
-  /* Dark surfaces */
-  --surface-dark: #1d1f20;
-  --surface-card: rgba(31, 34, 36, 0.92);
-  --surface-footer: #202223;
-  --surface-media: #151819;
-  --hardware: #303536;
-  --tablet-stroke: #55595b;
-  --dot-on-dark: rgba(255, 255, 255, 0.09);
+  /* ---- Color: text ---- */
+  --color-text: #111314;
+  --color-text-inverse: #ffffff;
+  --color-text-muted: #999fa0;
+  --color-link: var(--color-accent);
+  --color-signature: #0872a1;
 
-  /* Strokes and text on dark */
-  --stroke-card: rgba(255, 255, 255, 0.06);
-  --line: rgba(255, 255, 255, 0.15);
-  --line-strong: rgba(255, 255, 255, 0.2);
-  --text-on-dark: #f6f7f7;
-  --text-muted: #999fa0;
+  /* ---- Color: borders (on dark) ---- */
+  --color-border-subtle: rgba(255, 255, 255, 0.06);
+  --color-border: rgba(255, 255, 255, 0.15);
+  --color-border-strong: #ffffff;
 
-  /* Accent */
-  --accent: #3fa3f7;
-  --accent-selection: rgba(28, 120, 210, 0.45);
-  --signature: #0872a1;
+  /* ---- Color: accent ---- */
+  --color-accent: #3fa3f7;
+  --color-accent-selection: rgba(28, 120, 210, 0.45);
 
-  /* Shadows */
+  /* ---- Color: dotted background patterns ---- */
+  --color-dot-light: rgba(20, 22, 22, 0.16);
+  --color-dot-dark: rgba(255, 255, 255, 0.09);
+
+  /* ---- Color: hero tablet ---- */
+  --color-device-body: #303536;
+  --color-device-stroke: #55595b;
+  --gradient-device-screen: linear-gradient(100deg, #1c2c36 0%, #2b363d 50%, #4a5054 100%);
+  --effect-glow: radial-gradient(
+    ellipse at center,
+    rgba(0, 150, 230, 0.14) 0%,
+    rgba(0, 150, 230, 0.08) 35%,
+    transparent 70%
+  );
+  --effect-glare: linear-gradient(
+    62deg,
+    transparent 51%,
+    rgba(197, 238, 255, 0.08) 65%,
+    rgba(197, 238, 255, 0.29) 100%
+  );
+
+  /* ---- Type ---- */
+  --font-sans: Poppins, ui-sans-serif, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+  --font-script: "Segoe Script", "Bradley Hand", cursive;
+
+  --text-2xs: 0.75rem; /* 12px: captions, labels */
+  --text-xs: 0.875rem; /* 14px: small text, buttons */
+  --text-base: 1rem; /* 16px: body */
+  --text-md: 1.125rem; /* 18px */
+  --text-lg: 1.25rem; /* 20px: lead paragraphs, h4 */
+  --text-xl: 1.4375rem; /* 23px: h3 */
+  --text-2xl: 1.875rem; /* 30px: h2 */
+  --text-3xl: 2.375rem; /* 38px: h1 */
+  --text-display: 4.6875rem; /* 75px: hero headline */
+  --text-display-fluid: clamp(2.5rem, 9vw, 4rem); /* display on tablets/phones */
+
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  --leading-none: 1;
+  --leading-tight: 1.1;
+  --leading-snug: 1.25;
+  --leading-normal: 1.5;
+
+  --tracking-tight: -0.01em;
+  --tracking-tighter: -0.03em;
+  --tracking-display: -0.05em;
+
+  /* ---- Spacing ---- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 28px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* ---- Shadows ---- */
   --shadow-card: 0 25px 50px rgba(0, 0, 0, 0.2);
+  --shadow-device: 0 30px 50px rgba(0, 0, 0, 0.32), 0 70px 120px rgba(0, 0, 0, 0.22);
+  --shadow-pen: drop-shadow(0 22px 18px rgba(0, 0, 0, 0.45)); /* filter */
+  --shadow-portrait: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.28)); /* filter */
 
+  /* ---- Layout ---- */
   --max-width: 832px;
+  --max-width-wide: 1020px;
 }
 
 * {
@@ -42,10 +151,11 @@ html {
 
 body {
   margin: 0;
-  color: var(--ink);
-  background: var(--paper);
-  font-family: Poppins, ui-sans-serif, -apple-system, BlinkMacSystemFont,
-    "Segoe UI", sans-serif;
+  color: var(--color-text);
+  background: var(--color-bg-paper);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
 }
 
 a {
@@ -53,7 +163,7 @@ a {
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--color-accent);
   outline-offset: 3px;
 }
 
@@ -62,14 +172,119 @@ img {
   max-width: 100%;
 }
 
+/* ---- Type: element defaults ---- */
+h1,
+h2,
+h3,
+h4 {
+  margin: 0 0 var(--space-4);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-tighter);
+}
+
+h1 {
+  font-size: var(--text-3xl);
+  line-height: var(--leading-tight);
+  font-weight: var(--weight-bold);
+}
+
+h2 {
+  font-size: var(--text-2xl);
+  line-height: var(--leading-tight);
+}
+
+h3 {
+  font-size: var(--text-xl);
+  line-height: var(--leading-none);
+}
+
+h4 {
+  font-size: var(--text-lg);
+  line-height: var(--leading-snug);
+}
+
+p {
+  margin: 0 0 var(--space-4);
+}
+
+small {
+  font-size: var(--text-xs);
+}
+
+/* ---- Type: role classes (any tag) ---- */
+.text-display {
+  font-size: var(--text-display);
+  line-height: var(--leading-none);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-display);
+}
+
+.text-h1 {
+  font-size: var(--text-3xl);
+  line-height: var(--leading-tight);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-tighter);
+}
+
+.text-h2 {
+  font-size: var(--text-2xl);
+  line-height: var(--leading-tight);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-tighter);
+}
+
+.text-h3 {
+  font-size: var(--text-xl);
+  line-height: var(--leading-none);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-tighter);
+}
+
+.text-h4 {
+  font-size: var(--text-lg);
+  line-height: var(--leading-snug);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-tighter);
+}
+
+.text-lead {
+  font-size: var(--text-lg);
+  line-height: var(--leading-normal);
+  font-weight: var(--weight-regular);
+}
+
+.text-body {
+  font-size: var(--text-base);
+  line-height: var(--leading-snug);
+  font-weight: var(--weight-regular);
+}
+
+.text-small {
+  font-size: var(--text-xs);
+  line-height: var(--leading-normal);
+}
+
+.text-caption {
+  font-size: var(--text-2xs);
+  line-height: var(--leading-normal);
+  letter-spacing: var(--tracking-tight);
+}
+
+.text-muted {
+  color: var(--color-text-muted);
+}
+
+/* ==========================================================================
+   Home page
+   ========================================================================== */
 .hero {
   min-height: 1080px;
   /* Flexes with window height: tighter on laptops, roomier on tall screens */
   padding: clamp(32px, 7vh, 64px) 40px 116px;
-  background-color: var(--paper);
+  background-color: var(--color-bg-paper);
   background-image: radial-gradient(
     circle,
-    var(--dot-on-light) 1px,
+    var(--color-dot-light) 1px,
     transparent 1.2px
   );
   background-size: 20px 20px;
@@ -90,21 +305,21 @@ img {
 
 .hero__meta p {
   margin: 0;
-  font-size: 1.125rem;
-  line-height: 1.08;
-  font-weight: 750;
+  font-size: var(--text-md);
+  line-height: var(--leading-tight);
+  font-weight: var(--weight-bold);
 }
 
 .hero__pen {
   width: min(40%, 20rem);
   height: auto;
-  filter: drop-shadow(0 22px 18px rgba(0, 0, 0, 0.45));
+  filter: var(--shadow-pen);
 }
 
 .tablet {
   --screen-radius: 58px;
   position: relative;
-  margin-top: 24px;
+  margin-top: var(--space-6);
 }
 
 /* Short desktop and tablet windows: scale the hero column down in steps so
@@ -152,7 +367,7 @@ img {
 
 .tablet__controls i {
   position: absolute;
-  background: var(--hardware);
+  background: var(--color-device-body);
 }
 
 .tablet__controls i:nth-child(1),
@@ -183,10 +398,10 @@ img {
   position: relative;
   aspect-ratio: 832 / 468;
   overflow: hidden;
-  border: 2px solid var(--tablet-stroke);
+  border: 2px solid var(--color-device-stroke);
   border-radius: var(--screen-radius);
   isolation: isolate;
-  background: linear-gradient(100deg, #1c2c36 0%, #2b363d 50%, #4a5054 100%);
+  background: var(--gradient-device-screen);
 }
 
 /* Shadow on its own layer so the reveal can fade it with opacity (no repaint) */
@@ -195,9 +410,7 @@ img {
   inset: 0;
   pointer-events: none;
   border-radius: var(--screen-radius);
-  box-shadow:
-    0 30px 50px rgba(0, 0, 0, 0.32),
-    0 70px 120px rgba(0, 0, 0, 0.22);
+  box-shadow: var(--shadow-device);
 }
 
 /* Solid site-colored layer the hero hands off to (opacity driven by script.js) */
@@ -206,7 +419,7 @@ img {
   inset: 0;
   z-index: 5;
   pointer-events: none;
-  background: var(--surface-dark);
+  background: var(--color-bg-dark);
   opacity: 0;
 }
 
@@ -230,12 +443,7 @@ img {
   height: 140%;
   pointer-events: none;
   border-radius: 50%;
-  background: radial-gradient(
-    ellipse at center,
-    rgba(0, 150, 230, 0.14) 0%,
-    rgba(0, 150, 230, 0.08) 35%,
-    transparent 70%
-  );
+  background: var(--effect-glow);
   filter: blur(40px);
   opacity: var(--fx, 1);
 }
@@ -248,12 +456,7 @@ img {
   pointer-events: none;
   z-index: 6;
   opacity: var(--fx, 1);
-  background: linear-gradient(
-    62deg,
-    transparent 51%,
-    rgba(197, 238, 255, 0.08) 65%,
-    rgba(197, 238, 255, 0.29) 100%
-  );
+  background: var(--effect-glare);
 }
 
 .tablet__screen h1 {
@@ -261,11 +464,11 @@ img {
   z-index: 3;
   margin: 0;
   padding: 72px 0 0 116px;
-  color: var(--white);
-  font-size: 4.6875rem;
-  line-height: 1;
-  letter-spacing: -0.05em;
-  font-weight: 700;
+  color: var(--color-text-inverse);
+  font-size: var(--text-display);
+  line-height: var(--leading-none);
+  letter-spacing: var(--tracking-display);
+  font-weight: var(--weight-bold);
 }
 
 .tablet__screen h1 .line {
@@ -273,7 +476,7 @@ img {
 }
 
 .tablet__screen h1 .accent {
-  color: var(--accent);
+  color: var(--color-accent);
 }
 
 /* Text selection on "designed": highlight box plus two drag handles */
@@ -287,7 +490,7 @@ img {
   position: absolute;
   z-index: -1;
   inset: 0.12em -0.1em 0.08em;
-  background: var(--accent-selection);
+  background: var(--color-accent-selection);
 }
 
 .selection i {
@@ -295,7 +498,7 @@ img {
   top: 0.12em;
   bottom: 0.08em;
   width: 2px;
-  background: var(--accent);
+  background: var(--color-accent);
 }
 
 .selection i::before {
@@ -305,7 +508,7 @@ img {
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: var(--accent);
+  background: var(--color-accent);
 }
 
 .selection i:first-of-type {
@@ -334,7 +537,7 @@ img {
   height: 84%;
   max-width: none;
   transform: translateX(-50%);
-  filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.28));
+  filter: var(--shadow-portrait);
 }
 
 .scroll-button {
@@ -344,20 +547,20 @@ img {
   bottom: 40px;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 12px 20px;
-  color: var(--white);
-  border: 2px solid var(--white);
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-5);
+  color: var(--color-text-inverse);
+  border: 2px solid var(--color-border-strong);
   border-radius: 999px;
-  font-size: 0.9375rem;
-  font-weight: 500;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
   text-decoration: none;
 }
 
 .scroll-button:hover,
 .scroll-button:focus-visible {
-  color: var(--ink);
-  background: var(--white);
+  color: var(--color-text);
+  background: var(--color-bg-white);
 }
 
 /* Drawn with currentColor, so it follows the text on hover */
@@ -390,33 +593,33 @@ img {
 }
 
 .hero__intro {
-  margin: 48px 0 0;
-  font-size: 1.25rem;
-  line-height: 1.45;
+  margin: var(--space-12) 0 0;
+  font-size: var(--text-lg);
+  line-height: var(--leading-normal);
 }
 
 .signature {
-  margin: 24px 0 0;
-  color: var(--signature);
-  font-family: "Segoe Script", "Bradley Hand", cursive;
-  font-size: 1.375rem;
+  margin: var(--space-6) 0 0;
+  color: var(--color-signature);
+  font-family: var(--font-script);
+  font-size: var(--text-xl);
   font-style: italic;
 }
 
 .work {
-  padding: 0 40px 88px;
-  color: var(--text-on-dark);
-  background-color: var(--surface-dark);
+  padding: 0 var(--space-10) 88px;
+  color: var(--color-text-inverse);
+  background-color: var(--color-bg-dark);
   background-image: radial-gradient(
     circle,
-    var(--dot-on-dark) 1px,
+    var(--color-dot-dark) 1px,
     transparent 1.2px
   );
   background-size: 22px 22px;
 }
 
 .work__inner {
-  width: min(100%, 1020px);
+  width: min(100%, var(--max-width-wide));
   margin: 0 auto;
 }
 
@@ -428,13 +631,13 @@ img {
   top: calc(-1 * (8px + 0.75rem * 1.5));
   z-index: 10;
   width: min(340px, 100%);
-  margin: 0 auto 64px;
-  padding: 8px 16px;
+  margin: 0 auto var(--space-16);
+  padding: var(--space-2) var(--space-4);
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px 12px;
-  background: var(--surface-card);
-  border: 1px solid var(--stroke-card);
+  gap: var(--space-4) var(--space-3);
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border-subtle);
   border-top: 0;
   border-radius: 0 0 20px 20px;
   box-shadow: var(--shadow-card);
@@ -444,11 +647,11 @@ img {
 .project-nav__title {
   grid-column: 1 / -1;
   margin: 0;
-  color: var(--text-muted);
-  font-size: 0.9rem;
-  line-height: 1.5;
-  font-weight: 400;
-  letter-spacing: -0.01em;
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+  line-height: var(--leading-normal);
+  font-weight: var(--weight-regular);
+  letter-spacing: var(--tracking-tight);
   text-align: center;
 }
 
@@ -456,11 +659,11 @@ img {
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: var(--white);
-  font-size: 0.75rem;
-  line-height: 1.5;
-  font-weight: 600;
-  letter-spacing: -0.01em;
+  color: var(--color-text-inverse);
+  font-size: var(--text-2xs);
+  line-height: var(--leading-normal);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-tight);
   text-align: center;
   white-space: nowrap;
   text-decoration: none;
@@ -471,12 +674,12 @@ img {
   width: 32px;
   max-width: 100%;
   height: auto;
-  margin-bottom: 4px;
+  margin-bottom: var(--space-1);
   transition: transform 0.2s;
 }
 
 .project-nav a:hover .project-nav__thumb {
-  transform: translateY(-4px);
+  transform: translateY(calc(-1 * var(--space-1)));
 }
 
 .case-study {
@@ -485,11 +688,11 @@ img {
   min-height: 440px;
   display: grid;
   grid-template-columns: 280px minmax(0, 1fr);
-  gap: 48px;
-  padding: 48px;
-  margin-bottom: 64px;
-  background: var(--surface-card);
-  border: 1px solid var(--stroke-card);
+  gap: var(--space-12);
+  padding: var(--space-12);
+  margin-bottom: var(--space-16);
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border-subtle);
   box-shadow: var(--shadow-card);
 }
 
@@ -503,7 +706,7 @@ img {
   position: relative;
   width: 72px;
   height: 74px;
-  margin-bottom: 16px;
+  margin-bottom: var(--space-4);
 }
 
 .archive-icon img {
@@ -512,49 +715,41 @@ img {
   object-fit: contain;
 }
 
-.case-study h3 {
-  margin: 0 0 16px;
-  font-size: 1.4375rem;
-  line-height: 1;
-  letter-spacing: -0.03em;
-  font-weight: 600;
-}
-
 .case-study__copy > p {
   margin: 0;
-  font-size: 1rem;
-  line-height: 1.25;
+  font-size: var(--text-base);
+  line-height: var(--leading-snug);
 }
 
 .case-study__rule {
   width: 100%;
   height: 1px;
-  margin: 24px 0 20px;
-  background: var(--line);
+  margin: var(--space-6) 0 var(--space-5);
+  background: var(--color-border);
 }
 
 .case-study__copy > .case-study__metrics {
-  margin-bottom: 28px;
-  color: var(--text-muted);
+  margin-bottom: var(--space-7);
+  color: var(--color-text-muted);
 }
 
 .case-study__cta {
   margin-top: auto;
-  padding: 12px 16px;
-  border: 1px solid var(--white);
-  font-size: 0.875rem;
-  font-weight: 700;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-border-strong);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
   text-decoration: none;
 }
 
 .case-study__cta span {
-  margin-left: 16px;
+  margin-left: var(--space-4);
 }
 
 .case-study__cta:hover,
 .case-study__cta:focus-visible {
-  color: var(--ink);
-  background: var(--white);
+  color: var(--color-text);
+  background: var(--color-bg-white);
 }
 
 .project-visual {
@@ -562,7 +757,7 @@ img {
   /* Full thumbnail at its natural shape, never cropped */
   align-self: center;
   overflow: hidden;
-  background: var(--surface-media);
+  background: var(--color-bg-dark);
 }
 
 .project-visual > img {
@@ -572,10 +767,10 @@ img {
 }
 
 .footer {
-  padding: 32px 64px 40px;
-  color: var(--white);
-  background: var(--surface-footer);
-  border-top: 1px solid var(--line-strong);
+  padding: var(--space-8) var(--space-16) var(--space-10);
+  color: var(--color-text-inverse);
+  background: var(--color-bg-dark);
+  border-top: 1px solid var(--color-border);
 }
 
 .footer__inner {
@@ -589,26 +784,27 @@ img {
 }
 
 .footer__identity > p {
-  padding: 8px 12px;
-  border: 1px solid var(--line);
-  font-size: 0.9375rem;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border);
+  font-size: var(--text-xs);
 }
 
 .footer__details {
   display: flex;
   align-items: center;
-  border: 1px solid var(--line);
+  border: 1px solid var(--color-border);
 }
 
 .footer__details strong {
-  padding: 12px;
-  font-size: 1.875rem;
+  padding: var(--space-3);
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-bold);
 }
 
 .footer__details > div {
-  padding: 8px 12px;
-  border-left: 1px solid var(--line);
-  font-size: 0.875rem;
+  padding: var(--space-2) var(--space-3);
+  border-left: 1px solid var(--color-border);
+  font-size: var(--text-xs);
 }
 
 .footer__details a {
@@ -616,14 +812,14 @@ img {
 }
 
 .footer__link {
-  color: var(--accent);
+  color: var(--color-link);
 }
 
 .footer__details span {
   display: inline-block;
-  margin: 4px 4px 0 0;
-  padding: 4px 8px;
-  border: 1px solid var(--line);
+  margin: var(--space-1) var(--space-1) 0 0;
+  padding: var(--space-1) var(--space-2);
+  border: 1px solid var(--color-border);
   border-radius: 10px;
 }
 
@@ -632,7 +828,7 @@ img {
 }
 
 .footer__social > p {
-  margin-bottom: 1rem;
+  margin-bottom: var(--space-4);
 }
 
 .footer__social > div {
@@ -680,7 +876,7 @@ img {
   }
 
   .hero__meta p {
-    font-size: 0.9375rem;
+    font-size: var(--text-xs);
   }
 
   .tablet {
@@ -693,8 +889,8 @@ img {
   }
 
   .tablet__screen h1 {
-    padding: 40px 24px 0 32px;
-    font-size: clamp(2.5rem, 9vw, 4rem);
+    padding: var(--space-10) var(--space-6) 0 var(--space-8);
+    font-size: var(--text-display-fluid);
   }
 
   .tablet__portrait {
@@ -702,22 +898,22 @@ img {
   }
 
   .hero__intro {
-    font-size: 1rem;
+    font-size: var(--text-base);
   }
 
   .work {
-    padding: 0 20px 60px;
+    padding: 0 var(--space-5) 60px;
   }
 
   /* Stacked layout: one even 28px rhythm for rule → metrics → CTA → image */
   .case-study {
     grid-template-columns: 1fr;
-    padding: 28px;
-    gap: 28px;
+    padding: var(--space-7);
+    gap: var(--space-7);
   }
 
   .case-study__rule {
-    margin-bottom: 28px;
+    margin-bottom: var(--space-7);
   }
 
   /* Stacked layout: no min-height, so the CTA sits right under the metrics
@@ -733,8 +929,8 @@ img {
      the copy's children join the card's grid, so the gap spaces everything
      and the CTA can move below the image. */
   .case-study {
-    padding: 24px;
-    gap: 24px;
+    padding: var(--space-6);
+    gap: var(--space-6);
   }
 
   .case-study__copy {
@@ -754,12 +950,12 @@ img {
     order: 1;
     width: 100%;
     margin-top: 0;
-    padding: 16px;
+    padding: var(--space-4);
     text-align: center;
   }
 
   .case-study__cta span {
-    margin-left: 12px;
+    margin-left: var(--space-3);
   }
 
   .hero__pen {
@@ -771,7 +967,7 @@ img {
   }
 
   .tablet__screen h1 {
-    font-size: 2.375rem;
+    font-size: var(--text-3xl);
   }
 
   .tablet__portrait {
@@ -779,7 +975,7 @@ img {
   }
 
   .project-nav {
-    gap: 8px;
+    gap: var(--space-2);
   }
 
   .case-study {
@@ -792,14 +988,14 @@ img {
   }
 
   .footer {
-    padding: 28px 20px;
+    padding: var(--space-7) var(--space-5);
   }
 
   /* Mobile footer: everything centered */
   .footer__inner {
     align-items: center;
     flex-direction: column;
-    gap: 32px;
+    gap: var(--space-8);
   }
 
   .footer__social {
@@ -822,12 +1018,12 @@ img {
 
 /* Phones turned sideways (two-column cards): the thumbnail's top edge lines
    up with the top of the title's lowercase letters. Offset = archive icon
-   (74px) + its margin (16px) + Poppins' x-height top within the title's
-   line box (0.294em of the 1.4375rem title). */
+   (74px) + its margin (--space-4) + Poppins' x-height top within the title's
+   line box (0.294em of the --text-xl title). */
 @media (orientation: landscape) and (max-height: 500px) and (min-width: 801px) {
   .project-visual {
     align-self: start;
-    margin-top: calc(74px + 16px + 1.4375rem * 0.294);
+    margin-top: calc(74px + var(--space-4) + var(--text-xl) * 0.294);
   }
 }
 
