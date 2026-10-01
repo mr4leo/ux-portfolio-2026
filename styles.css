@@ -367,7 +367,7 @@ img {
 
 .project-nav {
   /* Sticks while scrolling the case studies. The negative offset (top
-     padding + one 12px title line) tucks "3 Case Studies" above the screen
+     padding + one 12px title line) tucks "Marve’s Work" above the screen
      edge, leaving just the icons with the row gap above them. */
   position: sticky;
   top: calc(-1 * (8px + 0.75rem * 1.5));
@@ -385,7 +385,7 @@ img {
   box-shadow: var(--shadow-card);
 }
 
-/* Spans all three columns; the dashes are decorative */
+/* Spans all three columns */
 .project-nav__title {
   grid-column: 1 / -1;
   margin: 0;
@@ -395,19 +395,6 @@ img {
   font-weight: 400;
   letter-spacing: -0.01em;
   text-align: center;
-}
-
-.project-nav__title::before,
-.project-nav__title::after {
-  content: "—";
-}
-
-.project-nav__title::before {
-  margin-right: 0.4em;
-}
-
-.project-nav__title::after {
-  margin-left: 0.4em;
 }
 
 .project-nav a {
@@ -767,6 +754,14 @@ img {
   .footer__social > div {
     justify-content: center;
     margin: -9.5px 0;
+  }
+}
+
+/* Phones turned sideways: little vertical room, so the sticky nav shows
+   project names only */
+@media (orientation: landscape) and (max-height: 500px) {
+  .project-nav__thumb {
+    display: none;
   }
 }
 
