@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Marve Afo — product design and enterprise UX portfolio." />
+  <title>Marve Afo — Product Designer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="preload" as="image" href="images/Marve%20Photo.png" />
+  <link rel="stylesheet" href="styles.css" />
+  <script>
+    // Opt into the scroll reveal before first paint (no layout jump). script.js
+    // removes this class again if GSAP fails to load up.
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      document.documentElement.classList.add("has-reveal");
+    }
+  </script>
+</head>
+<body>
+  <main>
+    <div class="reveal-track" data-anim="track">
+    <div class="reveal" data-anim="stage">
+    <section class="hero" data-anim="desk-bg" aria-labelledby="hero-title">
+      <div class="hero__inner">
+        <header class="hero__meta">
+          <p data-anim="desk-label">Product Designer<br />Enterprise UX</p>
+          <img class="hero__pen" data-anim="desk-stylus" src="images/Frame - Pen.png" width="339" height="42" alt="" />
+        </header>
+
+        <div class="tablet" data-anim="tablet">
+          <div class="tablet__controls" data-anim="tablet-buttons" aria-hidden="true">
+            <i></i><i></i><i></i>
+          </div>
+
+          <div class="tablet__shadow" data-anim="tablet-shadow" aria-hidden="true"></div>
+
+          <div class="tablet__screen" data-anim="screen">
+            <div class="tablet__texture" data-anim="screen-bg" aria-hidden="true"></div>
+            <img class="tablet__portrait" data-anim="hero-portrait" src="images/Marve%20Photo.png" width="576" height="801" alt="Portrait of Marve Afo" />
+
+            <h1 id="hero-title" data-anim="hero-headline">
+              <span class="line"><span class="accent">Digital</span> products</span>
+              <span class="line"><span class="selection">designed<i aria-hidden="true"></i><i aria-hidden="true"></i></span> from</span>
+              <span class="line">end to end</span>
+            </h1>
+
+            <a class="scroll-button" data-anim="hero-cta" href="#work">
+              <span aria-hidden="true">↓</span> Scroll Down
+            </a>
+
+            <!-- Solid layer the hero hands off to before the site shows through -->
+            <div class="tablet__blank" data-anim="screen-blank" aria-hidden="true"></div>
+          </div>
+        </div>
+
+        <p class="hero__intro" data-anim="desk-bio">
+          I design digital products and enterprise experiences, from research
+          and problem framing through prototyping and shipped design. My
+          background ranges across classroom teaching, brand design, as well as
+          music and video production, so I care as much about story as I do
+          about screens.
+        </p>
+
+        <p class="signature" data-anim="desk-signature">— Marve Afo</p>
+      </div>
+    </section>
+
+    <section class="work" id="work" data-anim="site">
+      <div class="work__inner">
+        <nav class="project-nav" aria-labelledby="case-studies-title">
+          <h2 class="project-nav__title" id="case-studies-title">3 Case Studies</h2>
+
+          <a href="#thrive">
+            <img class="project-nav__thumb" src="images/Thrive%20Folder%20Box.png" alt="" />
+            Thrive
+          </a>
+
+          <a href="#learn">
+            <img class="project-nav__thumb" src="images/Learn%20Folder%20Box.png" alt="" />
+            Learn.vml
+          </a>
+
+          <a href="#everydai">
+            <img class="project-nav__thumb" src="images/Everydai%20Folder%20Box.png" alt="" />
+            Open Everydai
+          </a>
+        </nav>
+
+        <article class="case-study" id="thrive">
+          <div class="case-study__copy">
+            <div class="archive-icon" aria-hidden="true">
+              <img src="images/Thrive%20Folder%20Box.png" alt="" />
+            </div>
+
+            <h3><span class="sr-only">Thrive: </span>Built under merger pressure</h3>
+            <p>Description and impact numbers for this project here for all to see.</p>
+            <div class="case-study__rule"></div>
+            <p class="case-study__metrics">
+              1,000 completions • Trust building • 5 Awards
+            </p>
+
+            <a class="case-study__cta" href="#thrive">
+              Unpack Case Study<span class="sr-only">: Thrive</span> <span aria-hidden="true">→</span>
+            </a>
+          </div>
+
+          <div class="project-visual">
+            <img src="images/Thrive%20Thumbnail.png" alt="Thrive at VML project identity" />
+          </div>
+        </article>
+
+        <article class="case-study" id="learn">
+          <div class="case-study__copy">
+            <div class="archive-icon" aria-hidden="true">
+              <img src="images/Learn%20Folder%20Box.png" alt="" />
+            </div>
+
+            <h3><span class="sr-only">Learn.vml: </span>Learning at enterprise scale</h3>
+            <p>
+              A flexible learning experience designed to make development easier
+              to discover and complete.
+            </p>
+
+            <div class="case-study__rule"></div>
+            <p class="case-study__metrics">
+              Enterprise UX • Learning systems • Product strategy
+            </p>
+
+            <a class="case-study__cta" href="#learn">
+              Unpack Case Study<span class="sr-only">: Learn.vml</span> <span aria-hidden="true">→</span>
+            </a>
+          </div>
+
+          <div class="project-visual">
+            <img src="images/Learn.VML%20Thumbnail.png" alt="Learn.VML project identity" />
+          </div>
+        </article>
+
+        <article class="case-study" id="everydai">
+          <div class="case-study__copy">
+            <div class="archive-icon" aria-hidden="true">
+              <img src="images/Everydai%20Folder%20Box.png" alt="" />
+            </div>
+
+            <h3><span class="sr-only">Open Everydai: </span>Built under merger pressure</h3>
+            <p>Description and impact numbers for this project here for all to see.</p>
+            <div class="case-study__rule"></div>
+
+            <p class="case-study__metrics">
+              1,000 completions • Trust building • 5 Awards
+            </p>
+
+            <a class="case-study__cta" href="#everydai">
+              Unpack Case Study<span class="sr-only">: Open Everydai</span> <span aria-hidden="true">→</span>
+            </a>
+          </div>
+
+          <div class="project-visual">
+            <img src="images/Open%20Everydai%20Thumbnail.png" alt="Open Everydai project identity" />
+          </div>
+        </article>
+      </div>
+    </section>
+    </div>
+    <!-- Scroll distance for the reveal; .reveal stays stuck while this passes -->
+    <div class="reveal-spacer" data-anim="spacer" aria-hidden="true"></div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__identity">
+        <p>UX / Brand Design</p>
+
+        <div class="footer__details">
+          <strong>MA</strong>
+          <div>
+            <a class="footer__link" href="mailto:marvinafo@gmail.com">marvinafo@gmail.com</a>
+            <p><a class="footer__link" href="https://docs.google.com/document/d/1WTawhsRUU4jk6PNU6clx0Kiq7-qmPQi9/edit?usp=sharing&amp;ouid=106695809341626137144&amp;rtpof=true&amp;sd=true" target="_blank" rel="noopener">Resume<span class="sr-only"> (opens in new tab)</span></a></p>
+            <span>Product</span><span>Design</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer__social">
+        <p>Connect</p>
+        <div>
+          <a href="mailto:marvinafo@gmail.com" aria-label="Email">
+            <img src="images/Social%20Icon%20%E2%80%94%20Portfolio.svg" alt="" />
+          </a>
+          <a href="https://www.linkedin.com/in/marvin-afo/" target="_blank" rel="noopener" aria-label="LinkedIn (opens in new tab)">
+            <img src="images/Social%20Icon%20%E2%80%94%20LinkedIn.svg" alt="" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,867 @@
+:root {
+  /* Light surfaces */
+  --paper: #f6f6f3;
+  --ink: #111314;
+  --white: #ffffff;
+  --dot-on-light: rgba(20, 22, 22, 0.16);
+
+  /* Dark surfaces */
+  --surface-dark: #1d1f20;
+  --surface-card: rgba(31, 34, 36, 0.92);
+  --surface-footer: #202223;
+  --surface-media: #151819;
+  --hardware: #303536;
+  --tablet-stroke: #55595b;
+  --dot-on-dark: rgba(255, 255, 255, 0.09);
+
+  /* Strokes and text on dark */
+  --stroke-card: rgba(255, 255, 255, 0.06);
+  --line: rgba(255, 255, 255, 0.15);
+  --line-strong: rgba(255, 255, 255, 0.2);
+  --text-on-dark: #f6f7f7;
+  --text-muted: #999fa0;
+
+  /* Accent */
+  --accent: #3fa3f7;
+  --accent-selection: rgba(28, 120, 210, 0.45);
+  --signature: #0872a1;
+
+  /* Shadows */
+  --shadow-card: 0 25px 50px rgba(0, 0, 0, 0.2);
+
+  --max-width: 832px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: Poppins, ui-sans-serif, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+.hero {
+  min-height: 1080px;
+  /* Flexes with window height: tighter on laptops, roomier on tall screens */
+  padding: clamp(32px, 7vh, 64px) 40px 116px;
+  background-color: var(--paper);
+  background-image: radial-gradient(
+    circle,
+    var(--dot-on-light) 1px,
+    transparent 1.2px
+  );
+  background-size: 20px 20px;
+}
+
+.hero__inner {
+  width: min(100%, var(--max-width));
+  margin: 0 auto;
+}
+
+.hero__meta {
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 36px;
+}
+
+.hero__meta p {
+  margin: 0;
+  font-size: 1.125rem;
+  line-height: 1.08;
+  font-weight: 750;
+}
+
+.hero__pen {
+  width: min(40%, 20rem);
+  height: auto;
+  filter: drop-shadow(0 22px 18px rgba(0, 0, 0, 0.45));
+}
+
+.tablet {
+  --screen-radius: 58px;
+  position: relative;
+  margin-top: 24px;
+}
+
+/* Short desktop windows (e.g. 1366×768 laptops): scale the hero column down
+   so the tablet fits on first load with room below. zoom scales layout too,
+   unlike transform, so everything stays aligned. */
+@media (min-width: 801px) and (max-height: 800px) {
+  .hero__inner {
+    zoom: 0.87;
+  }
+}
+
+/* Hardware buttons: two volume keys on top, power key on the left edge */
+.tablet__controls {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.tablet__controls i {
+  position: absolute;
+  background: var(--hardware);
+}
+
+.tablet__controls i:nth-child(1),
+.tablet__controls i:nth-child(2) {
+  top: -5px;
+  width: 39px;
+  height: 5px;
+  border-radius: 2px 2px 0 0;
+}
+
+.tablet__controls i:nth-child(1) {
+  left: 100px;
+}
+
+.tablet__controls i:nth-child(2) {
+  left: 149px;
+}
+
+.tablet__controls i:nth-child(3) {
+  top: 80px;
+  left: -5px;
+  width: 5px;
+  height: 67px;
+  border-radius: 2px 0 0 2px;
+}
+
+.tablet__screen {
+  position: relative;
+  aspect-ratio: 832 / 468;
+  overflow: hidden;
+  border: 2px solid var(--tablet-stroke);
+  border-radius: var(--screen-radius);
+  isolation: isolate;
+  background: linear-gradient(100deg, #1c2c36 0%, #2b363d 50%, #4a5054 100%);
+}
+
+/* Shadow on its own layer so the reveal can fade it with opacity (no repaint) */
+.tablet__shadow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: var(--screen-radius);
+  box-shadow:
+    0 30px 50px rgba(0, 0, 0, 0.32),
+    0 70px 120px rgba(0, 0, 0, 0.22);
+}
+
+/* Solid site-colored layer the hero hands off to (opacity driven by script.js) */
+.tablet__blank {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  background: var(--surface-dark);
+  opacity: 0;
+}
+
+/* "Abstract Abyss" halftone, matching Figma: multiply at 50% */
+.tablet__texture {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: url("images/Abstract%20Abyss.png") center / cover no-repeat;
+  mix-blend-mode: multiply;
+  opacity: 0.5;
+}
+
+/* Blue lighting glow: a soft ellipse of light in the top-left corner */
+.tablet__screen::before {
+  content: "";
+  position: absolute;
+  top: -30%;
+  left: -20%;
+  width: 95%;
+  height: 140%;
+  pointer-events: none;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0, 150, 230, 0.14) 0%,
+    rgba(0, 150, 230, 0.08) 35%,
+    transparent 70%
+  );
+  filter: blur(40px);
+  opacity: var(--fx, 1);
+}
+
+/* Glass glare: a diagonal sheen that brightens toward the right edge */
+.tablet__screen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 6;
+  opacity: var(--fx, 1);
+  background: linear-gradient(
+    62deg,
+    transparent 51%,
+    rgba(197, 238, 255, 0.08) 65%,
+    rgba(197, 238, 255, 0.29) 100%
+  );
+}
+
+.tablet__screen h1 {
+  position: relative;
+  z-index: 3;
+  margin: 0;
+  padding: 72px 0 0 116px;
+  color: var(--white);
+  font-size: 4.6875rem;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  font-weight: 700;
+}
+
+.tablet__screen h1 .line {
+  display: block;
+}
+
+.tablet__screen h1 .accent {
+  color: var(--accent);
+}
+
+/* Text selection on "designed": highlight box plus two drag handles */
+.selection {
+  position: relative;
+  display: inline-block;
+}
+
+.selection::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0.12em -0.1em 0.08em;
+  background: var(--accent-selection);
+}
+
+.selection i {
+  position: absolute;
+  top: 0.12em;
+  bottom: 0.08em;
+  width: 2px;
+  background: var(--accent);
+}
+
+.selection i::before {
+  content: "";
+  position: absolute;
+  left: -7px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.selection i:first-of-type {
+  left: -0.1em;
+}
+
+.selection i:first-of-type::before {
+  bottom: -8px;
+}
+
+.selection i:last-of-type {
+  right: -0.1em;
+}
+
+.selection i:last-of-type::before {
+  top: -8px;
+}
+
+.tablet__portrait {
+  position: absolute;
+  z-index: 4;
+  bottom: -4px;
+  left: 50%;
+  /* Sized by screen height so the head always reaches the third headline line */
+  width: auto;
+  height: 84%;
+  max-width: none;
+  transform: translateX(-50%);
+  filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.28));
+}
+
+.scroll-button {
+  position: absolute;
+  z-index: 5;
+  right: 44px;
+  bottom: 40px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  color: var(--white);
+  border: 2px solid var(--white);
+  border-radius: 999px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.scroll-button:hover,
+.scroll-button:focus-visible {
+  color: var(--ink);
+  background: var(--white);
+}
+
+.hero__intro {
+  margin: 48px 0 0;
+  font-size: 1.25rem;
+  line-height: 1.45;
+}
+
+.signature {
+  margin: 24px 0 0;
+  color: var(--signature);
+  font-family: "Segoe Script", "Bradley Hand", cursive;
+  font-size: 1.375rem;
+  font-style: italic;
+}
+
+.work {
+  padding: 0 40px 88px;
+  color: var(--text-on-dark);
+  background-color: var(--surface-dark);
+  background-image: radial-gradient(
+    circle,
+    var(--dot-on-dark) 1px,
+    transparent 1.2px
+  );
+  background-size: 22px 22px;
+}
+
+.work__inner {
+  width: min(100%, 1020px);
+  margin: 0 auto;
+}
+
+.project-nav {
+  /* Sticks while scrolling the case studies. The negative offset (top
+     padding + one 12px title line) tucks "3 Case Studies" above the screen
+     edge, leaving just the icons with the row gap above them. */
+  position: sticky;
+  top: calc(-1 * (8px + 0.75rem * 1.5));
+  z-index: 10;
+  width: min(340px, 100%);
+  margin: 0 auto 64px;
+  padding: 8px 16px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px 12px;
+  background: var(--surface-card);
+  border: 1px solid var(--stroke-card);
+  border-top: 0;
+  border-radius: 0 0 20px 20px;
+  box-shadow: var(--shadow-card);
+}
+
+/* Spans all three columns; the dashes are decorative */
+.project-nav__title {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  text-align: center;
+}
+
+.project-nav__title::before,
+.project-nav__title::after {
+  content: "—";
+}
+
+.project-nav__title::before {
+  margin-right: 0.4em;
+}
+
+.project-nav__title::after {
+  margin-left: 0.4em;
+}
+
+.project-nav a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--white);
+  font-size: 0.75rem;
+  line-height: 1.5;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-align: center;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.project-nav__thumb {
+  display: block;
+  width: 32px;
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 4px;
+  transition: transform 0.2s;
+}
+
+.project-nav a:hover .project-nav__thumb {
+  transform: translateY(-4px);
+}
+
+.case-study {
+  /* Land below the sticky nav when jumped to */
+  scroll-margin-top: 100px;
+  min-height: 440px;
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  gap: 48px;
+  padding: 48px;
+  margin-bottom: 64px;
+  background: var(--surface-card);
+  border: 1px solid var(--stroke-card);
+  box-shadow: var(--shadow-card);
+}
+
+.case-study__copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.archive-icon {
+  position: relative;
+  width: 72px;
+  height: 74px;
+  margin-bottom: 16px;
+}
+
+.archive-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.case-study h3 {
+  margin: 0 0 16px;
+  font-size: 1.4375rem;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-weight: 600;
+}
+
+.case-study__copy > p {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.25;
+}
+
+.case-study__rule {
+  width: 100%;
+  height: 1px;
+  margin: 24px 0 20px;
+  background: var(--line);
+}
+
+.case-study__copy > .case-study__metrics {
+  margin-bottom: 28px;
+  color: var(--text-muted);
+}
+
+.case-study__cta {
+  margin-top: auto;
+  padding: 12px 16px;
+  border: 1px solid var(--white);
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.case-study__cta span {
+  margin-left: 16px;
+}
+
+.case-study__cta:hover,
+.case-study__cta:focus-visible {
+  color: var(--ink);
+  background: var(--white);
+}
+
+.project-visual {
+  position: relative;
+  min-height: 350px;
+  overflow: hidden;
+  background: var(--surface-media);
+}
+
+.project-visual > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.footer {
+  padding: 32px 64px 40px;
+  color: var(--white);
+  background: var(--surface-footer);
+  border-top: 1px solid var(--line-strong);
+}
+
+.footer__inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer p {
+  margin: 0;
+}
+
+.footer__identity > p {
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  font-size: 0.9375rem;
+}
+
+.footer__details {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--line);
+}
+
+.footer__details strong {
+  padding: 12px;
+  font-size: 1.875rem;
+}
+
+.footer__details > div {
+  padding: 8px 12px;
+  border-left: 1px solid var(--line);
+  font-size: 0.875rem;
+}
+
+.footer__details a {
+  text-decoration: none;
+}
+
+.footer__link {
+  color: var(--accent);
+}
+
+.footer__details span {
+  display: inline-block;
+  margin: 4px 4px 0 0;
+  padding: 4px 8px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+
+.footer__social {
+  text-align: right;
+}
+
+.footer__social > p {
+  margin-bottom: 1rem;
+}
+
+.footer__social > div {
+  display: flex;
+  justify-content: flex-end;
+  /* Offset the 44px tap area so the 25px icons align visually */
+  margin: -9.5px -9.5px -9.5px 0;
+}
+
+.footer__social a {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border-radius: 50%;
+  transition: opacity 0.2s;
+}
+
+.footer__social a:hover,
+.footer__social a:focus-visible {
+  opacity: 0.7;
+}
+
+.footer__social img {
+  display: block;
+  width: 25px;
+  height: 25px;
+  filter: invert(1);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+@media (max-width: 800px) {
+  .hero {
+    min-height: auto;
+    padding: 48px 20px 72px;
+  }
+
+  .hero__meta p {
+    font-size: 0.9375rem;
+  }
+
+  .tablet {
+    --screen-radius: 34px;
+  }
+
+  .tablet__screen {
+    aspect-ratio: auto;
+    min-height: 430px;
+  }
+
+  .tablet__screen h1 {
+    padding: 40px 24px 0 32px;
+    font-size: clamp(2.5rem, 9vw, 4rem);
+  }
+
+  .tablet__portrait {
+    height: 90%;
+  }
+
+  .hero__intro {
+    font-size: 1rem;
+  }
+
+  .work {
+    padding: 0 20px 60px;
+  }
+
+  /* Stacked layout: one even 28px rhythm for rule → metrics → CTA → image */
+  .case-study {
+    grid-template-columns: 1fr;
+    padding: 28px;
+    gap: 28px;
+  }
+
+  .case-study__rule {
+    margin-bottom: 28px;
+  }
+
+  /* Stacked layout: no min-height, so the CTA sits right under the metrics
+     (the 28px metrics margin) instead of being pushed to the bottom. */
+  .case-study__copy {
+    min-height: 0;
+  }
+
+  .project-visual {
+    min-height: 300px;
+  }
+}
+
+@media (max-width: 520px) {
+  /* Phone cards: one column on an even 24px rhythm. display: contents lets
+     the copy's children join the card's grid, so the gap spaces everything
+     and the CTA can move below the image. */
+  .case-study {
+    padding: 24px;
+    gap: 24px;
+  }
+
+  .case-study__copy {
+    display: contents;
+  }
+
+  .case-study .archive-icon,
+  .case-study h3,
+  .case-study__copy > p,
+  .case-study__rule,
+  .case-study__copy > .case-study__metrics {
+    margin: 0;
+  }
+
+  /* Full thumbnail at its natural shape, no cropping */
+  .project-visual {
+    min-height: 0;
+  }
+
+  .project-visual > img {
+    height: auto;
+    object-fit: initial;
+  }
+
+  /* Full-width CTA under the image */
+  .case-study__cta {
+    order: 1;
+    width: 100%;
+    margin-top: 0;
+    padding: 16px;
+    text-align: center;
+  }
+
+  .case-study__cta span {
+    margin-left: 12px;
+  }
+
+  .hero__pen {
+    width: 48%;
+  }
+
+  .tablet__screen {
+    min-height: 390px;
+  }
+
+  .tablet__screen h1 {
+    font-size: 2.375rem;
+  }
+
+  .tablet__portrait {
+    height: 100%;
+  }
+
+  .project-nav {
+    gap: 8px;
+  }
+
+  .case-study {
+    scroll-margin-top: 116px;
+  }
+
+  /* Very narrow screens: let "Open Everydai" wrap rather than overflow */
+  .project-nav a {
+    white-space: normal;
+  }
+
+  .footer {
+    padding: 28px 20px;
+  }
+
+  /* Mobile footer: everything centered */
+  .footer__inner {
+    align-items: center;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .footer__social {
+    text-align: center;
+  }
+
+  .footer__social > div {
+    justify-content: center;
+    margin: -9.5px 0;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Scroll reveal (see docs/hero-reveal.md)
+   Only active when <html> has .has-reveal (JS + motion allowed).
+   Stacking, back to front: desk (.hero) → site (.work, clipped to the
+   tablet screen) → tablet frame + hero layers.
+   ------------------------------------------------------------------ */
+.has-reveal {
+  scroll-behavior: auto;
+}
+
+/* The pin is native sticky: .reveal sticks while .reveal-spacer scrolls by.
+   (No transforms afterwards, so sticky children like the case-study nav work.) */
+.reveal-spacer {
+  display: none;
+}
+
+.has-reveal .reveal {
+  position: sticky;
+  top: 0;
+}
+
+.has-reveal .reveal-spacer {
+  display: block;
+  height: 400vh; /* script.js sets the exact length */
+}
+
+.has-reveal .hero {
+  position: absolute;
+  inset: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100svh;
+  min-height: 0;
+  padding-block: clamp(32px, 7vh, 64px);
+  overflow: hidden;
+}
+
+/* Center the hero vertically on tall screens (tablets, big monitors). Auto
+   margins collapse to 0 when the content is taller than the screen, so short
+   laptops stay top-aligned instead of being pushed off the top. */
+.has-reveal .hero__inner {
+  margin: auto;
+}
+
+.has-reveal .work {
+  position: relative;
+  z-index: 1;
+  /* Fully clipped until script.js syncs it to the tablet screen */
+  clip-path: inset(0 0 100% 0);
+}
+
+.has-reveal .tablet {
+  z-index: 2;
+  transform-origin: 0 0;
+  /* Clicks pass through the frame to the site showing in the screen, so the
+     case-study links work as soon as they're visible. */
+  pointer-events: none;
+}
+
+.has-reveal .scroll-button {
+  pointer-events: auto;
+}
+
+.has-reveal .tablet.is-animating {
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+  }
+
+  .project-nav a:hover .project-nav__thumb {
+    transform: none;
+  }
+}
