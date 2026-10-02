@@ -788,6 +788,9 @@ small {
 }
 
 .case-study__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
   margin-top: auto;
   padding: var(--space-3) var(--space-4);
   border: 1px solid var(--color-border-strong);
@@ -796,8 +799,13 @@ small {
   text-decoration: none;
 }
 
-.case-study__cta span {
-  margin-left: var(--space-4);
+/* The same arrow as the hero button, turned to point right; drawn with
+   currentColor so it follows the text on hover */
+.case-study__cta-icon {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  transform: rotate(-90deg);
 }
 
 .case-study__cta:hover,
@@ -1010,8 +1018,9 @@ small {
     text-align: center;
   }
 
-  .case-study__cta span {
-    margin-left: var(--space-3);
+  .case-study__cta {
+    justify-content: center;
+    gap: var(--space-3);
   }
 
   .hero__pen {
