@@ -1640,14 +1640,9 @@ small {
   }
 }
 
-/* Shortest sideways screens (Safari with its bars, small phones): the bio
-   steps out and the head rises half as far, so the card stays wide enough
-   for the footer */
+/* Shortest sideways screens (Safari with its bars, small phones): the head
+   rises half as far, so the card stays wide enough for the footer */
 @media (orientation: landscape) and (max-height: 372px) {
-  .hero__intro {
-    display: none;
-  }
-
   .hero__inner {
     --card-w: min(
       324px,
@@ -1665,13 +1660,6 @@ small {
   }
 }
 
-/* Narrow sideways screens (iPhone SE and smaller): the text column is too
-   narrow for the bio to fit beside the card */
-@media (orientation: landscape) and (max-height: 500px) and (max-width: 720px) {
-  .hero__intro {
-    display: none;
-  }
-}
 
 /* The very shortest sideways screens: the card is already small, so it skips
    the 10% reduction to keep room for the email */
