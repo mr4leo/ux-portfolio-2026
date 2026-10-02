@@ -20,7 +20,6 @@ const T = {
   portrait: [0.15, 0.15],
   blankIn: [0.3, 0.15], // screen texture → solid site color
   grow1: [0.3, 0.2], // Frame 2→3: grow from top-center over the bio
-  cardOut: [0.28, 0.12], // phones: white card + footer fade as the screen grows
   // Sideways phones: text slides out left, top to bottom (gone by 0.10), then
   // the card glides to the horizontal center, crossing the text column only
   // after the text has left; the portrait fade (0.15) follows
@@ -60,22 +59,24 @@ function bindPlainAnchors() {
 
 // ---- Phone hero ruler: size it and label it with the width it measures -----
 // Upright phones: CSS sizes it to the headline's "end to end". Sideways
-// phones: it measures the signature, whose script font differs by platform,
-// so its drawn width is measured here.
+// phones: it sits above the profile card and measures the card.
 const sidewaysPhone = window.matchMedia("(orientation: landscape) and (max-height: 500px)");
 
 function updateRuler() {
   const ruler = document.querySelector(".hero__ruler");
   if (!ruler) return;
   ruler.style.width = "";
-  ruler.style.marginLeft = "";
   if (!ruler.offsetParent) return; // hidden (desktop, short phones)
   if (sidewaysPhone.matches) {
-    const range = document.createRange();
-    range.selectNodeContents(document.querySelector(".hero__signature-top"));
-    const text = range.getBoundingClientRect();
-    ruler.style.width = `${text.width}px`;
-    ruler.style.marginLeft = `${text.left - ruler.getBoundingClientRect().left}px`;
+    // Sits just above the card, as wide as it
+    const card = document.querySelector(".hero-device").getBoundingClientRect();
+    const box = ruler.offsetParent.getBoundingClientRect();
+    ruler.style.width = `${card.width}px`;
+    ruler.style.left = `${card.left - box.left}px`;
+    ruler.style.top = `${card.top - box.top - ruler.offsetHeight - 10}px`;
+  } else {
+    ruler.style.left = "";
+    ruler.style.top = "";
   }
   const line = ruler.querySelector(".hero__ruler-line");
   ruler.querySelector(".hero__ruler-value").textContent =
@@ -127,6 +128,39 @@ function initReveal() {
   let tl = null;
   const state = { g1: 0, g2: 0, g3: 0, shift: 0 };
   const cardLayers = [q("device-card"), q("device-footer")];
+  const device = document.querySelector(".hero-device");
+  const frames = all("card-frame");
+
+  // Rounded-rect outline for a clip path (clockwise from the top-left corner)
+  const roundRect = (x, y, w, h, r) =>
+    `M${x + r},${y} H${x + w - r} A${r},${r} 0 0 1 ${x + w},${y + r} V${y + h - r} ` +
+    `A${r},${r} 0 0 1 ${x + w - r},${y + h} H${x + r} A${r},${r} 0 0 1 ${x},${y + h - r} ` +
+    `V${y + r} A${r},${r} 0 0 1 ${x + r},${y} Z`;
+
+  // Phones: size the in-tablet card frame to the card and cut the screen out
+  // of it, in the tablet's own (untransformed) coordinates
+  function measureFrame(r, zoom) {
+    const card = q("device-card");
+    if (!device || !card || getComputedStyle(card).display === "none") {
+      device?.classList.remove("is-framed");
+      return;
+    }
+    const d = device.getBoundingClientRect();
+    const cs = getComputedStyle(device);
+    const inset = parseFloat(cs.paddingLeft) || 0;
+    const outerR = parseFloat(cs.getPropertyValue("--card-radius")) || 28;
+    const screenR = parseFloat(getComputedStyle(tablet).getPropertyValue("--screen-radius")) || 16;
+    const w = r.width / zoom, h = r.height / zoom;
+    const below = (d.bottom - r.bottom) / zoom; // screen bottom → card bottom
+    const W = w + 2 * inset, H = h + inset + below;
+    for (const el of frames) {
+      Object.assign(el.style, { left: `${-inset}px`, top: `${-inset}px`, width: `${W}px`, height: `${H}px` });
+    }
+    const frame = tablet.querySelector(".tablet__frame");
+    frame.style.clipPath =
+      `path(evenodd, "${roundRect(0, 0, W, H, outerR)} ${roundRect(inset, inset, w, h, screenR)}")`;
+    device.classList.add("is-framed");
+  }
 
   function measure() {
     tablet.style.transform = "none";
@@ -171,6 +205,8 @@ function initReveal() {
     // Frame 5: past every viewport edge.
     const over = Math.max(vw, vh) * OVERSHOOT;
     const s3 = Math.max((vw + 2 * over) / B.w, (vh + 2 * over) / B.h);
+
+    measureFrame(r, zoom);
 
     // Sideways phones: the card first glides to the horizontal center
     const dx = sidewaysPhone.matches ? vw / 2 - (B.left + B.w / 2) : 0;
@@ -279,13 +315,13 @@ function initReveal() {
     });
 
     if (sideways) {
-      // Text slides out to the left, top to bottom, as the card glides to center
+      // The card's ruler fades first; the text slides out to the left, top to
+      // bottom, before the card glides to center
       const textOut = [
-        q("desk-label"),
-        document.querySelector(".hero__signature-top"),
         q("desk-ruler"),
         ...document.querySelectorAll(".hero__headline-below .line"),
         q("desk-bio"),
+        q("desk-signature"),
       ];
       tl.to(textOut, {
         opacity: 0,
@@ -310,8 +346,9 @@ function initReveal() {
     // autoAlpha also sets visibility: hidden at 0, so the faded CTA can't be clicked
     tl.to(all("hero-cta"), { autoAlpha: 0, y: 12, duration: dur(T.cta) }, at(T.cta))
       .to(portrait, { opacity: 0, scale: 0.96, y: 20, duration: dur(T.portrait) }, at(T.portrait))
-      // Phones: the white card and its footer fade as the screen grows out of them
-      .to([...all("device-card"), ...all("device-footer")], { autoAlpha: 0, duration: dur(T.cardOut) }, at(T.cardOut))
+      // Phones: the card's footer text leaves with the CTA; the card frame
+      // itself stays and zooms with the screen
+      .to(all("device-footer"), { autoAlpha: 0, duration: dur(T.cta) }, at(T.cta))
       .to(q("screen-blank"), { opacity: 1, duration: dur(T.blankIn) }, at(T.blankIn))
       .to(screen, { "--fx": 0, duration: dur(T.blankIn) }, at(T.blankIn))
       // Hidden under the blank layer, so these can switch off instantly
@@ -322,7 +359,7 @@ function initReveal() {
       .to(q("screen-blank"), { opacity: 0, duration: dur(T.blankOut) }, at(T.blankOut))
       .fromTo(siteInner, { y: SITE_DRIFT }, { y: 0, duration: dur(T.drift), ease: "power1.out" }, at(T.drift))
       .to(state, { g3: 1, duration: dur(T.grow3), ease: "power2.in" }, at(T.grow3))
-      .to([q("tablet-buttons"), q("tablet-shadow")], { opacity: 0, duration: dur(T.frameOut) }, at(T.frameOut))
+      .to([q("tablet-buttons"), q("tablet-shadow"), ...frames], { opacity: 0, duration: dur(T.frameOut) }, at(T.frameOut))
       .to(screen, { borderColor: transparentStroke, duration: dur(T.strokeOut) }, at(T.strokeOut))
       // Frame gone: stop it catching clicks or focus
       .set(tablet, { visibility: "hidden" }, 0.97)

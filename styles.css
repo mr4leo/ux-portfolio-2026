@@ -22,8 +22,8 @@
      Status        --color-status-online  "available" dot
      Accent        --color-accent           bright blue (on dark)
                    --color-accent-strong    dark blue (accent text on light)
-                   --color-accent-selection selection box on dark
-                   --color-accent-highlight selection box on light
+                   --color-accent-highlight selection box behind "designed"
+                                            (decorative, any background)
      Patterns      --color-dot-light, --color-dot-dark (dotted backgrounds)
      Tablet        --color-device-body, --color-device-stroke,
                    --gradient-device-screen, --effect-glow, --effect-glare
@@ -76,8 +76,7 @@
   /* ---- Color: accent ---- */
   --color-accent: #3fa3f7;
   --color-accent-strong: #00628c; /* 6.5:1 on paper */
-  --color-accent-selection: rgba(28, 120, 210, 0.45);
-  --color-accent-highlight: #94cfe8;
+  --color-accent-highlight: rgba(0, 178, 255, 0.33); /* Figma: #00B2FF @ 33% */
 
   /* ---- Color: dotted background patterns ---- */
   --color-dot-light: rgba(20, 22, 22, 0.16);
@@ -375,6 +374,8 @@ small {
 .hero__signature-top,
 .hero-device__card,
 .hero-device__footer,
+.tablet__frame,
+.tablet__frame-shadow,
 .tablet__pop,
 .hero__headline-below,
 .hero__ruler {
@@ -514,7 +515,7 @@ small {
   position: absolute;
   z-index: -1;
   inset: 0.12em -0.1em 0.08em;
-  background: var(--color-accent-selection);
+  background: var(--color-accent-highlight);
 }
 
 .selection i {
@@ -1160,6 +1161,39 @@ small {
     box-shadow: var(--shadow-card);
   }
 
+  /* With the scroll reveal, the card is redrawn inside .tablet so it zooms
+     with the screen (script.js adds .is-framed once it's sized). The static
+     card below stays for no-JS / reduced motion. */
+  .hero-device.is-framed .hero-device__card {
+    visibility: hidden;
+  }
+
+  .is-framed .tablet__frame,
+  .is-framed .tablet__frame-shadow {
+    display: block;
+    position: absolute;
+    pointer-events: none;
+    border-radius: var(--card-radius);
+  }
+
+  /* White card with a screen-shaped hole (clip-path set by script.js), so
+     the site shows through the screen as it grows */
+  .is-framed .tablet__frame {
+    background: var(--color-bg-white);
+    border: 1px solid var(--color-border-light);
+  }
+
+  /* Its shadow on a separate, unclipped layer (a box-shadow never paints
+     inside its own box, so it can't cover the screen) */
+  .is-framed .tablet__frame-shadow {
+    box-shadow: var(--shadow-card);
+  }
+
+  /* The footer text sits above the zooming frame, and fades before it grows */
+  .has-reveal .hero-device__footer {
+    z-index: 3;
+  }
+
   .tablet {
     /* --card-radius minus --card-inset. Kept literal: script.js parses it */
     --screen-radius: 16px;
@@ -1306,10 +1340,6 @@ small {
     color: var(--color-accent-strong);
   }
 
-  .hero__headline-below .selection::before {
-    background: var(--color-accent-highlight);
-  }
-
   /* Measures "end to end": same font size as the headline, and the line's ink
      runs from 0.028em to 4.892em, so the ruler spans exactly that at any
      size. script.js writes the measured width into the label. */
@@ -1317,17 +1347,22 @@ small {
     display: block;
     width: 4.864em;
     margin: var(--space-5) 0 0 0.028em;
-    color: var(--color-text-muted);
+    color: var(--color-signature);
     font-size: calc(100cqi / 7.454);
     line-height: var(--leading-none);
     text-align: center;
   }
 
+  /* Dashed measuring line with end ticks */
   .hero__ruler-line {
     position: relative;
     display: block;
     height: 1px;
-    background: currentColor;
+    background: repeating-linear-gradient(
+      to right,
+      currentColor 0 4px,
+      transparent 4px 7px
+    );
   }
 
   .hero__ruler-line::before,
@@ -1536,8 +1571,9 @@ small {
 
 /* ------------------------------------------------------------------
    Phones turned sideways: the phone hero in two columns. Text on the
-   left (role, signature + ruler, headline, bio), the profile card on the
-   right, sized from the screen height so the head and card always fit.
+   left (headline, one-sentence bio, "— Marve Afo"), the profile card on
+   the right with a ruler measuring it, sized from the visible height
+   (between the browser bars) so the head, ruler and card always fit.
    At the end of the file so it wins over the tablet hero rules above.
    ------------------------------------------------------------------ */
 @media (orientation: landscape) and (max-height: 500px) {
@@ -1555,7 +1591,9 @@ small {
     --card-w: min(
       324px,
       calc(((100svh - 2 * var(--space-4) - 74px) / 1.02 + 24px) * 0.9),
-      calc((100svh - 74px) / 1.29 + 24px)
+      calc((100svh - 74px) / 1.29 + 24px),
+      /* room above the centered card for its ruler (~36px) */
+      calc((100svh - 146px) / 0.75 + 24px)
     );
     zoom: 1;
     width: 100%;
@@ -1564,40 +1602,65 @@ small {
     display: grid;
     grid-template-columns: minmax(0, 430px) var(--card-w);
     /* Spacer rows keep the text block centered without stretching it */
-    grid-template-rows: 1fr auto auto auto auto 1fr;
+    grid-template-rows: 1fr auto auto auto 1fr;
     justify-content: center;
     align-items: start;
     column-gap: clamp(var(--space-6), 6vw, 56px);
+    position: relative; /* the ruler is placed against it */
   }
 
+  /* No role label here; the signature moves under the bio */
   .hero__meta {
-    grid-column: 1;
-    grid-row: 2;
-  }
-
-  /* Under the signature, measuring it (script.js sets the width) */
-  .hero__ruler {
-    grid-column: 1;
-    grid-row: 3;
-    width: auto;
-    margin: var(--space-2) 0 0;
-    font-size: var(--text-base);
+    display: none;
   }
 
   .hero__headline-below {
     grid-column: 1;
-    grid-row: 4;
-    margin-top: var(--space-4);
-    font-size: clamp(28px, 9.2svh, 44px);
+    grid-row: 2;
+    margin-top: 0;
+    font-size: clamp(28px, 12svh, 44px); /* ~36px on a 295px-tall view, as in the mock */
   }
 
   .hero__intro {
     display: block;
     grid-column: 1;
-    grid-row: 5;
+    grid-row: 3;
     margin: var(--space-3) 0 0;
-    font-size: var(--text-xs);
+    font-size: var(--text-base);
     line-height: var(--leading-normal);
+  }
+
+  /* "— Marve Afo", like a signed quote */
+  .signature {
+    display: block;
+    grid-column: 1;
+    grid-row: 4;
+    margin: var(--space-3) 0 0;
+    font-size: var(--text-base);
+    line-height: var(--leading-tight);
+  }
+
+  /* Above the card, measuring its width, number over the right end.
+     script.js places and sizes it from the card. The head overlaps it. */
+  .hero__ruler {
+    position: absolute;
+    z-index: 0;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: flex-end;
+    width: var(--card-w);
+    margin: 0;
+    font-size: var(--text-base);
+  }
+
+  .hero__ruler-line {
+    align-self: stretch;
+  }
+
+  .hero__ruler-value {
+    margin: 0 0 var(--space-1);
   }
 
   /* The card box sits at the vertical center; the head rises above it */
@@ -1643,6 +1706,11 @@ small {
       display: none;
     }
 
+    /* Without the avatar, give the text a little room from the card edge */
+    .hero-profile {
+      padding-left: var(--space-1);
+    }
+
     .hero-cta .scroll-button__icon {
       display: none;
     }
@@ -1656,7 +1724,9 @@ small {
     --card-w: min(
       324px,
       calc(((100svh - 2 * var(--space-4) - 74px) / 0.885 + 24px) * 0.9),
-      calc((100svh - 74px) / 1.02 + 24px)
+      calc((100svh - 74px) / 1.02 + 24px),
+      /* room above the centered card for its ruler (~36px) */
+      calc((100svh - 146px) / 0.75 + 24px)
     );
   }
 
@@ -1677,7 +1747,32 @@ small {
     --card-w: min(
       324px,
       calc((100svh - 2 * var(--space-4) - 74px) / 0.885 + 24px),
-      calc((100svh - 74px) / 1.02 + 24px)
+      calc((100svh - 74px) / 1.02 + 24px),
+      /* room above the centered card for its ruler (~36px) */
+      calc((100svh - 146px) / 0.75 + 24px)
     );
+  }
+}
+
+/* Tightest sideways cards: too narrow for the email beside "Swipe Up", so
+   the button shows only its arrow (the words stay for screen readers) */
+@container (max-width: 227px) {
+  @media (orientation: landscape) and (max-height: 500px) {
+    .hero-cta {
+      padding-inline: var(--space-3);
+    }
+
+    .hero-cta .scroll-button__icon {
+      display: block;
+    }
+
+    .hero-cta .scroll-button__label {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+    }
   }
 }
