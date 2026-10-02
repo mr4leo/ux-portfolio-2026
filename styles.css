@@ -12,11 +12,14 @@
      Text          --color-text           black text on light backgrounds
                    --color-text-inverse   white text on dark backgrounds
                    --color-text-muted     secondary text on dark
+                   --color-text-secondary secondary text on light
                    --color-link           links on dark
                    --color-signature      handwritten signature
      Borders       --color-border-subtle  card edges on dark
                    --color-border         dividers and outlines on dark
                    --color-border-strong  button outlines on dark
+                   --color-border-light   card edges on light
+     Status        --color-status-online  "available" dot
      Accent        --color-accent, --color-accent-selection
      Patterns      --color-dot-light, --color-dot-dark (dotted backgrounds)
      Tablet        --color-device-body, --color-device-stroke,
@@ -54,6 +57,7 @@
   --color-text: #111314;
   --color-text-inverse: #ffffff;
   --color-text-muted: #999fa0;
+  --color-text-secondary: #6b7072; /* 5:1 on white */
   --color-link: var(--color-accent);
   --color-signature: #0872a1;
 
@@ -61,6 +65,10 @@
   --color-border-subtle: rgba(255, 255, 255, 0.06);
   --color-border: rgba(255, 255, 255, 0.15);
   --color-border-strong: #ffffff;
+  --color-border-light: rgba(20, 22, 22, 0.16);
+
+  /* ---- Color: status ---- */
+  --color-status-online: #19bd68;
 
   /* ---- Color: accent ---- */
   --color-accent: #3fa3f7;
@@ -355,6 +363,17 @@ small {
   .hero__inner {
     zoom: 0.87;
   }
+}
+
+/* Phone hero pieces (white profile card, headline under it, ruler). Hidden
+   until the phone layout below turns them on. */
+.hero__signature-top,
+.hero-device__card,
+.hero-device__footer,
+.tablet__portrait-pop,
+.hero__headline-below,
+.hero__ruler {
+  display: none;
 }
 
 /* Hardware buttons: two volume keys on top, power key on the left edge */
@@ -1037,6 +1056,262 @@ small {
   .footer__social > div {
     justify-content: center;
     margin: -9.5px 0;
+  }
+
+  /* ---- Phone hero: the tablet becomes a white profile card ---- */
+  .hero__meta {
+    min-height: 0;
+  }
+
+  .hero__meta p {
+    font-size: var(--text-xs);
+  }
+
+  .hero__pen,
+  .hero__intro,
+  .signature,
+  .tablet__controls,
+  .tablet__shadow,
+  .tablet__portrait,
+  .scroll-button {
+    display: none;
+  }
+
+  /* The real h1 stays in the screen for screen readers; sighted users get
+     the copy under the card */
+  .tablet__screen h1 {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+
+  .hero__meta .hero__signature-top {
+    display: block;
+    margin: var(--space-1) 0 0;
+    color: var(--color-signature);
+    font-family: var(--font-script);
+    font-size: var(--text-base);
+    font-weight: var(--weight-regular);
+    font-style: italic;
+    line-height: var(--leading-tight);
+  }
+
+  .hero-device {
+    position: relative;
+    margin-top: var(--space-10); /* room for the head above the card */
+    padding: var(--space-3);
+  }
+
+  /* Card background on its own layer, behind the site (see the HTML note) */
+  .hero-device__card {
+    display: block;
+    position: absolute;
+    inset: 0;
+    background: var(--color-bg-white);
+    border: 1px solid var(--color-border-light);
+    border-radius: 28px;
+    box-shadow: var(--shadow-card);
+  }
+
+  .tablet {
+    --screen-radius: 16px; /* card radius minus its padding */
+    margin-top: 0;
+  }
+
+  .tablet__screen {
+    aspect-ratio: 4 / 3;
+    min-height: 0;
+    border-width: 0;
+  }
+
+  /* Head rises above the screen; shoulders sit on its bottom edge, inside its
+     sides. The photo's top third is transparent (hence 185%), and the subject
+     sits right of the file's center (hence 46%). */
+  .tablet__portrait-pop {
+    display: block;
+    position: absolute;
+    z-index: 4;
+    bottom: 0;
+    left: 46%;
+    width: auto;
+    height: 185%;
+    max-width: none;
+    transform: translateX(-50%);
+    filter: var(--shadow-portrait);
+    pointer-events: none;
+  }
+
+  .hero-device__footer {
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    padding: var(--space-3) 0 0;
+  }
+
+  .hero-profile {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .hero-profile__avatar {
+    position: relative;
+    flex: none;
+  }
+
+  .hero-profile__avatar img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+  }
+
+  .hero-profile__status {
+    position: absolute;
+    right: 0;
+    bottom: 1px;
+    width: 10px;
+    height: 10px;
+    border: 2px solid var(--color-bg-white);
+    border-radius: 50%;
+    background: var(--color-status-online);
+  }
+
+  .hero-profile__text {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    font-size: var(--text-2xs);
+    line-height: var(--leading-normal);
+  }
+
+  .hero-profile__email {
+    overflow: hidden;
+    font-weight: var(--weight-semibold);
+    text-decoration: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .hero-profile__detail {
+    color: var(--color-text-secondary);
+  }
+
+  .hero-cta {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-3);
+    color: var(--color-text-inverse);
+    background: var(--color-bg-dark);
+    border-radius: 10px;
+    font-size: var(--text-xs);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-none);
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+
+  .hero-cta:hover,
+  .hero-cta:focus-visible {
+    opacity: 0.85;
+  }
+
+  .hero__headline-below {
+    display: block;
+    margin: var(--space-6) 0 0;
+    color: var(--color-text);
+    font-size: var(--text-display-fluid);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-none);
+    letter-spacing: var(--tracking-display);
+  }
+
+  .hero__headline-below .line {
+    display: block;
+  }
+
+  .hero__headline-below .accent {
+    color: var(--color-accent);
+  }
+
+  .hero__ruler {
+    display: block;
+    width: 204px;
+    margin-top: var(--space-5);
+    color: var(--color-text-muted);
+    text-align: center;
+  }
+
+  .hero__ruler-line {
+    position: relative;
+    display: block;
+    height: 1px;
+    background: currentColor;
+  }
+
+  .hero__ruler-line::before,
+  .hero__ruler-line::after {
+    content: "";
+    position: absolute;
+    top: -3px;
+    width: 1px;
+    height: 7px;
+    background: currentColor;
+  }
+
+  .hero__ruler-line::before {
+    left: 0;
+  }
+
+  .hero__ruler-line::after {
+    right: 0;
+  }
+
+  .hero__ruler-value {
+    display: block;
+    margin-top: var(--space-1);
+    font-family: var(--font-script);
+    font-size: var(--text-2xs);
+    font-style: italic;
+  }
+}
+
+/* Short phone screens (e.g. iPhone SE with Safari's bars, ~550px): a wider,
+   shorter screen, tighter gaps and no ruler so the headline still fits */
+@media (max-width: 520px) and (max-height: 640px) {
+  .hero-device {
+    margin-top: var(--space-8);
+  }
+
+  .tablet__screen {
+    aspect-ratio: 16 / 10;
+  }
+
+  .hero__headline-below {
+    margin-top: var(--space-4);
+  }
+
+  .hero__ruler {
+    display: none;
+  }
+}
+
+/* Narrow phones (360px Androids): tighten the card footer so the email fits */
+@media (max-width: 370px) {
+  .hero-device__footer,
+  .hero-cta {
+    gap: var(--space-1);
+  }
+
+  .hero-cta {
+    padding-inline: var(--space-2);
   }
 }
 

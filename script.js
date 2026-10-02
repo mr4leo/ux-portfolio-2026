@@ -20,6 +20,7 @@ const T = {
   portrait: [0.15, 0.15],
   blankIn: [0.3, 0.15], // screen texture → solid site color
   grow1: [0.3, 0.2], // Frame 2→3: grow from top-center over the bio
+  cardOut: [0.28, 0.12], // phones: white card + footer fade as the screen grows
   grow2: [0.5, 0.25], // Frame 3→4: nearly full width, covers label + stylus
   blankOut: [0.52, 0.2], // site shows through the screen
   drift: [0.52, 0.43],
@@ -78,8 +79,11 @@ function initReveal() {
   const screen = q("screen");
   const site = q("site");
   const siteInner = site.querySelector(".work__inner");
-  const lines = q("hero-headline").querySelectorAll(".line");
-  const portrait = q("hero-portrait");
+  // Desktop and phone each have their own headline, portrait and CTA (only
+  // one set is displayed), so these select both.
+  const all = (name) => document.querySelectorAll(`[data-anim="${name}"]`);
+  const lines = document.querySelectorAll('[data-anim="hero-headline"] .line');
+  const portrait = all("hero-portrait");
 
   const lerp = (a, b, t) => a + (b - a) * t;
   const isPhone = () => window.innerWidth <= PHONE_MAX;
@@ -229,7 +233,7 @@ function initReveal() {
   const dur = ([, d]) => d;
 
   // autoAlpha also sets visibility: hidden at 0, so the faded CTA can't be clicked
-  tl.to(q("hero-cta"), { autoAlpha: 0, y: 12, duration: dur(T.cta) }, at(T.cta))
+  tl.to(all("hero-cta"), { autoAlpha: 0, y: 12, duration: dur(T.cta) }, at(T.cta))
     .to(lines, {
       opacity: 0,
       y: -16,
@@ -238,6 +242,10 @@ function initReveal() {
       stagger: (i) => (isPhone() ? 0 : i * T.headlineStagger),
     }, at(T.headline))
     .to(portrait, { opacity: 0, scale: 0.96, y: 20, duration: dur(T.portrait) }, at(T.portrait))
+    // Phones: the ruler leaves with the headline; the white card and its footer
+    // fade as the screen starts to grow out of them
+    .to(all("desk-ruler"), { opacity: 0, duration: dur(T.headline) }, at(T.headline))
+    .to([...all("device-card"), ...all("device-footer")], { autoAlpha: 0, duration: dur(T.cardOut) }, at(T.cardOut))
     .to(q("screen-blank"), { opacity: 1, duration: dur(T.blankIn) }, at(T.blankIn))
     .to(screen, { "--fx": 0, duration: dur(T.blankIn) }, at(T.blankIn))
     // Hidden under the blank layer, so these can switch off instantly

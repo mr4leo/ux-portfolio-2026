@@ -29,9 +29,19 @@
     <section class="hero" data-anim="desk-bg" aria-labelledby="hero-title">
       <div class="hero__inner">
         <header class="hero__meta">
-          <p data-anim="desk-label">Product Designer<br />Enterprise UX</p>
+          <div class="hero__id">
+            <p data-anim="desk-label">Product Designer<br />Enterprise UX</p>
+            <!-- Phones: the signature sits under the role (the desktop one is at the bottom) -->
+            <p class="hero__signature-top">Marve Afo</p>
+          </div>
           <img class="hero__pen" data-anim="desk-stylus" src="images/Frame - Pen.png" width="339" height="42" alt="" />
         </header>
+
+        <!-- Phones show the tablet as a white profile card. The card's background and
+             footer sit outside .tablet, behind the site layer, so they never cover
+             the site while the screen grows. -->
+        <div class="hero-device">
+        <div class="hero-device__card" data-anim="device-card" aria-hidden="true"></div>
 
         <div class="tablet" data-anim="tablet">
           <div class="tablet__controls" data-anim="tablet-buttons" aria-hidden="true">
@@ -62,6 +72,43 @@
             <!-- Solid layer the hero hands off to before the site shows through -->
             <div class="tablet__blank" data-anim="screen-blank" aria-hidden="true"></div>
           </div>
+
+          <!-- Phones: outside the screen so the head can rise above it -->
+          <img class="tablet__portrait-pop" data-anim="hero-portrait" src="images/Marve%20Photo.png" width="576" height="801" alt="Portrait of Marve Afo" />
+        </div>
+
+        <div class="hero-device__footer" data-anim="device-footer">
+          <div class="hero-profile">
+            <span class="hero-profile__avatar">
+              <img src="images/favicon-192.png" width="40" height="40" alt="" />
+              <span class="hero-profile__status" aria-hidden="true"></span>
+            </span>
+            <span class="hero-profile__text">
+              <a class="hero-profile__email" href="mailto:marvinafo@gmail.com">marvinafo@gmail.com</a>
+              <span class="hero-profile__detail">5+ Years in Design</span>
+            </span>
+          </div>
+
+          <a class="hero-cta" data-anim="hero-cta" href="#work">
+              <svg class="scroll-button__icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M8.00065 13.3346V2.66797M12.6673 8.66797L8.00065 13.3346L3.33398 8.66797" stroke="currentColor" stroke-width="1.98741" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            <span class="scroll-button__label">Scroll Down</span>
+            <span class="scroll-button__label scroll-button__label--touch">Swipe Up</span>
+          </a>
+        </div>
+        </div>
+
+        <!-- Phones: the headline sits under the card (desktop's is inside the screen) -->
+        <p class="hero__headline-below" data-anim="hero-headline" aria-hidden="true">
+          <span class="line"><span class="accent">Digital</span> products</span>
+          <span class="line"><span class="selection">designed<i></i><i></i></span> from</span>
+          <span class="line">end to end</span>
+        </p>
+
+        <div class="hero__ruler" data-anim="desk-ruler" aria-hidden="true">
+          <span class="hero__ruler-line"></span>
+          <span class="hero__ruler-value">204px</span>
         </div>
 
         <p class="hero__intro" data-anim="desk-bio">
