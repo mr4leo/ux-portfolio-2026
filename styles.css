@@ -1516,10 +1516,15 @@ small {
   inset: 0 0 auto;
   display: flex;
   flex-direction: column;
+  /* As tall as the screen with the browser's toolbar hidden (lvh), so its
+     clipping edge is always at the true bottom and shadows never get cut
+     when the toolbar collapses. The extra (lvh - svh) goes into the bottom
+     padding, so the content stays centered in the toolbar-showing area. */
   height: 100vh;
-  height: 100svh;
+  height: 100lvh;
   min-height: 0;
   padding-block: clamp(32px, 7vh, 64px);
+  padding-bottom: calc(clamp(32px, 7vh, 64px) + 100lvh - 100svh);
   overflow: hidden;
 }
 
@@ -1581,6 +1586,11 @@ small {
   .hero {
     padding: var(--space-4) max(var(--space-6), env(safe-area-inset-right))
       var(--space-4) max(var(--space-6), env(safe-area-inset-left));
+  }
+
+  /* Extra bottom padding for the toolbar difference (see .has-reveal .hero) */
+  .has-reveal .hero {
+    padding-bottom: calc(var(--space-4) + 100lvh - 100svh);
   }
 
   .hero__inner {

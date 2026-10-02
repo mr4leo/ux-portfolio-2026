@@ -121,6 +121,13 @@ function initReveal() {
   const portrait = all("hero-portrait");
 
   const lerp = (a, b, t) => a + (b - a) * t;
+
+  // Measures 100svh (the screen height with the browser's toolbar showing)
+  const svhProbe = document.createElement("div");
+  svhProbe.setAttribute("aria-hidden", "true");
+  svhProbe.style.cssText =
+    "position:fixed;top:0;left:0;width:0;height:100vh;height:100svh;visibility:hidden;pointer-events:none";
+  document.body.append(svhProbe);
   const isPhone = () => window.innerWidth <= PHONE_MAX;
 
   // Geometry, re-measured on every ScrollTrigger refresh (resize/rotate).
@@ -169,9 +176,11 @@ function initReveal() {
     const r = screen.getBoundingClientRect();
     const cs = getComputedStyle(screen);
     const vw = document.documentElement.clientWidth;
-    // The hero is 100svh, so this stays put when a phone's address bar hides
-    // or shows (window.innerHeight would jump by the toolbar's height).
-    const vh = q("desk-bg").offsetHeight || window.innerHeight;
+    // The toolbar-showing screen height (100svh), which stays put when a
+    // phone's address bar hides or shows (window.innerHeight would jump by
+    // the toolbar's height). The hero itself is 100lvh, so it's measured
+    // from a probe instead.
+    const vh = svhProbe.offsetHeight || window.innerHeight;
     const B = {
       left: r.left - stageRect.left,
       top: r.top - stageRect.top,
