@@ -1079,7 +1079,7 @@ small {
      proportions on every phone instead of squashing them. It's also a
      container, so the headline and the card footer can size from it. */
   .hero__inner {
-    --hero-fixed: 238px;
+    --hero-fixed: 222px;
     width: min(
       100%,
       calc((100svh - 2 * clamp(32px, 7vh, 64px) - var(--space-4) - var(--hero-fixed)) / 1.15)
@@ -1123,10 +1123,14 @@ small {
     line-height: var(--leading-tight);
   }
 
+  /* Concentric corners: everything inside the card sits --card-inset from
+     its edges, so inner radii = --card-radius minus that inset */
   .hero-device {
+    --card-radius: 28px;
+    --card-inset: var(--space-3);
     position: relative;
     margin-top: var(--space-10); /* room for the head above the card */
-    padding: var(--space-3);
+    padding: var(--card-inset);
   }
 
   /* Card background on its own layer, behind the site (see the HTML note) */
@@ -1136,12 +1140,13 @@ small {
     inset: 0;
     background: var(--color-bg-white);
     border: 1px solid var(--color-border-light);
-    border-radius: 28px;
+    border-radius: var(--card-radius);
     box-shadow: var(--shadow-card);
   }
 
   .tablet {
-    --screen-radius: 16px; /* card radius minus its padding */
+    /* --card-radius minus --card-inset. Kept literal: script.js parses it */
+    --screen-radius: 16px;
     margin-top: 0;
   }
 
@@ -1188,7 +1193,9 @@ small {
     align-items: center;
     justify-content: space-between;
     gap: var(--space-2);
-    padding: var(--space-6) 0 var(--space-3);
+    /* No bottom padding: the button sits --card-inset from the bottom edge,
+       the same as from the side */
+    padding: var(--space-6) 0 0;
   }
 
   .hero-profile {
@@ -1248,7 +1255,7 @@ small {
     padding: var(--space-3) var(--space-2);
     color: var(--color-text-inverse);
     background: var(--color-bg-dark);
-    border-radius: 10px;
+    border-radius: calc(var(--card-radius) - var(--card-inset));
     font-size: var(--text-xs);
     font-weight: var(--weight-semibold);
     line-height: var(--leading-none);
@@ -1372,7 +1379,7 @@ small {
    trim the fixed-height parts so the card can stay as large as possible */
 @media (max-width: 520px) and (max-height: 680px) {
   .hero__inner {
-    --hero-fixed: 210px;
+    --hero-fixed: 200px;
   }
 
   .hero-device {
