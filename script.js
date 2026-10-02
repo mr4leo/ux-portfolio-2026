@@ -21,6 +21,12 @@ const T = {
   blankIn: [0.3, 0.15], // screen texture → solid site color
   grow1: [0.3, 0.2], // Frame 2→3: grow from top-center over the bio
   cardOut: [0.28, 0.12], // phones: white card + footer fade as the screen grows
+  // Sideways phones: text slides out left, top to bottom (gone by 0.10), then
+  // the card glides to the horizontal center, crossing the text column only
+  // after the text has left; the portrait fade (0.15) follows
+  sidewaysText: [0, 0.04],
+  sidewaysTextStagger: 0.01,
+  sidewaysMove: [0.06, 0.09],
   grow2: [0.5, 0.25], // Frame 3→4: nearly full width, covers label + stylus
   blankOut: [0.52, 0.2], // site shows through the screen
   drift: [0.52, 0.43],
@@ -52,15 +58,33 @@ function bindPlainAnchors() {
   });
 }
 
-// ---- Phone hero ruler: label it with the width it actually measures --------
-function updateRulerLabel() {
+// ---- Phone hero ruler: size it and label it with the width it measures -----
+// Upright phones: CSS sizes it to the headline's "end to end". Sideways
+// phones: it measures the signature, whose script font differs by platform,
+// so its drawn width is measured here.
+const sidewaysPhone = window.matchMedia("(orientation: landscape) and (max-height: 500px)");
+
+function updateRuler() {
   const ruler = document.querySelector(".hero__ruler");
-  if (!ruler || !ruler.offsetParent) return; // hidden (desktop, short phones)
-  const value = ruler.querySelector(".hero__ruler-value");
-  value.textContent = `${Math.round(ruler.querySelector(".hero__ruler-line").getBoundingClientRect().width)}px`;
+  if (!ruler) return;
+  ruler.style.width = "";
+  ruler.style.marginLeft = "";
+  if (!ruler.offsetParent) return; // hidden (desktop, short phones)
+  if (sidewaysPhone.matches) {
+    const range = document.createRange();
+    range.selectNodeContents(document.querySelector(".hero__signature-top"));
+    const text = range.getBoundingClientRect();
+    ruler.style.width = `${text.width}px`;
+    ruler.style.marginLeft = `${text.left - ruler.getBoundingClientRect().left}px`;
+  }
+  const line = ruler.querySelector(".hero__ruler-line");
+  ruler.querySelector(".hero__ruler-value").textContent =
+    `${Math.round(line.getBoundingClientRect().width)}px`;
 }
-updateRulerLabel();
-window.addEventListener("resize", updateRulerLabel);
+updateRuler();
+document.fonts.ready.then(updateRuler);
+window.addEventListener("resize", updateRuler);
+sidewaysPhone.addEventListener("change", updateRuler);
 
 const root = document.documentElement;
 const canReveal =
@@ -101,7 +125,8 @@ function initReveal() {
   // Geometry, re-measured on every ScrollTrigger refresh (resize/rotate).
   let geo = null;
   let tl = null;
-  const state = { g1: 0, g2: 0, g3: 0 };
+  const state = { g1: 0, g2: 0, g3: 0, shift: 0 };
+  const cardLayers = [q("device-card"), q("device-footer")];
 
   function measure() {
     tablet.style.transform = "none";
@@ -147,13 +172,16 @@ function initReveal() {
     const over = Math.max(vw, vh) * OVERSHOOT;
     const s3 = Math.max((vw + 2 * over) / B.w, (vh + 2 * over) / B.h);
 
+    // Sideways phones: the card first glides to the horizontal center
+    const dx = sidewaysPhone.matches ? vw / 2 - (B.left + B.w / 2) : 0;
+
     geo = {
-      vw, vh, B, zoom, baseRadius, border,
+      vw, vh, B, zoom, baseRadius, border, dx,
       siteW: site.offsetWidth,
       siteH: site.offsetHeight,
       keys: [
         { s: 1, left: B.left, top: B.top },
-        { s: s1, left: B.left + B.w / 2 - (B.w * s1) / 2, top: B.top },
+        { s: s1, left: B.left + dx + B.w / 2 - (B.w * s1) / 2, top: B.top },
         { s: s2, left: (vw - B.w * s2) / 2, top: top2 },
         { s: s3, left: (vw - B.w * s3) / 2, top: (vh - B.h * s3) / 2 },
       ],
@@ -164,9 +192,11 @@ function initReveal() {
   // so the window onto the site can never drift away from the screen.
   function render() {
     if (!geo || !tl) return;
-    const { keys, B, zoom, baseRadius, border, siteW, siteH } = geo;
-    const { g1, g2, g3 } = state;
-    let a = keys[0], b = keys[1], t = g1;
+    const { keys, B, zoom, baseRadius, border, siteW, siteH, dx } = geo;
+    const { g1, g2, g3, shift } = state;
+    // Start frame, moved along by the sideways glide (0 elsewhere)
+    const k0 = { s: 1, left: B.left + dx * shift, top: B.top };
+    let a = k0, b = keys[1], t = g1;
     if (g3 > 0) { a = keys[2]; b = keys[3]; t = g3; }
     else if (g2 > 0) { a = keys[1]; b = keys[2]; t = g2; }
     const s = lerp(a.s, b.s, t);
@@ -177,6 +207,8 @@ function initReveal() {
     tablet.style.transform =
       `translate(${(left - B.left) / zoom}px, ${(top - B.top) / zoom}px) scale(${s})`;
     tablet.style.setProperty("--screen-radius", `${cssRadius}px`);
+    // The card's background and footer live outside .tablet; glide them too
+    for (const el of cardLayers) if (el) el.style.transform = dx ? `translateX(${dx * shift}px)` : "";
 
     const p = tl.progress();
     if (p >= 1) {
@@ -220,20 +252,6 @@ function initReveal() {
   gsap.set(portrait, { x: 0, xPercent: -50 });
   gsap.set(screen, { "--fx": 1 });
 
-  tl = gsap.timeline({
-    defaults: { ease: "none" },
-    onUpdate: render,
-    scrollTrigger: {
-      // The stage is pinned with CSS sticky; this only maps scroll → progress.
-      trigger: track,
-      start: "top top",
-      end: () => "+=" + spacer.offsetHeight,
-      scrub: SCRUB,
-      invalidateOnRefresh: true,
-      onToggle: (self) => tablet.classList.toggle("is-animating", self.isActive),
-    },
-  });
-
   // The stroke color lives in CSS (--color-device-stroke); fade it to the same
   // color at 0 alpha so it doesn't darken on the way out.
   const transparentStroke = getComputedStyle(screen).borderTopColor
@@ -242,35 +260,86 @@ function initReveal() {
   const at = ([start]) => start;
   const dur = ([, d]) => d;
 
-  // autoAlpha also sets visibility: hidden at 0, so the faded CTA can't be clicked
-  tl.to(all("hero-cta"), { autoAlpha: 0, y: 12, duration: dur(T.cta) }, at(T.cta))
-    .to(lines, {
-      opacity: 0,
-      y: -16,
-      duration: dur(T.headline),
-      // Phones: the headline leaves as one block
-      stagger: (i) => (isPhone() ? 0 : i * T.headlineStagger),
-    }, at(T.headline))
-    .to(portrait, { opacity: 0, scale: 0.96, y: 20, duration: dur(T.portrait) }, at(T.portrait))
-    // Phones: the ruler leaves with the headline; the white card and its footer
-    // fade as the screen starts to grow out of them
-    .to(all("desk-ruler"), { opacity: 0, duration: dur(T.headline) }, at(T.headline))
-    .to([...all("device-card"), ...all("device-footer")], { autoAlpha: 0, duration: dur(T.cardOut) }, at(T.cardOut))
-    .to(q("screen-blank"), { opacity: 1, duration: dur(T.blankIn) }, at(T.blankIn))
-    .to(screen, { "--fx": 0, duration: dur(T.blankIn) }, at(T.blankIn))
-    // Hidden under the blank layer, so these can switch off instantly
-    .set(q("screen-bg"), { opacity: 0 }, at(T.blankIn) + dur(T.blankIn) + 0.01)
-    .set(screen, { backgroundImage: "none" }, at(T.blankIn) + dur(T.blankIn) + 0.01)
-    .to(state, { g1: 1, duration: dur(T.grow1), ease: "power1.inOut" }, at(T.grow1))
-    .to(state, { g2: 1, duration: dur(T.grow2), ease: "power1.inOut" }, at(T.grow2))
-    .to(q("screen-blank"), { opacity: 0, duration: dur(T.blankOut) }, at(T.blankOut))
-    .fromTo(siteInner, { y: SITE_DRIFT }, { y: 0, duration: dur(T.drift), ease: "power1.out" }, at(T.drift))
-    .to(state, { g3: 1, duration: dur(T.grow3), ease: "power2.in" }, at(T.grow3))
-    .to([q("tablet-buttons"), q("tablet-shadow")], { opacity: 0, duration: dur(T.frameOut) }, at(T.frameOut))
-    .to(screen, { borderColor: transparentStroke, duration: dur(T.strokeOut) }, at(T.strokeOut))
-    // Frame gone: stop it catching clicks or focus
-    .set(tablet, { visibility: "hidden" }, 0.97)
-    .to({}, { duration: 0.03 }, 0.97);
+  // Built per layout: sideways phones get their own opening (see T); the
+  // timeline is rebuilt if the phone rotates between layouts.
+  function buildTimeline() {
+    const sideways = sidewaysPhone.matches;
+    tl = gsap.timeline({
+      defaults: { ease: "none" },
+      onUpdate: render,
+      scrollTrigger: {
+        // The stage is pinned with CSS sticky; this only maps scroll → progress.
+        trigger: track,
+        start: "top top",
+        end: () => "+=" + spacer.offsetHeight,
+        scrub: SCRUB,
+        invalidateOnRefresh: true,
+        onToggle: (self) => tablet.classList.toggle("is-animating", self.isActive),
+      },
+    });
+
+    if (sideways) {
+      // Text slides out to the left, top to bottom, as the card glides to center
+      const textOut = [
+        q("desk-label"),
+        document.querySelector(".hero__signature-top"),
+        q("desk-ruler"),
+        ...document.querySelectorAll(".hero__headline-below .line"),
+        q("desk-bio"),
+      ];
+      tl.to(textOut, {
+        opacity: 0,
+        x: -40,
+        duration: dur(T.sidewaysText),
+        stagger: T.sidewaysTextStagger,
+        ease: "power1.in",
+      }, at(T.sidewaysText))
+        .to(state, { shift: 1, duration: dur(T.sidewaysMove), ease: "power2.inOut" }, at(T.sidewaysMove));
+    } else {
+      tl.to(lines, {
+        opacity: 0,
+        y: -16,
+        duration: dur(T.headline),
+        // Phones: the headline leaves as one block
+        stagger: (i) => (isPhone() ? 0 : i * T.headlineStagger),
+      }, at(T.headline))
+        // Phones: the ruler leaves with the headline
+        .to(all("desk-ruler"), { opacity: 0, duration: dur(T.headline) }, at(T.headline));
+    }
+
+    // autoAlpha also sets visibility: hidden at 0, so the faded CTA can't be clicked
+    tl.to(all("hero-cta"), { autoAlpha: 0, y: 12, duration: dur(T.cta) }, at(T.cta))
+      .to(portrait, { opacity: 0, scale: 0.96, y: 20, duration: dur(T.portrait) }, at(T.portrait))
+      // Phones: the white card and its footer fade as the screen grows out of them
+      .to([...all("device-card"), ...all("device-footer")], { autoAlpha: 0, duration: dur(T.cardOut) }, at(T.cardOut))
+      .to(q("screen-blank"), { opacity: 1, duration: dur(T.blankIn) }, at(T.blankIn))
+      .to(screen, { "--fx": 0, duration: dur(T.blankIn) }, at(T.blankIn))
+      // Hidden under the blank layer, so these can switch off instantly
+      .set(q("screen-bg"), { opacity: 0 }, at(T.blankIn) + dur(T.blankIn) + 0.01)
+      .set(screen, { backgroundImage: "none" }, at(T.blankIn) + dur(T.blankIn) + 0.01)
+      .to(state, { g1: 1, duration: dur(T.grow1), ease: "power1.inOut" }, at(T.grow1))
+      .to(state, { g2: 1, duration: dur(T.grow2), ease: "power1.inOut" }, at(T.grow2))
+      .to(q("screen-blank"), { opacity: 0, duration: dur(T.blankOut) }, at(T.blankOut))
+      .fromTo(siteInner, { y: SITE_DRIFT }, { y: 0, duration: dur(T.drift), ease: "power1.out" }, at(T.drift))
+      .to(state, { g3: 1, duration: dur(T.grow3), ease: "power2.in" }, at(T.grow3))
+      .to([q("tablet-buttons"), q("tablet-shadow")], { opacity: 0, duration: dur(T.frameOut) }, at(T.frameOut))
+      .to(screen, { borderColor: transparentStroke, duration: dur(T.strokeOut) }, at(T.strokeOut))
+      // Frame gone: stop it catching clicks or focus
+      .set(tablet, { visibility: "hidden" }, 0.97)
+      .to({}, { duration: 0.03 }, 0.97);
+  }
+
+  buildTimeline();
+
+  sidewaysPhone.addEventListener("change", () => {
+    // Back to the start values, then swap in the other layout's timeline
+    tl.progress(0);
+    tl.scrollTrigger.kill();
+    tl.kill();
+    Object.assign(state, { g1: 0, g2: 0, g3: 0, shift: 0 });
+    buildTimeline();
+    ScrollTrigger.refresh();
+  });
 
   ScrollTrigger.addEventListener("refreshInit", () => {
     site.style.clipPath = "";
@@ -294,7 +363,7 @@ function initReveal() {
     render();
   });
 
-  const st = tl.scrollTrigger;
+  const st = () => tl.scrollTrigger;
 
   // ---- Navigation that respects the pin ----
   // A target inside the site sits at: end of pin + its offset within the stage.
@@ -306,8 +375,8 @@ function initReveal() {
 
   function scrollToTarget(target, instant) {
     let y;
-    if (target === site) y = st.end;
-    else if (site.contains(target)) y = st.end + offsetWithinStage(target);
+    if (target === site) y = st().end;
+    else if (site.contains(target)) y = st().end + offsetWithinStage(target);
     else y = target.getBoundingClientRect().top + window.scrollY;
     // Respect scroll-margin-top (e.g. room for the sticky case-study nav)
     if (target !== site) y -= parseFloat(getComputedStyle(target).scrollMarginTop) || 0;

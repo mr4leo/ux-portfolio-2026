@@ -1063,6 +1063,12 @@ small {
     margin: -9.5px 0;
   }
 
+}
+
+/* Phone hero (upright phones, and phones turned sideways; the sideways
+   layout is at the end of this file). The tablet becomes a white profile
+   card. */
+@media (max-width: 520px), (orientation: landscape) and (max-height: 500px) {
   /* ---- Phone hero: the tablet becomes a white profile card ---- */
   .hero {
     padding-inline: clamp(var(--space-5), 8vw, var(--space-8));
@@ -1128,6 +1134,7 @@ small {
   .hero-device {
     --card-radius: 28px;
     --card-inset: var(--space-3);
+    container-type: inline-size; /* footer layout responds to the card's width */
     position: relative;
     margin-top: var(--space-10); /* room for the head above the card */
     padding: var(--card-inset);
@@ -1343,7 +1350,7 @@ small {
 
 /* Card footer vs the card's own width: tighten when it narrows, then give
    the button its own full-width row (the usual phone pattern). */
-@container (max-width: 327px) {
+@container (max-width: 303px) {
   .hero-device__footer,
   .hero-profile {
     gap: var(--space-1);
@@ -1359,7 +1366,7 @@ small {
   }
 }
 
-@container (max-width: 287px) {
+@container (max-width: 263px) {
   .hero-device__footer {
     flex-direction: column;
     align-items: stretch;
@@ -1448,6 +1455,11 @@ small {
 .has-reveal .reveal {
   position: sticky;
   top: 0;
+  /* The hero is 100svh. When a phone's toolbar hides, the screen grows past
+     it; the same dotted paper here fills that strip seamlessly */
+  background-color: var(--color-bg-paper);
+  background-image: radial-gradient(circle, var(--color-dot-light) 1px, transparent 1.2px);
+  background-size: 20px 20px;
 }
 
 .has-reveal .reveal-spacer {
@@ -1510,5 +1522,165 @@ small {
 
   .project-nav a:hover .project-nav__thumb {
     transform: none;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Phones turned sideways: the phone hero in two columns. Text on the
+   left (role, signature + ruler, headline, bio), the profile card on the
+   right, sized from the screen height so the head and card always fit.
+   At the end of the file so it wins over the tablet hero rules above.
+   ------------------------------------------------------------------ */
+@media (orientation: landscape) and (max-height: 500px) {
+  .has-reveal .hero,
+  .hero {
+    padding: var(--space-4) max(var(--space-6), env(safe-area-inset-right))
+      var(--space-4) max(var(--space-6), env(safe-area-inset-left));
+  }
+
+  .hero__inner {
+    /* Card width from the height it has. The card is ~0.75 x (width - 24)
+       + 74px tall and centered on the screen; the head rises ~0.27 x
+       (width - 24) above it. So: 90% of the size that would fill the
+       height, capped so the head never reaches the top of the screen. */
+    --card-w: min(
+      324px,
+      calc(((100svh - 2 * var(--space-4) - 74px) / 1.02 + 24px) * 0.9),
+      calc((100svh - 74px) / 1.29 + 24px)
+    );
+    zoom: 1;
+    width: 100%;
+    max-width: none;
+    container-type: normal;
+    display: grid;
+    grid-template-columns: minmax(0, 430px) var(--card-w);
+    /* Spacer rows keep the text block centered without stretching it */
+    grid-template-rows: 1fr auto auto auto auto 1fr;
+    justify-content: center;
+    align-items: start;
+    column-gap: clamp(var(--space-6), 6vw, 56px);
+  }
+
+  .hero__meta {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  /* Under the signature, measuring it (script.js sets the width) */
+  .hero__ruler {
+    grid-column: 1;
+    grid-row: 3;
+    width: auto;
+    margin: var(--space-2) 0 0;
+    font-size: var(--text-base);
+  }
+
+  .hero__headline-below {
+    grid-column: 1;
+    grid-row: 4;
+    margin-top: var(--space-4);
+    font-size: clamp(28px, 9.2svh, 44px);
+  }
+
+  .hero__intro {
+    display: block;
+    grid-column: 1;
+    grid-row: 5;
+    margin: var(--space-3) 0 0;
+    font-size: var(--text-xs);
+    line-height: var(--leading-normal);
+  }
+
+  /* The card box sits at the vertical center; the head rises above it */
+  .hero-device {
+    grid-column: 2;
+    grid-row: 1 / -1;
+    align-self: center;
+    width: var(--card-w);
+    margin-top: 0;
+  }
+
+  /* Bio: first sentence only */
+  .hero__intro-more {
+    display: none;
+  }
+
+  /* The column fills the screen height so "centered" means the screen's
+     center (overrides the reveal's margin: auto) */
+  .has-reveal .hero__inner {
+    flex: 1 1 auto;
+    min-height: 0;
+    margin: 0;
+  }
+}
+
+/* Sideways phones: height is the scarce thing, so the card footer never
+   stacks; a narrow card drops the avatar instead */
+@media (orientation: landscape) and (max-height: 500px) {
+  .hero-device__footer {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .hero-cta {
+    justify-content: flex-start;
+  }
+}
+
+@container (max-width: 270px) {
+  @media (orientation: landscape) and (max-height: 500px) {
+    .hero-profile__avatar {
+      display: none;
+    }
+
+    .hero-cta .scroll-button__icon {
+      display: none;
+    }
+  }
+}
+
+/* Shortest sideways screens (Safari with its bars, small phones): the bio
+   steps out and the head rises half as far, so the card stays wide enough
+   for the footer */
+@media (orientation: landscape) and (max-height: 372px) {
+  .hero__intro {
+    display: none;
+  }
+
+  .hero__inner {
+    --card-w: min(
+      324px,
+      calc(((100svh - 2 * var(--space-4) - 74px) / 0.885 + 24px) * 0.9),
+      calc((100svh - 74px) / 1.02 + 24px)
+    );
+  }
+
+  .tablet__portrait-pop {
+    --head-rise: 18%;
+  }
+
+  .hero-device__footer {
+    gap: var(--space-1);
+  }
+}
+
+/* Narrow sideways screens (iPhone SE and smaller): the text column is too
+   narrow for the bio to fit beside the card */
+@media (orientation: landscape) and (max-height: 500px) and (max-width: 720px) {
+  .hero__intro {
+    display: none;
+  }
+}
+
+/* The very shortest sideways screens: the card is already small, so it skips
+   the 10% reduction to keep room for the email */
+@media (orientation: landscape) and (max-height: 335px) {
+  .hero__inner {
+    --card-w: min(
+      324px,
+      calc((100svh - 2 * var(--space-4) - 74px) / 0.885 + 24px),
+      calc((100svh - 74px) / 1.02 + 24px)
+    );
   }
 }
