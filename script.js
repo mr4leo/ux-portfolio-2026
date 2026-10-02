@@ -87,6 +87,134 @@ document.fonts.ready.then(updateRuler);
 window.addEventListener("resize", updateRuler);
 sidewaysPhone.addEventListener("change", updateRuler);
 
+// ---- Live texture: the hero screen's dotted waves slowly undulate --------
+// Draws the same texture the CSS uses onto a canvas inside .tablet__texture,
+// warped by three looping waves (the math of images/abstract-abyss-loop-*,
+// see abstract-abyss-loop-generator.py). It inherits the layer's multiply
+// blend and opacity. Phones get waves twice as tall, since their screen is
+// much smaller. It only runs while the hero's screen is showing its texture;
+// with reduced motion, or without WebGL, the still CSS image stays.
+const LIVE_TEXTURE = {
+  src: "images/abstract-abyss.webp",
+  loopSeconds: 6,
+  fps: 30,
+  phoneBoost: 2,
+};
+
+function startLiveTexture() {
+  const layer = document.querySelector(".tablet__texture");
+  if (!layer || reduceMotion.matches) return null;
+  const canvas = document.createElement("canvas");
+  canvas.setAttribute("aria-hidden", "true");
+  canvas.style.cssText = "position:absolute;inset:0;width:100%;height:100%;display:block";
+  const gl = canvas.getContext("webgl", { alpha: false, antialias: false, premultipliedAlpha: false });
+  if (!gl) return null;
+
+  const vert = "attribute vec2 p; void main() { gl_Position = vec4(p, 0.0, 1.0); }";
+  // Waves: amplitude in px of a 1280x720 frame, spatial frequency (x, y),
+  // whole cycles per loop (so it loops seamlessly) and phase
+  const frag = `
+    precision mediump float;
+    uniform sampler2D tex;
+    uniform vec2 res, cover;
+    uniform float t, boost;
+    void wave(vec2 uv, float a, float fx, float fy, float cyc, float ph,
+              inout vec2 d, inout float lift) {
+      float arg = 6.2831853 * (fx * uv.x + fy * uv.y) - cyc * t + ph;
+      d.y += boost * a / 720.0 * sin(arg);
+      d.x += boost * 0.45 * a / 1280.0 * cos(arg * 0.9);
+      lift += sin(arg) / 3.0;
+    }
+    void main() {
+      vec2 uv = gl_FragCoord.xy / res;
+      uv.y = 1.0 - uv.y;
+      uv = (uv - 0.5) * cover + 0.5;          // background-size: cover
+      vec2 d = vec2(0.0);
+      float lift = 0.0;
+      wave(uv, 7.0, 1.3, 0.6, 1.0, 0.0, d, lift);
+      wave(uv, 4.5, -0.8, 1.7, 2.0, 1.3, d, lift);
+      wave(uv, 3.0, 2.6, -1.1, 1.0, 2.1, d, lift);
+      vec3 c = texture2D(tex, clamp(uv + d, 0.0, 1.0)).rgb;
+      gl_FragColor = vec4(c * (1.0 + 0.10 * lift), 1.0);   // crests catch light
+    }`;
+  const shader = (type, source) => {
+    const sh = gl.createShader(type);
+    gl.shaderSource(sh, source);
+    gl.compileShader(sh);
+    return gl.getShaderParameter(sh, gl.COMPILE_STATUS) ? sh : null;
+  };
+  const vs = shader(gl.VERTEX_SHADER, vert), fs = shader(gl.FRAGMENT_SHADER, frag);
+  if (!vs || !fs) return null;
+  const prog = gl.createProgram();
+  gl.attachShader(prog, vs);
+  gl.attachShader(prog, fs);
+  gl.linkProgram(prog);
+  if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return null;
+  gl.useProgram(prog);
+  gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
+  const pLoc = gl.getAttribLocation(prog, "p");
+  gl.enableVertexAttribArray(pLoc);
+  gl.vertexAttribPointer(pLoc, 2, gl.FLOAT, false, 0, 0);
+  const u = (name) => gl.getUniformLocation(prog, name);
+  const uRes = u("res"), uCover = u("cover"), uT = u("t"), uBoost = u("boost");
+
+  const phone = window.matchMedia("(max-width: 520px), (orientation: landscape) and (max-height: 500px)");
+  let imgW = 1920, imgH = 1080, ready = false, active = true, visible = true, frame = 0, last = 0;
+
+  function resize() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const w = Math.max(1, Math.round(layer.clientWidth * dpr));
+    const h = Math.max(1, Math.round(layer.clientHeight * dpr));
+    if (canvas.width !== w || canvas.height !== h) { canvas.width = w; canvas.height = h; }
+    gl.viewport(0, 0, w, h);
+    const ea = w / h, ia = imgW / imgH;
+    gl.uniform2f(uRes, w, h);
+    gl.uniform2f(uCover, ea > ia ? 1 : ea / ia, ea > ia ? ia / ea : 1);
+    gl.uniform1f(uBoost, phone.matches ? LIVE_TEXTURE.phoneBoost : 1);
+  }
+
+  function draw(now) {
+    frame = 0;
+    if (!ready || !active || !visible) return;
+    frame = requestAnimationFrame(draw);
+    if (now - last < 1000 / LIVE_TEXTURE.fps) return;
+    last = now;
+    const loop = LIVE_TEXTURE.loopSeconds * 1000;
+    gl.uniform1f(uT, (2 * Math.PI * (now % loop)) / loop);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+  }
+  const run = () => { if (!frame && ready && active && visible) frame = requestAnimationFrame(draw); };
+
+  const img = new Image();
+  img.onload = () => {
+    imgW = img.naturalWidth; imgH = img.naturalHeight;
+    gl.bindTexture(gl.TEXTURE_2D, gl.createTexture());
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, img);
+    layer.append(canvas);
+    resize();
+    ready = true;
+    run();
+  };
+  img.src = LIVE_TEXTURE.src; // same file as the CSS background, so it's cached
+
+  new ResizeObserver(resize).observe(layer);
+  phone.addEventListener("change", resize);
+  // Pause whenever the hero is off screen
+  new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; run(); }).observe(layer);
+  canvas.addEventListener("webglcontextlost", () => { ready = false; canvas.remove(); });
+
+  return {
+    // The reveal turns it off once the screen starts filling with the site
+    setActive(on) { if (on !== active) { active = on; run(); } },
+  };
+}
+const liveTexture = startLiveTexture();
+
 const root = document.documentElement;
 const canReveal =
   root.classList.contains("has-reveal") && window.gsap && window.ScrollTrigger;
@@ -256,6 +384,8 @@ function initReveal() {
     for (const el of cardLayers) if (el) el.style.transform = dx ? `translateX(${dx * shift}px)` : "";
 
     const p = tl.progress();
+    // The texture is covered from T.blankIn on; stop drawing it there
+    if (liveTexture) liveTexture.setActive(p < T.blankIn[0] + T.blankIn[1]);
     if (p >= 1) {
       site.style.clipPath = "none";
       return;

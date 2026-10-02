@@ -1,2 +1,24 @@
 .DS_Store
 .vscode/
+
+# Undulating background loops: large source files kept locally, not deployed
+images/abstract-abyss-loop-*.webp
+images/abstract-abyss-loop-generator.py
+
+# Original / source images: kept in images/ locally, not used by the site,
+# so not committed or deployed (the site uses the WebP versions)
+images/Abstract Abyss.png
+images/Blue Lighting Glow.png
+images/Glare.png
+images/Learn.VML Thumbnail.png
+images/Open Everydai Thumbnail.png
+images/Thrive Thumbnail.png
+images/Marve Photo.png
+images/Thrive Folder Box.png
+images/Learn Folder Box.png
+images/Everydai Folder Box.png
+images/Marv Orange Clean.png
+images/Favicon Update.jpeg
+images/Head Shot - Minimal Illustration.png
+images/arrow-down.svg
+images/portfolio-hero-mobile*.png
