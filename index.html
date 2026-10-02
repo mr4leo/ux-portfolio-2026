@@ -12,7 +12,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="preload" as="image" href="images/Marve%20Photo.png" />
+  <!-- Each layout preloads only the portrait it shows -->
+  <link rel="preload" as="image" href="images/marve-photo.webp" media="(min-width: 521px) and (orientation: portrait), (min-width: 521px) and (min-height: 501px)" />
+  <link rel="preload" as="image" href="images/marve-portrait-phone.webp" media="(max-width: 520px), (orientation: landscape) and (max-height: 500px)" />
   <link rel="stylesheet" href="styles.css" />
   <script>
     // Opt into the scroll reveal before first paint (no layout jump). script.js
@@ -57,7 +59,11 @@
 
           <div class="tablet__screen" data-anim="screen">
             <div class="tablet__texture" data-anim="screen-bg" aria-hidden="true"></div>
-            <img class="tablet__portrait" data-anim="hero-portrait" src="images/Marve%20Photo.png" width="576" height="801" alt="Portrait of Marve Afo" />
+            <!-- Phones don't show this portrait, so they get a 1px blank instead -->
+            <picture>
+              <source media="(max-width: 520px), (orientation: landscape) and (max-height: 500px)" srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" />
+              <img class="tablet__portrait" data-anim="hero-portrait" src="images/marve-photo.webp" width="576" height="801" alt="Portrait of Marve Afo" />
+            </picture>
 
             <h1 id="hero-title" data-anim="hero-headline">
               <span class="line"><span class="accent">Digital</span> products</span>
@@ -81,7 +87,11 @@
           <!-- Phones: outside the screen so the head can rise above it; the
                wrapper clips the sides and bottom to the screen -->
           <div class="tablet__pop">
-            <img class="tablet__portrait-pop" data-anim="hero-portrait" src="images/marve-portrait-phone.webp" width="800" height="952" alt="Portrait of Marve Afo" />
+            <!-- Only phones show this portrait; larger screens get a 1px blank -->
+            <picture>
+              <source media="(min-width: 521px) and (orientation: portrait), (min-width: 521px) and (min-height: 501px)" srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" />
+              <img class="tablet__portrait-pop" data-anim="hero-portrait" src="images/marve-portrait-phone.webp" width="800" height="952" alt="Portrait of Marve Afo" />
+            </picture>
           </div>
         </div>
 
@@ -138,17 +148,17 @@
           <h2 class="project-nav__title" id="case-studies-title">Marve’s Work</h2>
 
           <a href="#thrive">
-            <img class="project-nav__thumb" src="images/Thrive%20Folder%20Box.png" alt="" />
+            <img class="project-nav__thumb" src="images/thrive-folder-box.webp" alt="" />
             Thrive
           </a>
 
           <a href="#learn">
-            <img class="project-nav__thumb" src="images/Learn%20Folder%20Box.png" alt="" />
+            <img class="project-nav__thumb" src="images/learn-folder-box.webp" alt="" />
             Learn.vml
           </a>
 
           <a href="#everydai">
-            <img class="project-nav__thumb" src="images/Everydai%20Folder%20Box.png" alt="" />
+            <img class="project-nav__thumb" src="images/everydai-folder-box.webp" alt="" />
             Open Everydai
           </a>
         </nav>
@@ -156,7 +166,7 @@
         <article class="case-study" id="thrive">
           <div class="case-study__copy">
             <div class="archive-icon" aria-hidden="true">
-              <img src="images/Thrive%20Folder%20Box.png" alt="" />
+              <img src="images/thrive-folder-box.webp" alt="" />
             </div>
 
             <h3><span class="sr-only">Thrive: </span>Built to survive a merger</h3>
@@ -172,14 +182,14 @@
           </div>
 
           <div class="project-visual">
-            <img src="images/Thrive%20Thumbnail.png" alt="Thrive at VML project identity" />
+            <img src="images/thrive-thumbnail.webp" alt="Thrive at VML project identity" />
           </div>
         </article>
 
         <article class="case-study" id="learn">
           <div class="case-study__copy">
             <div class="archive-icon" aria-hidden="true">
-              <img src="images/Learn%20Folder%20Box.png" alt="" />
+              <img src="images/learn-folder-box.webp" alt="" />
             </div>
 
             <h3><span class="sr-only">Learn.vml: </span>Turning a junk drawer into a design system</h3>
@@ -195,14 +205,14 @@
           </div>
 
           <div class="project-visual">
-            <img src="images/Learn.VML%20Thumbnail.png" alt="Learn.VML project identity" />
+            <img src="images/learn-vml-thumbnail.webp" alt="Learn.VML project identity" />
           </div>
         </article>
 
         <article class="case-study" id="everydai">
           <div class="case-study__copy">
             <div class="archive-icon" aria-hidden="true">
-              <img src="images/Everydai%20Folder%20Box.png" alt="" />
+              <img src="images/everydai-folder-box.webp" alt="" />
             </div>
 
             <h3><span class="sr-only">Open Everydai: </span>How a $3,000 idea beat a $300 million problem</h3>
@@ -218,7 +228,7 @@
           </div>
 
           <div class="project-visual">
-            <img src="images/Open%20Everydai%20Thumbnail.png" alt="Open Everydai project identity" />
+            <img src="images/open-everydai-thumbnail.webp" alt="Open Everydai project identity" />
           </div>
         </article>
       </div>

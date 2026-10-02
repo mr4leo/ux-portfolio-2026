@@ -453,7 +453,7 @@ small {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: url("images/Abstract%20Abyss.png") center / cover no-repeat;
+  background: url("images/abstract-abyss.webp") center / cover no-repeat;
   mix-blend-mode: multiply;
   opacity: 0.5;
 }
