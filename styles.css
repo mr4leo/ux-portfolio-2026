@@ -20,7 +20,10 @@
                    --color-border-strong  button outlines on dark
                    --color-border-light   card edges on light
      Status        --color-status-online  "available" dot
-     Accent        --color-accent, --color-accent-selection
+     Accent        --color-accent           bright blue (on dark)
+                   --color-accent-strong    dark blue (accent text on light)
+                   --color-accent-selection selection box on dark
+                   --color-accent-highlight selection box on light
      Patterns      --color-dot-light, --color-dot-dark (dotted backgrounds)
      Tablet        --color-device-body, --color-device-stroke,
                    --gradient-device-screen, --effect-glow, --effect-glare
@@ -72,7 +75,9 @@
 
   /* ---- Color: accent ---- */
   --color-accent: #3fa3f7;
+  --color-accent-strong: #00628c; /* 6.5:1 on paper */
   --color-accent-selection: rgba(28, 120, 210, 0.45);
+  --color-accent-highlight: #94cfe8;
 
   /* ---- Color: dotted background patterns ---- */
   --color-dot-light: rgba(20, 22, 22, 0.16);
@@ -370,7 +375,7 @@ small {
 .hero__signature-top,
 .hero-device__card,
 .hero-device__footer,
-.tablet__portrait-pop,
+.tablet__pop,
 .hero__headline-below,
 .hero__ruler {
   display: none;
@@ -1059,8 +1064,27 @@ small {
   }
 
   /* ---- Phone hero: the tablet becomes a white profile card ---- */
+  .hero {
+    padding-inline: clamp(var(--space-5), 8vw, var(--space-8));
+  }
+
   .hero__meta {
     min-height: 0;
+  }
+
+  /* The column (= card) width is what scales the hero: the screen, photo and
+     headline are all sized from it, while text keeps its normal size. Its
+     height is about --hero-fixed (text, gaps, footer, ruler) plus 1.15x the
+     width, so solving for the width that fills the screen keeps the mock's
+     proportions on every phone instead of squashing them. It's also a
+     container, so the headline and the card footer can size from it. */
+  .hero__inner {
+    --hero-fixed: 238px;
+    width: min(
+      100%,
+      calc((100svh - 2 * clamp(32px, 7vh, 64px) - var(--space-4) - var(--hero-fixed)) / 1.15)
+    );
+    container-type: inline-size;
   }
 
   .hero__meta p {
@@ -1127,21 +1151,35 @@ small {
     border-width: 0;
   }
 
-  /* Head rises above the screen; shoulders sit on its bottom edge, inside its
-     sides. The photo's top third is transparent (hence 185%), and the subject
-     sits right of the file's center (hence 46%). */
-  .tablet__portrait-pop {
+  /* Pop-out portrait. The wrapper is the screen's width and extends one
+     screen-height above it; its clip keeps the photo inside the screen's
+     sides and rounded bottom while the head rises out of the top. */
+  .tablet__pop {
     display: block;
     position: absolute;
     z-index: 4;
+    right: 0;
     bottom: 0;
-    left: 46%;
+    left: 0;
+    height: 200%;
+    pointer-events: none;
+    clip-path: inset(0 round 0 0 var(--screen-radius) var(--screen-radius));
+  }
+
+  /* Matches the mock: hair top 36% of a screen-height above the screen, chest
+     pocket in view. In wrapper units (2 screen-heights): the screen starts at
+     50%, and the photo is 138% of a screen-height tall, so its bottom edge
+     always reaches past the screen's (head rise + 100% <= 138%). */
+  .tablet__portrait-pop {
+    --head-rise: 36%;
+    position: absolute;
+    top: calc(50% - var(--head-rise) / 2);
+    left: 50%;
     width: auto;
-    height: 185%;
+    height: 69%;
     max-width: none;
     transform: translateX(-50%);
     filter: var(--shadow-portrait);
-    pointer-events: none;
   }
 
   .hero-device__footer {
@@ -1150,7 +1188,7 @@ small {
     align-items: center;
     justify-content: space-between;
     gap: var(--space-2);
-    padding: var(--space-3) 0 0;
+    padding: var(--space-6) 0 var(--space-3);
   }
 
   .hero-profile {
@@ -1166,8 +1204,8 @@ small {
   }
 
   .hero-profile__avatar img {
-    width: 36px;
-    height: 36px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
   }
 
@@ -1207,7 +1245,7 @@ small {
     flex: none;
     align-items: center;
     gap: var(--space-2);
-    padding: var(--space-3);
+    padding: var(--space-3) var(--space-2);
     color: var(--color-text-inverse);
     background: var(--color-bg-dark);
     border-radius: 10px;
@@ -1225,9 +1263,13 @@ small {
 
   .hero__headline-below {
     display: block;
-    margin: var(--space-6) 0 0;
+    position: relative;
+    isolation: isolate; /* keeps the highlight box (z-index: -1) above the page */
+    margin: var(--space-5) 0 0;
     color: var(--color-text);
-    font-size: var(--text-display-fluid);
+    /* "Digital products", the longest line, is 7.454em wide: this makes it
+       span the card exactly, edge to edge, at any phone width */
+    font-size: calc(100cqi / 7.454);
     font-weight: var(--weight-bold);
     line-height: var(--leading-none);
     letter-spacing: var(--tracking-display);
@@ -1238,14 +1280,23 @@ small {
   }
 
   .hero__headline-below .accent {
-    color: var(--color-accent);
+    color: var(--color-accent-strong);
   }
 
+  .hero__headline-below .selection::before {
+    background: var(--color-accent-highlight);
+  }
+
+  /* Measures "end to end": same font size as the headline, and the line's ink
+     runs from 0.028em to 4.892em, so the ruler spans exactly that at any
+     size. script.js writes the measured width into the label. */
   .hero__ruler {
     display: block;
-    width: 204px;
-    margin-top: var(--space-5);
+    width: 4.864em;
+    margin: var(--space-5) 0 0 0.028em;
     color: var(--color-text-muted);
+    font-size: calc(100cqi / 7.454);
+    line-height: var(--leading-none);
     text-align: center;
   }
 
@@ -1283,35 +1334,72 @@ small {
   }
 }
 
-/* Short phone screens (e.g. iPhone SE with Safari's bars, ~550px): a wider,
-   shorter screen, tighter gaps and no ruler so the headline still fits */
-@media (max-width: 520px) and (max-height: 640px) {
-  .hero-device {
-    margin-top: var(--space-8);
+/* Card footer vs the card's own width: tighten when it narrows, then give
+   the button its own full-width row (the usual phone pattern). */
+@container (max-width: 327px) {
+  .hero-device__footer,
+  .hero-profile {
+    gap: var(--space-1);
   }
 
-  .tablet__screen {
-    aspect-ratio: 16 / 10;
+  .hero-profile__avatar img {
+    width: 32px;
+    height: 32px;
   }
 
-  .hero__headline-below {
-    margin-top: var(--space-4);
-  }
-
-  .hero__ruler {
+  .hero-cta .scroll-button__icon {
     display: none;
   }
 }
 
-/* Narrow phones (360px Androids): tighten the card footer so the email fits */
-@media (max-width: 370px) {
-  .hero-device__footer,
-  .hero-cta {
-    gap: var(--space-1);
+@container (max-width: 287px) {
+  .hero-device__footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-3);
   }
 
   .hero-cta {
-    padding-inline: var(--space-2);
+    justify-content: center;
+  }
+
+  .hero-cta .scroll-button__icon {
+    display: block;
+  }
+}
+
+/* Short phone screens (under 680px tall, e.g. Safari with its bars showing):
+   trim the fixed-height parts so the card can stay as large as possible */
+@media (max-width: 520px) and (max-height: 680px) {
+  .hero__inner {
+    --hero-fixed: 210px;
+  }
+
+  .hero-device {
+    margin-top: var(--space-6);
+  }
+
+  .hero-device__footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-3);
+    padding-top: var(--space-3);
+  }
+
+  .hero-cta {
+    justify-content: center;
+  }
+
+  .hero-cta .scroll-button__icon {
+    display: block;
+  }
+
+  .hero__headline-below {
+    margin-top: var(--space-3);
+  }
+
+  .hero__ruler {
+    display: none;
   }
 }
 

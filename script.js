@@ -52,6 +52,16 @@ function bindPlainAnchors() {
   });
 }
 
+// ---- Phone hero ruler: label it with the width it actually measures --------
+function updateRulerLabel() {
+  const ruler = document.querySelector(".hero__ruler");
+  if (!ruler || !ruler.offsetParent) return; // hidden (desktop, short phones)
+  const value = ruler.querySelector(".hero__ruler-value");
+  value.textContent = `${Math.round(ruler.querySelector(".hero__ruler-line").getBoundingClientRect().width)}px`;
+}
+updateRulerLabel();
+window.addEventListener("resize", updateRulerLabel);
+
 const root = document.documentElement;
 const canReveal =
   root.classList.contains("has-reveal") && window.gsap && window.ScrollTrigger;
