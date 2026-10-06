@@ -37,6 +37,7 @@
     }
 
     .viewer-pages {
+      position: relative;
       max-width: 1440px;
       margin: 0 auto;
       background: var(--color-bg-white);
@@ -46,6 +47,12 @@
       display: block;
       width: 100%;
       height: auto;
+    }
+
+    /* Video playing over its frame in the design (position set by build.py) */
+    .viewer-video {
+      position: absolute;
+      object-fit: cover;
     }
 
     /* Loading wheel: covers the page until the first slice has loaded */
@@ -99,6 +106,7 @@
     <h1 class="sr-only">{{name}} case study</h1>
     <div class="viewer-pages" aria-hidden="true">
       {{images}}
+      {{video}}
     </div>
     <!-- The case study's text, for screen readers and search engines -->
     <div class="sr-only">
@@ -107,6 +115,14 @@
   </main>
 
   <script>
+    // Respect reduced motion: no autoplay, offer controls instead.
+    const video = document.querySelector(".viewer-video");
+    if (video && matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      video.removeAttribute("autoplay");
+      video.pause();
+      video.controls = true;
+    }
+
     // Hide the loading wheel once the first slice is on screen (or fails).
     const first = document.querySelector(".viewer-pages img");
     const done = () => document.documentElement.classList.add("is-loaded");

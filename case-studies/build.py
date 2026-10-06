@@ -18,7 +18,13 @@ from PIL import Image
 HERE = Path(__file__).resolve().parent
 DOCS = {
     "learn-vml": "Learn.vml",
+    "open-everydai": "Open Everydai",
     "thrive": "Thrive",
+}
+# Silent looping videos laid over a spot in the PDF: (file, x, y, width, height)
+# in PDF points (the 1440pt-wide Figma frame). Re-measure if the layout moves.
+VIDEOS = {
+    "open-everydai": ("open-everydai-sizzle.mp4", 574, 429, 812, 454),
 }
 WIDTH = 2880  # 2x the 1440px Figma frame; phones get the 1440px copies
 SLICE = 2400  # px per slice at 2x, so lower slices can load lazily
@@ -54,6 +60,17 @@ def build(slug, name):
                 + " />"
             )
         text = (Path(tmp) / "text.txt").read_text()
+        page_height = sum(Image.open(p).height for p in Path(tmp).glob("*.png")) / (WIDTH / 1440)
+
+    video = ""
+    if slug in VIDEOS:
+        file, x, y, w, h = VIDEOS[slug]
+        pct = lambda v, total: f"{v / total * 100:.4f}%"
+        video = (
+            f'<video class="viewer-video" src="{file}" autoplay muted loop playsinline '
+            f'preload="auto" style="left: {pct(x, 1440)}; top: {pct(y, page_height)}; '
+            f'width: {pct(w, 1440)}; height: {pct(h, page_height)};"></video>'
+        )
 
     paragraphs = "\n".join(
         f"      <p>{html.escape(line.strip())}</p>" for line in text.splitlines() if line.strip()
@@ -62,6 +79,7 @@ def build(slug, name):
         TEMPLATE.replace("{{name}}", name)
         .replace("{{slug}}", slug)
         .replace("{{images}}", "\n      ".join(imgs))
+        .replace("{{video}}", video)
         .replace("{{text}}", paragraphs)
     )
     (HERE / f"{slug}.html").write_text(page)
