@@ -25,3 +25,6 @@ images/portfolio-hero-mobile*.png
 
 # Case-study source exports: sliced into WebP by case-studies/build.py
 case-studies/*.png
+
+# Figma exports: converted to WebP by case-studies/use-exports.py
+case-studies/exports/

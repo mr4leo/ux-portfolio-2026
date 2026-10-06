@@ -1,0 +1,534 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Preview of the responsive build: not linked from the site yet -->
+  <meta name="robots" content="noindex" />
+  <title>Learn.vml Case Study | Marve Afo</title>
+  <link rel="icon" href="../favicon.ico" sizes="48x48" />
+  <link rel="icon" type="image/png" href="../images/favicon-32.png" sizes="32x32" />
+  <link rel="apple-touch-icon" href="../images/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="stylesheet" href="case-study.css" />
+  <script>
+    // Hide sections until case-study.js reveals them (shown anyway after 3s
+    // if that script fails to load)
+    document.documentElement.classList.add("cs-js");
+    setTimeout(() => window.csReady || document.documentElement.classList.remove("cs-js"), 3000);
+  </script>
+  <style>
+    /* Learn.vml theme (Figma node 224:70333): map-topography green */
+    .cs {
+      --cs-accent: #838f65 url("learn-vml-r/texture-green.webp") center / cover;
+      --cs-accent-text: #838e64;
+      --cs-accent-ink: var(--color-text-inverse);
+      --cs-dark-bg: #838f65 url("learn-vml-r/texture-green.webp") center / cover;
+      --cs-stat-bg: #838f65 url("learn-vml-r/texture-green.webp") center / cover;
+    }
+
+    /* Sneak Peek: both screenshots at their natural (equal) height
+       instead of stretched to the column width */
+    .cs-shot img.lv-peek-img {
+      align-self: flex-start;
+      width: auto;
+      max-width: 100%;
+    }
+
+    /* Problem row split evenly, each side's text filling its half */
+    .cs-problem.lv-even {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .lv-even .cs-cell__inner {
+      max-width: none;
+    }
+
+    /* Keep the headline on its designed two lines */
+    .lv-even .cs-h2 {
+      max-width: 9.5em;
+    }
+
+    @media (max-width: 900px) {
+      .cs-problem.lv-even {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .lv-paper-tex {
+      background: #f6f6f3 url("learn-vml-r/texture-paper.webp") center / cover;
+    }
+
+    .lv-list p + p {
+      margin-top: 4px;
+    }
+
+    .lv-system {
+      color: var(--color-text);
+    }
+
+    .lv-brand-note {
+      padding: 40px var(--cs-gutter);
+      background: #b5bf9c;
+    }
+
+    /* Brand band (Figma 1440x1024): the caption sits on top of the concept
+       gallery, which is tilted -30deg and scrolls up-left forever. The gallery
+       tile repeats every 1240px of 1440 (86.11% of the band's width). */
+    .lv-brand {
+      --tile: 86.11cqw;
+      container-type: inline-size;
+      position: relative;
+      aspect-ratio: 1440 / 1024;
+      overflow: hidden;
+      background: #838f65 url("learn-vml-r/texture-green.webp") center / cover;
+    }
+
+    .lv-brand .lv-brand-note {
+      position: relative;
+      z-index: 1;
+    }
+
+    .lv-gallery {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: calc(var(--tile) * 4);
+      margin-top: calc(var(--tile) * -2);
+      transform: rotate(-30deg);
+    }
+
+    .lv-gallery__strip {
+      height: 100%;
+      background: url("learn-vml-r/brand-tile.webp") top / 100% auto repeat-y;
+      animation: lv-gallery-scroll 60s linear infinite;
+      will-change: transform;
+    }
+
+    /* One tile up = the strip looks identical again, so the loop is seamless */
+    @keyframes lv-gallery-scroll {
+      to { transform: translateY(calc(var(--tile) * -1)); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .lv-gallery__strip {
+        animation: none;
+      }
+    }
+
+    /* Phones: the caption stacks above a band tall enough to show the cards */
+    @media (max-width: 900px) {
+      .lv-brand {
+        aspect-ratio: auto;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .lv-brand::after {
+        content: "";
+        aspect-ratio: 1440 / 1024;
+      }
+    }
+
+    .lv-code-band {
+      background: #2b2e30;
+      color: var(--color-text-inverse);
+      border-bottom: 1px solid var(--cs-line);
+    }
+
+    .lv-code-band .cs-row {
+      border-bottom: 0;
+    }
+
+    .lv-hero-mock {
+      padding: clamp(48px, 5.6vw, 80px) var(--cs-gutter);
+    }
+
+    .lv-hero-mock img {
+      width: 100%;
+    }
+
+    /* Coded nav: the bar sits on top, its dropdowns hang over the green band
+       (bar is 50 of the image's 100px height at 1440) */
+    .lv-results-nav {
+      position: relative;
+      z-index: 1;
+      margin-bottom: -3.472%;
+    }
+
+    /* Design iterations: same height, widths follow each screen */
+    .lv-iters {
+      display: grid;
+      grid-template-columns: 121fr 121fr 122fr 141fr;
+      gap: 12px;
+      align-items: end;
+      width: 100%;
+      max-width: 541px;
+    }
+
+    .lv-iters img {
+      width: 100%;
+    }
+
+    /* Drawing board: two regional FigJam boards with a comment note */
+    .lv-board {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 275fr) minmax(0, 291fr);
+      gap: 24px;
+      width: 100%;
+      max-width: 590px;
+      padding-top: 32px;
+    }
+
+    .lv-board img {
+      width: 100%;
+    }
+
+    .lv-note {
+      position: absolute;
+      top: 0;
+      left: -24px;
+      width: 104px;
+      margin: 0 !important;
+      padding: 8px 8px 22px;
+      background: #f9f9f7 linear-gradient(135deg, transparent calc(100% - 22px), #f1c75b calc(100% - 22px)) no-repeat;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+      font-size: 9px;
+      line-height: 1.4;
+    }
+
+    @media (max-width: 900px) {
+      .lv-note {
+        left: 0;
+      }
+    }
+
+    .lv-note span {
+      color: #8a3ffc;
+      background: #efe4ff;
+    }
+  </style>
+</head>
+<body>
+  <nav class="viewer-bar" aria-label="Case study">
+    <a href="../index.html#work">← Back to portfolio</a>
+    <a href="learn-vml.pdf" download>Download PDF</a>
+  </nav>
+
+  <main class="cs">
+    <header class="cs-header cs-dark">
+      <p class="cs-header__name">Marve Afo<span>Product designer</span></p>
+      <img class="cs-header__logo" src="open-everydai-r/vml-logo.svg" width="78" height="24" alt="VML" />
+    </header>
+
+    <section class="cs-hero" aria-labelledby="cs-title">
+      <div class="cs-hero__text">
+        <div class="cs-hero__text-inner">
+          <h1 id="cs-title">Turning a Junk Drawer Into a <span class="cs-accent-text">Design System</span></h1>
+          <div>
+            <h2 class="cs-h3">T.L.D.R.</h2>
+            <p>Rebuilt VML's global LMS from a nav-less 'junk drawer' into a coded, design system.</p>
+            <ul class="cs-hero__highlights">
+              <li>Drove 89% org-wide adoption</li>
+              <li>316% more learning time</li>
+              <li>230% more active users</li>
+            </ul>
+          </div>
+          <div>
+            <h2 class="cs-h3">Role</h2>
+            <p><strong>Sole product and visual designer</strong><br />on a six-person learning team, reporting to the Global VP of Learning.</p>
+          </div>
+          <div>
+            <h2 class="cs-h3">Key Stakeholders</h2>
+            <ul>
+              <li>VP, Global Head of Learning</li>
+              <li>Global Director of HR Technology</li>
+              <li>Regional Learning Directors</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="cs-hero__media">
+        <div class="cs-glow" aria-hidden="true"></div>
+        <div class="cs-video">
+          <img src="learn-vml-r/hero-frame-1x.webp" srcset="learn-vml-r/hero-frame-1x.webp 818w, learn-vml-r/hero-frame.webp 1636w" sizes="(max-width: 900px) 100vw, 818px" width="818" height="460" alt="Learn.VML title card on a map-topography texture" fetchpriority="high" />
+        </div>
+      </div>
+    </section>
+
+    <section class="cs-decisions" aria-labelledby="lv-peek">
+      <div class="cs-tabbar">
+        <h2 class="cs-h2 cs-tab cs-tab--paper" id="lv-peek">Sneak Peek<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg></h2>
+      </div>
+      <div class="cs-row">
+        <div class="cs-shot cs-dots">
+          <figure>
+            <div>
+              <h3 class="cs-shot__title">Before</h3>
+              <p class="cs-shot__subtitle">Original home page</p>
+            </div>
+            <img class="lv-peek-img" src="learn-vml-r/before-1x.webp" srcset="learn-vml-r/before-1x.webp 374w, learn-vml-r/before.webp 748w" sizes="(max-width: 900px) 100vw, 374px" width="374" height="742" alt="The original LMS home page: crowded banners, image-based text and a long list of quick links" loading="lazy" />
+          </figure>
+        </div>
+        <div class="cs-shot cs-dots">
+          <figure>
+            <div>
+              <h3 class="cs-shot__title">After</h3>
+              <p class="cs-shot__subtitle">Revised home page</p>
+            </div>
+            <img class="lv-peek-img" src="learn-vml-r/after-1x.webp" srcset="learn-vml-r/after-1x.webp 458w, learn-vml-r/after.webp 916w" sizes="(max-width: 900px) 100vw, 458px" width="458" height="741" alt="The revised Learn.VML home page: navigation bar, one hero and organized content rows" loading="lazy" />
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="cs-row" aria-labelledby="lv-changed">
+      <div class="cs-shot cs-dots">
+        <figure>
+          <div>
+            <h3 class="cs-shot__title">A Closer Look</h3>
+            <p class="cs-shot__subtitle">Revised home page with highlighted callouts</p>
+          </div>
+          <img src="learn-vml-r/closer-look-1x.webp" srcset="learn-vml-r/closer-look-1x.webp 382w, learn-vml-r/closer-look.webp 764w" sizes="(max-width: 900px) 100vw, 382px" width="382" height="727" alt="Revised home page with callouts: 1 navigation bar, 2 hero, 3 live text" loading="lazy" />
+        </figure>
+      </div>
+      <div class="cs-cell">
+        <div class="cs-cell__inner">
+          <p class="cs-eyebrow">What Changed</p>
+          <h2 class="cs-h2" id="lv-changed">Same Page,<br /><span class="cs-accent-text">New System</span></h2>
+          <div class="cs-text-block lv-list" style="margin-top: 16px">
+            <p><strong>1) Real navigation</strong>A coded nav bar replaced links buried inside links.</p>
+            <p><strong>2) New hero</strong>A customizable coded hero spotlights one initiative instead of competing banners.</p>
+            <p><strong>3) Real text</strong>Headlines and descriptions are live text, so search can find them.</p>
+            <p><strong>Fewer cards</strong>Organized content rows replaced dozens of scattered tiles.</p>
+            <p><strong>One block system</strong>Every section uses the same component library, so pages stay consistent.</p>
+            <p><strong>Branded throughout</strong>VML colors, textures, and the custom font run site-wide.</p>
+            <p><strong>Clear CTAs</strong>One consistent button style across every section.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cs-row cs-problem lv-even" aria-labelledby="lv-problem">
+      <div class="cs-cell lv-paper-tex">
+        <div class="cs-cell__inner">
+          <p class="cs-eyebrow">The Problem</p>
+          <h2 class="cs-h2" id="lv-problem">Leadership Called It A Junk Drawer</h2>
+        </div>
+      </div>
+      <div class="cs-cell">
+        <div class="cs-cell__inner cs-text-block">
+          <p><strong>Unorganized</strong>VML's learning platform had no main navigation, just links buried inside links. Leadership called it a junk drawer. For a creative agency that sells branded experiences, a platform that looked like an afterthought undercut the very learning it asked employees to take seriously.</p>
+          <p>Then VMLY&amp;R merged with Wunderman Thompson to become VML. That meant two legacy LMSs, a new brand kit, and new leadership, all needed one platform to teach employees who the new company was.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="cs-band cs-accent" aria-labelledby="lv-fix">
+      <div class="cs-tabbar" style="height: 83px">
+        <h2 class="cs-h2 cs-tab cs-tab--accent" id="lv-fix">4 Step Fix</h2>
+      </div>
+      <ol class="cs-steps">
+        <li>Audit</li>
+        <li>Systemize</li>
+        <li>Brand</li>
+        <li>Customize</li>
+      </ol>
+    </section>
+
+    <section class="cs-section" aria-labelledby="lv-audit">
+      <div>
+        <p class="cs-eyebrow">UX Audit</p>
+        <h2 class="cs-h2" id="lv-audit">An Audit Highlighted 3 Failures</h2>
+        <p style="margin-top: 8px">Before redesigning anything, I ran a heuristic audit, clicking through the platform as a new employee would and annotating screenshots wherever the experience broke down.</p>
+      </div>
+      <div class="cs-boxes">
+        <p><strong>It was hard to find pages</strong>There was no main navigation, search was easy to miss and laid out backwards. Many courses were buried in links inside links. There was not a clear info hierarchy.</p>
+        <p><strong>The interface didn't explain itself</strong>Icons were misleading (the "add content" icon looked like an email reply), labels were vague ("Share this view?"), and there were two filter buttons doing one job.</p>
+      </div>
+      <div class="cs-pair" style="margin-top: 56px; --cols: minmax(0, 0.5203fr) minmax(0, 0.7475fr)">
+        <img class="cs-shadow" src="learn-vml-r/audit-screens-1x.webp" srcset="learn-vml-r/audit-screens-1x.webp 371w, learn-vml-r/audit-screens.webp 742w" sizes="(max-width: 900px) 100vw, 371px" width="371" height="713" alt="The old home page annotated with green sticky notes" loading="lazy" />
+        <img class="cs-shadow" src="learn-vml-r/audit-notes-1x.webp" srcset="learn-vml-r/audit-notes-1x.webp 533w, learn-vml-r/audit-notes.webp 1066w" sizes="(max-width: 900px) 100vw, 533px" width="533" height="713" alt="Audit notes: hard-to-notice search, misleading icons, unclear labels and duplicate filter buttons" loading="lazy" />
+      </div>
+    </section>
+
+    <section class="cs-row" aria-labelledby="lv-constraints">
+      <div class="cs-cell cs-accent">
+        <div class="cs-cell__inner">
+          <p class="cs-eyebrow">The Constraints</p>
+          <h2 class="cs-h2" id="lv-constraints">4 Blocks,<br />No Nav,<br />No Custom<br />Fonts.</h2>
+        </div>
+      </div>
+      <div class="cs-cell">
+        <div class="cs-cell__inner cs-text-block">
+          <p><strong>Limited customization</strong>This needed real information architecture, not a new coat of style. Docebo locked us into fixed content blocks, with no native navigation and no way to load our own fonts. Whatever we built had to work inside those walls.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="cs-row" aria-labelledby="lv-drawing">
+      <div class="cs-cell">
+        <div class="cs-cell__inner">
+          <p class="cs-eyebrow">Drawing Board</p>
+          <h2 class="cs-h2" id="lv-drawing">I Fixed Structure Before Style</h2>
+          <p style="margin-top: 12px">With the audit done, I facilitated a session introducing learning directors from four global regions to FigJam, so we could share and compare sitemap needs in one place. I then helped each region build lo-fi mockups of their own LMS pages.</p>
+        </div>
+      </div>
+      <div class="cs-cell cs-media">
+        <div class="lv-board">
+          <img class="cs-shadow" src="learn-vml-r/board-latam-1x.webp" srcset="learn-vml-r/board-latam-1x.webp 275w, learn-vml-r/board-latam.webp 550w" sizes="(max-width: 900px) 48vw, 275px" width="275" height="464" alt="LATAM's FigJam board: lo-fi wireframes of their LMS pages" loading="lazy" />
+          <img class="cs-shadow" src="learn-vml-r/board-apac-1x.webp" srcset="learn-vml-r/board-apac-1x.webp 291w, learn-vml-r/board-apac.webp 582w" sizes="(max-width: 900px) 48vw, 291px" width="291" height="464" alt="APAC's FigJam board with a zoomed-in 'Welcome to wire framing 101' guide" loading="lazy" />
+          <p class="lv-note">Hi <span>@Marve Afo</span>, links 2 and 3 will be merged into 1 link when learn.vml is officially launched. We are planning to upload recordings into the course itself.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="cs-row cs-row--open cs-accent" aria-labelledby="lv-limits">
+      <div class="cs-cell cs-media">
+        <img src="learn-vml-r/limits-1x.webp" srcset="learn-vml-r/limits-1x.webp 664w, learn-vml-r/limits.webp 1328w" sizes="(max-width: 900px) 100vw, 664px" width="664" height="492" alt="Docebo's content blocks rebuilt as a Figma component library with swap-in textures and swatches" loading="lazy" />
+      </div>
+      <div class="cs-cell">
+        <div class="cs-cell__inner">
+          <h2 class="cs-h2" id="lv-limits">I Turned Limits<br />Into a <span class="lv-system">System</span></h2>
+          <p style="margin-top: 12px"><strong>I reverse engineered Docebo's content blocks in Figma,</strong> measuring the real thing so anything I built translated exactly when shipped. I systemized the four block sizes into a lego-like component library with swap-in textures and swatches from the new <strong>VML</strong> brand kit, built all 14 core pages for the post-merger relaunch, enabling fast, consistent mockups for easy sharing and approval.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="cs-row" aria-labelledby="lv-again">
+      <div class="cs-cell">
+        <div class="cs-cell__inner">
+          <h2 class="cs-h2" id="lv-again">Again and Again</h2>
+          <p style="margin-top: 12px">I did many iterations of branding and design before reaching the current product.</p>
+        </div>
+      </div>
+      <div class="cs-cell cs-media">
+        <div class="lv-iters">
+          <img class="cs-shadow" src="learn-vml-r/iter-1-1x.webp" srcset="learn-vml-r/iter-1-1x.webp 121w, learn-vml-r/iter-1.webp 242w" sizes="(max-width: 900px) 24vw, 121px" width="121" height="207" alt="Early home page iteration with a Hi hero" loading="lazy" />
+          <img class="cs-shadow" src="learn-vml-r/iter-2-1x.webp" srcset="learn-vml-r/iter-2-1x.webp 121w, learn-vml-r/iter-2.webp 242w" sizes="(max-width: 900px) 24vw, 121px" width="121" height="207" alt="Inclusion, Equity and Belonging page iteration" loading="lazy" />
+          <img class="cs-shadow" src="learn-vml-r/iter-3-1x.webp" srcset="learn-vml-r/iter-3-1x.webp 122w, learn-vml-r/iter-3.webp 244w" sizes="(max-width: 900px) 24vw, 122px" width="122" height="207" alt="Careers page iteration with Thrive tiles" loading="lazy" />
+          <img class="cs-shadow" src="learn-vml-r/iter-4-1x.webp" srcset="learn-vml-r/iter-4-1x.webp 141w, learn-vml-r/iter-4.webp 282w" sizes="(max-width: 900px) 24vw, 141px" width="141" height="207" alt="Near-final home page with the We Are VML Elevated hero and navigation" loading="lazy" />
+        </div>
+      </div>
+    </section>
+
+    <section class="cs-decisions" aria-labelledby="lv-decisions">
+      <div class="cs-tabbar">
+        <h2 class="cs-h2 cs-tab cs-tab--paper" id="lv-decisions">The Decisions</h2>
+      </div>
+      <div class="cs-row">
+        <div class="cs-cell">
+          <div class="cs-cell__inner">
+            <h3 class="cs-h2">Readable Text Made Learning Findable</h3>
+            <p style="margin-top: 12px">The old platform rendered most of its text as images. That meant no search, and no screen reader support. I rebuilt everything as real, readable text. Not a stylistic choice. A functional one.</p>
+          </div>
+        </div>
+        <div class="cs-cell">
+          <div class="cs-cell__inner">
+            <h3 class="cs-h2">Fewer Cards Made Pages Faster</h3>
+            <p style="margin-top: 12px">Certain key pages were trying to load up to fifty content cards at once. It wasn't just cluttered, it was slow. I restructured all main pages into one hero block, a handful of organized content block rows, and a single channel feed at the bottom. Fixed the mess and the load time in the same move.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cs-row cs-row--narrow cs-row--open" aria-labelledby="lv-governance">
+      <div class="cs-cell">
+        <div class="cs-cell__inner">
+          <h2 class="cs-h2" id="lv-governance">Governance Made the System Last</h2>
+          <p style="margin-top: 12px">Good design can't fix active misuse on its own. The team built tagging rules with regional leads owning them; I built the training that made it stick, teaching teams exactly how to organize what they uploaded so better tagging meant content actually got found.</p>
+        </div>
+      </div>
+      <div class="cs-cell cs-media">
+        <img class="cs-shadow" src="learn-vml-r/toolkit-1x.webp" srcset="learn-vml-r/toolkit-1x.webp 715w, learn-vml-r/toolkit.webp 1430w" sizes="(max-width: 900px) 100vw, 715px" width="715" height="471" alt="Content Creator Toolkit course page" loading="lazy" />
+      </div>
+    </section>
+
+    <section class="cs-row cs-row--narrow" aria-labelledby="lv-mobile">
+      <div class="cs-cell" style="background: var(--color-bg-paper)">
+        <div class="cs-cell__inner">
+          <h2 class="cs-h2" id="lv-mobile">1 Block for Mobile</h2>
+          <p style="margin-top: 12px">I redesigned every page for mobile using a single block: the smallest of Docebo's four sizes. It fit the screen perfectly, so stacking it gave every page a clean, consistent layout that kept the branding and hierarchy intact.</p>
+        </div>
+      </div>
+      <div class="cs-cell cs-media">
+        <img class="cs-shadow" src="learn-vml-r/mobile-1x.webp" srcset="learn-vml-r/mobile-1x.webp 196w, learn-vml-r/mobile.webp 392w" sizes="196px" width="196" height="400" alt="Learn.VML on a phone, built from stacked small blocks" loading="lazy" style="width: 196px; filter: drop-shadow(0 100px 100px rgba(0, 0, 0, 0.5))" />
+      </div>
+    </section>
+
+    <section class="lv-brand" aria-labelledby="lv-brand">
+      <p class="lv-brand-note"><strong id="lv-brand">The Brand Couldn’t Look Like Training</strong><br />It had to make people want to click. I started in black and white to avoid color bias, testing textures from paper to foundational bricks. With VML's VP, Global Head of Learning, we landed on elevation: growth, told through map topography and VML's full color palette.</p>
+      <div class="lv-gallery" role="img" aria-label="Learn.VML branding concepts: dozens of title cards in black, grey, textures and green, tilted across the page">
+        <div class="lv-gallery__strip"></div>
+      </div>
+    </section>
+
+    <section class="lv-code-band" aria-labelledby="lv-coded">
+      <div class="cs-row cs-row--narrow cs-row--open">
+        <div class="cs-cell">
+          <div class="cs-cell__inner">
+            <p class="cs-eyebrow">Customization</p>
+            <h2 class="cs-h2" id="lv-coded">Where the LMS Stopped, I Coded</h2>
+            <div class="cs-text-block" style="margin-top: 12px">
+              <p>Docebo had no navigation bar or flexible hero section, so I coded both in HTML. The new hero held video, leaderboards, larger images, and longer copy, allowing room to promote initiatives like our Brandon Hall Award–winning Microlearning Challenge that brought nearly 12K visits in three months, triple the usual monthly traffic.</p>
+              <p>I pulled CSS selectors in dev tools to fix spacing platform-wide with my own code, and embedded VML's custom font via base64, giving every page the brand voice the platform’s limits once constrained.</p>
+            </div>
+          </div>
+        </div>
+        <div class="cs-cell">
+<pre class="cs-code" aria-label="Excerpt of the navigation HTML"><span>&lt;!-- NAVIGATION --&gt;</span>
+<span class="t">&lt;div</span> <span class="a">id</span>=<span class="v">"nav-container"</span><span class="t">&gt;</span>
+  <span class="t">&lt;nav</span> <span class="a">id</span>=<span class="v">"nav-bar"</span><span class="t">&gt;</span>
+    <span class="t">&lt;ul&gt;</span>
+      <span class="t">&lt;li&gt;&lt;a</span> <span class="a">href</span>=<span class="v">"/pages/126/gu-home"</span><span class="t">&gt;</span><span class="x">Home</span><span class="t">&lt;/a&gt;&lt;/li&gt;</span>
+      <span class="t">&lt;li&gt;&lt;a</span> <span class="a">href</span>=<span class="v">"/pages/129/what-we-do"</span><span class="t">&gt;</span><span class="x">What We Do</span><span class="t">&lt;/a&gt;&lt;/li&gt;</span>
+      <span class="t">&lt;li&gt;</span>
+        <span class="t">&lt;a&gt;</span><span class="x">Who We Are</span><span class="t">&lt;/a&gt;</span>
+        <span class="t">&lt;ul</span> <span class="a">class</span>=<span class="v">"dropdown-list"</span><span class="t">&gt;</span>
+          <span class="t">&lt;li&gt;&lt;a</span> <span class="a">class</span>=<span class="v">"sub-item"</span> <span class="a">href</span>=<span class="v">"https://learn.vml.com/pages/173/your-career-thrive-oct-2024"</span><span class="t">&gt;</span><span class="x">Your Career</span><span class="t">&lt;/a&gt;&lt;/li&gt;</span></pre>
+        </div>
+      </div>
+    </section>
+
+    <div class="lv-hero-mock cs-dots">
+      <img class="cs-shadow" src="learn-vml-r/hero-mock-1x.webp" srcset="learn-vml-r/hero-mock-1x.webp 1140w, learn-vml-r/hero-mock.webp 2280w" sizes="(max-width: 1440px) 100vw, 1120px" width="1140" height="410" alt="The coded hero: We Are VML Elevated, with a world map leaderboard by region" loading="lazy" />
+    </div>
+
+    <section class="cs-results" aria-labelledby="lv-results">
+      <img class="cs-full lv-results-nav" src="learn-vml-r/nav-1x.webp" srcset="learn-vml-r/nav-1x.webp 1440w, learn-vml-r/nav.webp 2880w" sizes="100vw" width="1440" height="100" alt="The coded navigation bar with dropdowns" loading="lazy" />
+      <div class="cs-results__intro cs-dark">
+        <h2 id="lv-results">89% Showed Up.<br />Then They Stayed.</h2>
+        <p>Stats reflect the first 10 months after launch.</p>
+      </div>
+      <div class="cs-stat">
+        <p class="cs-stat__value">89%</p>
+        <p class="cs-stat__label">of employees logged in at least once</p>
+      </div>
+      <div class="cs-stat">
+        <p class="cs-stat__value">316%</p>
+        <p class="cs-stat__label">increase in average learning time per user versus the old platform</p>
+      </div>
+      <div class="cs-stat">
+        <p class="cs-stat__value">230%</p>
+        <p class="cs-stat__label">increase in unique monthly users compared to both legacy platforms combined</p>
+      </div>
+      <div class="cs-stat">
+        <p class="cs-stat__value">+431</p>
+        <p class="cs-stat__label">additional courses created by regional teams, all inside the system</p>
+      </div>
+    </section>
+
+    <section class="cs-cols3" aria-labelledby="lv-closing">
+      <h2 class="cs-h2" id="lv-closing">431 Courses Later, No Junk Drawer</h2>
+      <p><strong>What I'd Do Differently</strong>I'd go back and properly name, tag, and organize my Figma layers after every big push. I spent this project teaching teams that good tagging is what makes content findable. My own files deserved the same rule. Clean layers would have made every later project, from branding new learning initiatives to new LMS pages, faster to build from.</p>
+      <p><strong>2+ Years In</strong>Revamping the LMS was my first major project at VML. It's since been at the heart of 10+ awards for the learning team, including Brandon Hall and even Docebo itself. The real test of a design system isn't launch day. It's whether it holds when other people start building. So far, so good.</p>
+    </section>
+  </main>
+  <script src="case-study.js"></script>
+</body>
+</html>

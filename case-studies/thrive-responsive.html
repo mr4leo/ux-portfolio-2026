@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Preview of the responsive build: not linked from the site yet -->
+  <meta name="robots" content="noindex" />
+  <title>Thrive Case Study | Marve Afo</title>
+  <link rel="icon" href="../favicon.ico" sizes="48x48" />
+  <link rel="icon" type="image/png" href="../images/favicon-32.png" sizes="32x32" />
+  <link rel="apple-touch-icon" href="../images/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="stylesheet" href="case-study.css" />
+  <script>
+    // Hide sections until case-study.js reveals them (shown anyway after 3s
+    // if that script fails to load)
+    document.documentElement.classList.add("cs-js");
+    setTimeout(() => window.csReady || document.documentElement.classList.remove("cs-js"), 3000);
+  </script>
+  <style>
+    /* Thrive theme (Figma node 172:40652): VML purple */
+    .cs {
+      --cs-accent: #723066 url("thrive-r/texture-purple.webp") center / cover;
+      --cs-accent-text: #733167;
+      --cs-accent-ink: var(--color-text-inverse);
+      --cs-dark-bg: #723066 url("thrive-r/texture-purple.webp") center / cover;
+    }
+
+    .th-pink {
+      background: #d6c6d3 url("thrive-r/texture-pink.webp") center / cover;
+    }
+
+    .th-highlights {
+      margin-top: 1em !important;
+      color: #733167;
+    }
+
+    .th-caption {
+      color: var(--cs-muted);
+      font-size: clamp(16px, 1.4vw, 20px);
+    }
+
+    .th-caption strong {
+      display: block;
+      font-size: 0.9em;
+    }
+
+    .th-items p + p {
+      margin-top: 20px;
+    }
+
+    .th-items strong {
+      display: block;
+    }
+
+    /* Wheel, text, table */
+    .th-trio {
+      display: grid;
+      grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.1fr) minmax(0, 1fr);
+      gap: clamp(24px, 3.3vw, 48px);
+      align-items: center;
+      padding: clamp(48px, 5.6vw, 80px) var(--cs-gutter);
+      border-bottom: 1px solid var(--cs-line);
+    }
+
+    .th-trio img {
+      width: 100%;
+    }
+
+    .th-quote {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+
+    .th-quote img {
+      flex: none;
+      width: 53px;
+    }
+
+    .th-quote blockquote {
+      margin: 0;
+    }
+
+    .th-quote cite {
+      display: block;
+      margin-top: 16px;
+      font-style: normal;
+      font-weight: var(--weight-bold);
+    }
+
+    .th-onboarding .cs-video {
+      max-width: 564px;
+    }
+
+    /* Brand: no shadow under the caption; instead the THRIVE banner at the top
+       of the image (250 of its 1024px) casts Figma's 0 100 100 50% shadow
+       down onto the collage, drawn as a fade just below the banner */
+    .th-brand-caption {
+      box-shadow: none;
+    }
+
+    .th-brand {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .th-brand__banner {
+      position: absolute;
+      top: 24.41%;
+      left: 0;
+      right: 0;
+      height: 19.5%;
+      background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.18) 45%, transparent);
+      pointer-events: none;
+    }
+
+    .th-flows img {
+      width: 100%;
+    }
+
+    .th-bars {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      width: 100%;
+      max-width: 550px;
+    }
+
+    .th-bars img {
+      width: 100%;
+    }
+
+    /* The view switcher tabs hang under the bar at the same scale
+       (107 of the bar's 550px) */
+    .th-bars .th-tabs {
+      width: 19.45%;
+    }
+
+    /* Video card before / after */
+    .th-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      width: 100%;
+      max-width: 530px;
+    }
+
+    .th-cards figure {
+      margin: 0;
+    }
+
+    .th-cards img {
+      width: 100%;
+    }
+
+    .th-card__title {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 6px !important;
+      color: #4e1ba8;
+      font-size: 12px;
+      font-weight: var(--weight-medium);
+      line-height: 1.3;
+    }
+
+    .th-card__title svg {
+      flex: none;
+      width: 16px;
+      height: 16px;
+    }
+
+    @media (max-width: 900px) {
+      .th-trio {
+        grid-template-columns: 1fr;
+      }
+
+      .th-trio > :nth-child(2) {
+        order: -1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="viewer-bar" aria-label="Case study">
+    <a href="../index.html#work">← Back to portfolio</a>
+    <a href="thrive.pdf" download>Download PDF</a>
+  </nav>
+
+  <main class="cs">
+    <header class="cs-header cs-dark">
+      <p class="cs-header__name">Marve Afo<span>Product designer</span></p>
+      <img class="cs-header__logo" src="open-everydai-r/vml-logo.svg" width="78" height="24" alt="VML" />
+    </header>
+
+    <section class="cs-hero" aria-labelledby="cs-title">
+      <div class="cs-hero__text">
+        <div class="cs-hero__text-inner">
+          <h1 id="cs-title">Designing AI Managers Could Trust</h1>
+          <div>
+            <h2 class="cs-h3">T.L.D.R.</h2>
+            <p>Redesigned VML's peer feedback tool so employees always knew where they stood, and turned an AI summary concept into a human-assisted interface managers trusted.</p>
+            <ul class="th-highlights">
+              <li>Won 3 Awards</li>
+              <li>Lauded by C-Suite Leadership</li>
+            </ul>
+          </div>
+          <div>
+            <h2 class="cs-h3">Role</h2>
+            <p><strong>Sole product and visual designer</strong><br />reporting to the Global Director of Talent and Org Effectiveness.</p>
+          </div>
+          <div>
+            <h2 class="cs-h3">Key Stakeholders</h2>
+            <ul>
+              <li><strong>Product Manager:</strong> Global Director, Talent and Org Effectiveness</li>
+              <li><strong>Brand Sign-Off:</strong> Executive Director, Global Marcomms</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="cs-hero__media">
+        <div class="cs-glow" aria-hidden="true"></div>
+        <div class="cs-video">
+          <img src="thrive-r/hero-frame-1x.webp" srcset="thrive-r/hero-frame-1x.webp 818w, thrive-r/hero-frame.webp 1636w" sizes="(max-width: 900px) 100vw, 818px" width="818" height="459" alt="Thrive at VML title card on a purple stepped pattern" fetchpriority="high" />
+        </div>
+      </div>
+    </section>
+
+    <section class="cs-row cs-problem" aria-labelledby="th-problem">
+      <div class="cs-cell">
+        <div class="cs-cell__inner">
+          <p class="cs-eyebrow">The Problem</p>
+          <h2 class="cs-h2" id="th-problem">“Where Was I?”</h2>
+        </div>
+      </div>
+      <div class="cs-cell">
+        <div class="cs-cell__inner cs-text-block">
+          <p><strong>A Process Spread Too Thin to Remember</strong>Thrive came to VML through the 2023 merger with Wunderman Thompson: a custom Power App running inside Microsoft Teams. It guided employees through a year of feedback and performance conversations in steps spaced weeks apart. Each time people returned, they had to figure out where they'd left off, and the circular diagram, showing every step at once, didn't make that easy. Managers had it worse, reading five or more long feedback submissions per employee before every conversation. The product manager wanted AI to lighten that load.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="cs-decisions" aria-labelledby="th-peek">
+      <div class="cs-tabbar">
+        <h2 class="cs-h2 cs-tab cs-tab--paper" id="th-peek">Sneak Peek<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg></h2>
+      </div>
+      <div class="cs-row">
+        <div class="cs-shot cs-dots">
+          <figure>
+            <div>
+              <h3 class="cs-shot__title">Before</h3>
+              <p class="cs-shot__subtitle">Original Thrive Home Screen</p>
+            </div>
+            <img src="thrive-r/before-1x.webp" srcset="thrive-r/before-1x.webp 500w, thrive-r/before.webp 1000w" sizes="(max-width: 900px) 100vw, 500px" width="500" height="384" alt="Original Thrive home screen: purple everywhere, a crowded top bar and a circular step diagram" loading="lazy" />
+            <figcaption class="th-caption"><strong>Everything Competing at Once</strong>Plenty purple, a crowded top bar, and every step shown at once left little clear to focus on.</figcaption>
+          </figure>
+        </div>
+        <div class="cs-shot cs-dots">
+          <figure>
+            <div>
+              <h3 class="cs-shot__title">After</h3>
+              <p class="cs-shot__subtitle">Redesigned Thrive Home Screen</p>
+            </div>
+            <img src="thrive-r/after-1x.webp" srcset="thrive-r/after-1x.webp 500w, thrive-r/after.webp 1000w" sizes="(max-width: 900px) 100vw, 500px" width="500" height="391" alt="Redesigned Thrive home screen: white space, sidebar tabs, Start Here videos and a step table" loading="lazy" />
+            <figcaption class="th-caption"><strong>More White Space, Less Competition</strong>More white space and a cooler background sharpened the visual hierarchy so content could stand out, like the AI coach added to the hero display for easy access.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="th-brand">
+      <p class="cs-brand__caption cs-dark th-brand-caption"><strong id="th-brand">The Brand Had to Stand on Its Own</strong><br />Thrive's original look belonged to a company that no longer existed. My PM's first idea was a three-way sub-brand system uniting VMLY&amp;R's <em>Drive Your Career</em>, Wunderman Thompson's <em>Authentic Personal Brand</em>, and <em>Thrive</em>. I explored directions built on fingerprints for authenticity, vines for growth, and fragments of the VMLY&amp;R snowflake. In the end, the Executive Director of Global Marcomms narrowed the work to one new VML-aligned palette, which set the direction for every screen.</p>
+      <div class="th-brand">
+        <img class="cs-full" src="thrive-r/brand-1x.webp" srcset="thrive-r/brand-1x.webp 1440w, thrive-r/brand.webp 2880w" sizes="100vw" width="1440" height="1024" alt="Thrive brand explorations: the THRIVE wordmark, Authentic Personal Brand and Drive Your Career marks with fingerprint and vine motifs" loading="lazy" />
+        <div class="th-brand__banner" aria-hidden="true"></div>
+      </div>
+    </section>
+
+    <section class="cs-band cs-accent" aria-labelledby="th-fix">
+      <div class="cs-tabbar" style="height: 83px">
+        <h2 class="cs-h2 cs-tab cs-tab--accent" id="th-fix">4 Step Fix</h2>
+      </div>
+      <ol class="cs-steps">
+        <li>Test</li>
+        <li>Redesign Decisions</li>
+        <li>Prototype AI</li>
+        <li>Onboard</li>
+      </ol>
+    </section>
+
+    <section class="cs-section" aria-labelledby="th-testing">
+      <div>
+        <p class="cs-eyebrow">Testing</p>
+        <h2 class="cs-h2" id="th-testing">What Users Told Us</h2>
+        <p style="margin-top: 8px">I wrote the test plan and ran four 45-minute moderated sessions with my PM, serving as the primary note taker. The findings were consistent. People weren't sure where to start, and they could jump into any step regardless of what they'd completed. Some didn't recognize the onboarding videos as videos, clicking the language and download icons instead of play, because nothing on the card said "watch this."</p>
+      </div>
+      <div style="margin-top: 48px">
+        <h3 class="cs-shot__title">User Testing Notes</h3>
+        <p class="cs-shot__subtitle">A sample of rough user test observation notes</p>
+      </div>
+      <div class="cs-pair" style="--cols: minmax(0, 0.9944fr) minmax(0, 0.9552fr)">
+        <img class="cs-shadow" src="thrive-r/test-notes-1x.webp" srcset="thrive-r/test-notes-1x.webp 532w, thrive-r/test-notes.webp 1064w" sizes="(max-width: 900px) 100vw, 532px" width="532" height="535" alt="Moderated test notes for one participant, before and during the test" loading="lazy" />
+        <img class="cs-shadow" src="thrive-r/test-board-1x.webp" srcset="thrive-r/test-board-1x.webp 533w, thrive-r/test-board.webp 1066w" sizes="(max-width: 900px) 100vw, 533px" width="533" height="558" alt="Sticky notes: not sure where to navigate, overwhelmed by the first screen, missed notifications, scrolled past Start Here" loading="lazy" />
+      </div>
+    </section>
+
+    <section class="cs-decisions" aria-labelledby="th-decisions">
+      <div class="cs-tabbar">
+        <h2 class="cs-h2 cs-tab cs-tab--paper" id="th-decisions">Redesign Decisions</h2>
+      </div>
+      <div class="cs-row">
+        <div class="cs-cell cs-media">
+          <div class="th-bars">
+          <img class="cs-shadow" src="thrive-r/topbar-old-1x.webp" srcset="thrive-r/topbar-old-1x.webp 550w, thrive-r/topbar-old.webp 1100w" sizes="(max-width: 900px) 100vw, 550px" width="550" height="23" alt="Old top bar crowded with buttons and filters" loading="lazy" />
+          <div class="th-newbar cs-shadow">
+            <img src="thrive-r/topbar-new-1x.webp" srcset="thrive-r/topbar-new-1x.webp 550w, thrive-r/topbar-new.webp 1100w" sizes="(max-width: 900px) 100vw, 550px" width="550" height="31" alt="New top bar with a single help icon" loading="lazy" />
+            <img class="th-tabs" src="thrive-r/tabs-1x.webp" srcset="thrive-r/tabs-1x.webp 107w, thrive-r/tabs.webp 214w" sizes="(max-width: 900px) 19.5vw, 107px" width="107" height="24" alt="My To Do and My Team tabs" loading="lazy" />
+          </div>
+        </div>
+        </div>
+        <div class="cs-cell">
+          <div class="cs-cell__inner th-items">
+            <p><strong>Fewer Buttons Made the Starting Point Clear</strong>Testers didn't know where to start. I moved the view switcher into sidebar tabs and folded Resources, Help, and support contacts into one "?" icon.</p>
+            <p><strong>A Moving Bell Made Reminders Hard to Miss</strong>Testers missed key notifications, so I animated the bell to flag anything new.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="th-trio" aria-labelledby="th-return">
+      <img class="cs-shadow" src="thrive-r/wheel-1x.webp" srcset="thrive-r/wheel-1x.webp 301w, thrive-r/wheel.webp 602w" sizes="(max-width: 900px) 100vw, 301px" width="301" height="308" alt="The old circular step wheel" loading="lazy" />
+      <div class="th-items">
+        <h2 class="cs-h2" id="th-return">Built for<br />Return Visits</h2>
+        <p style="margin-top: 12px"><strong>A Table Made Progress Trackable</strong>A wheel explains a process but is hard to track. A table shows returning users exactly where they left off laid out from left to right, top to bottom in natural reading order.</p>
+        <p><strong>Locking Future Steps Kept Users on Track</strong>Testers could click into any step, even ones they weren't ready for. Now only the current step is clickable, so users can't go the wrong way. (Highlighted in yellow)</p>
+        <p><strong>Clearer Statuses Showed What Needed Attention</strong>Six statuses, a feedback request checklist, and each quarter's lock date put everything due in one view.</p>
+      </div>
+      <img class="cs-shadow" src="thrive-r/table-1x.webp" srcset="thrive-r/table-1x.webp 415w, thrive-r/table.webp 830w" sizes="(max-width: 900px) 100vw, 415px" width="415" height="332" alt="The new step table by quarter, with the current step highlighted in yellow and status keys" loading="lazy" />
+    </section>
+
+    <section class="cs-row" aria-labelledby="th-videos">
+      <div class="cs-cell cs-media">
+        <div class="th-cards">
+          <figure>
+            <img class="cs-shadow" src="thrive-r/video-old.webp" width="250" height="156" alt="Before: video card with a globe icon and no play button" loading="lazy" />
+          </figure>
+          <figure>
+            <img class="cs-shadow" src="thrive-r/video-new.webp" width="250" height="140" alt="After: video card with a play button" loading="lazy" />
+            <p class="th-card__title">Building A Personal Brand With THRIVE<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M10 9.5v5l4-2.5z" fill="currentColor" stroke="none" /></svg></p>
+          </figure>
+        </div>
+      </div>
+      <div class="cs-cell">
+        <div class="cs-cell__inner th-items">
+          <p><strong id="th-videos">Play Buttons Made Videos Look Like Videos</strong>Testers mistook the videos for articles. Each card now has a title, a play button, and a video icon.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="cs-row" aria-labelledby="th-confetti">
+      <div class="cs-cell cs-media">
+        <img class="cs-shadow" src="thrive-r/confetti-1x.webp" srcset="thrive-r/confetti-1x.webp 564w, thrive-r/confetti.webp 1128w" sizes="(max-width: 900px) 100vw, 564px" width="564" height="324" alt="All Done! confirmation with confetti" loading="lazy" />
+      </div>
+      <div class="cs-cell">
+        <div class="cs-cell__inner th-items">
+          <p><strong id="th-confetti">Confetti Confirmed the Finish Line</strong>Testers missed the message telling them they were done, so a celebratory animation now makes the end of each cycle unmistakable.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="cs-row" aria-labelledby="th-prototype">
+      <div class="cs-cell th-pink">
+        <div class="cs-cell__inner">
+          <p class="cs-eyebrow">Prototype</p>
+          <h2 class="cs-h2" id="th-prototype">AI Summaries Managers Trusted</h2>
+          <p style="margin-top: 12px">My PM explained the initial flows. I refined them and turned them into real Figma mockups across multiple rounds. Managers read every submission first, generating a summary was optional, and they could edit it before using it. Employees and managers both knew where AI was involved. This process saved managers time on reading and manually combining and summarizing feedback from as many as 10 direct reports.</p>
+        </div>
+      </div>
+      <div class="cs-cell cs-media">
+        <img class="cs-shadow" src="thrive-r/prototype-1x.webp" srcset="thrive-r/prototype-1x.webp 563w, thrive-r/prototype.webp 1126w" sizes="(max-width: 900px) 100vw, 563px" width="563" height="918" alt="Manager view: AI feedback summary for Valerie with strengths, opportunities and values, and career conversation prompts" loading="lazy" />
+      </div>
+    </section>
+
+    <div class="cs-section th-flows">
+      <img class="cs-shadow" src="thrive-r/flows-1x.webp" srcset="thrive-r/flows-1x.webp 1191w, thrive-r/flows.webp 2382w" sizes="(max-width: 1440px) 100vw, 1120px" width="1191" height="600" alt="AI summary submission flows: save draft, ready to submit checklist, and all done confirmation" loading="lazy" />
+    </div>
+
+    <section class="cs-row cs-row--open th-pink th-onboarding" aria-labelledby="th-onboarding">
+      <div class="cs-cell">
+        <div class="cs-cell__inner">
+          <p class="cs-eyebrow">Onboarding</p>
+          <h2 class="cs-h2" id="th-onboarding">1 Video Led to 10 More</h2>
+          <p style="margin-top: 12px">I produced the first onboarding video with on-screen callouts showing exactly where to look. A production team used it as the template for the remaining 10+ videos.</p>
+        </div>
+      </div>
+      <div class="cs-cell cs-media">
+        <div class="cs-video">
+          <img src="thrive-r/onboarding-poster-1x.webp" srcset="thrive-r/onboarding-poster-1x.webp 564w, thrive-r/onboarding-poster.webp 1128w" sizes="(max-width: 900px) 100vw, 564px" width="564" height="318" alt="" loading="lazy" />
+          <button type="button" class="cs-video__btn" data-label="Thrive onboarding video">
+            <video src="thrive-tutorial.mp4" poster="thrive-r/onboarding-poster-1x.webp" muted loop playsinline preload="metadata"></video>
+            <span class="cs-video__badge" aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="cs-results" aria-labelledby="th-results">
+      <div class="cs-tabbar cs-dark" style="height: 83px">
+        <h2 class="cs-h2 cs-tab cs-tab--accent" id="th-results">Results</h2>
+      </div>
+      <div class="cs-row">
+        <div class="cs-cell">
+          <div class="cs-cell__inner">
+            <p class="cs-eyebrow">Recognition</p>
+            <p class="cs-h2">“Human-Assisted, Not Human-Replacing”</p>
+          </div>
+        </div>
+        <div class="cs-cell">
+          <figure class="cs-cell__inner th-quote" style="margin: 0">
+            <img src="thrive-r/quote-mark-1x.webp" width="53" height="58" alt="" loading="lazy" />
+            <blockquote>“A brilliant and practical use of AI… With 10 direct reports it’s a time-saver... the perfect example of Human-assisted not Human-replacing.”<cite>— Global Chief Strategy Officer</cite></blockquote>
+          </figure>
+        </div>
+      </div>
+      <div class="cs-row cs-awards">
+        <div class="cs-cell">
+          <ul class="cs-cell__inner">
+            <li><img src="thrive-r/award-worklife.webp" width="90" height="75" alt="" loading="lazy" /><p><strong>WorkLife Awards 2024</strong>Most Dedicated to Employee Growth</p></li>
+            <li><img src="thrive-r/award-worklife-finalist.webp" width="90" height="75" alt="" loading="lazy" /><p><strong>WorkLife Finalist 2024</strong>Best Use of AI in the Workplace for Thrive's AI coach and AI-generated feedback features.</p></li>
+          </ul>
+        </div>
+        <div class="cs-cell">
+          <ul class="cs-cell__inner">
+            <li><img src="thrive-r/award-business.webp" width="90" height="72" alt="" loading="lazy" /><p><strong>Business Culture Awards 2024</strong>Best Personal Development, Coaching &amp; Mentoring Initiative</p></li>
+            <li><img src="thrive-r/award-engage.webp" width="90" height="75" alt="" loading="lazy" /><p><strong>Engage Awards 2024</strong>Best Use of Technology to Drive Employee Engagement</p></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="cs-row" aria-labelledby="th-reflection">
+      <div class="cs-cell">
+        <div class="cs-cell__inner">
+          <p class="cs-eyebrow">Reflection</p>
+          <h2 class="cs-h2" id="th-reflection">Confident,<br />But Not Confirmed</h2>
+        </div>
+      </div>
+      <div class="cs-cell">
+        <div class="cs-cell__inner cs-text-block">
+          <p><strong>What I'd Do Differently</strong>I'd push for a quick validation round before launch. Development time was expensive, but testing a Figma prototype wasn't. Even two or three sessions would have confirmed the redesign fixed what the first four found. The feedback from managers suggests it did. I'd just rather have known before launch.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="case-study.js"></script>
+</body>
+</html>

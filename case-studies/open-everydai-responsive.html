@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Preview of the responsive build: not linked from the site yet -->
+  <meta name="robots" content="noindex" />
+  <title>Open Everydai Case Study | Marve Afo</title>
+  <link rel="icon" href="../favicon.ico" sizes="48x48" />
+  <link rel="icon" type="image/png" href="../images/favicon-32.png" sizes="32x32" />
+  <link rel="apple-touch-icon" href="../images/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="stylesheet" href="case-study.css" />
+  <script>
+    // Hide sections until case-study.js reveals them (shown anyway after 3s
+    // if that script fails to load)
+    document.documentElement.classList.add("cs-js");
+    setTimeout(() => window.csReady || document.documentElement.classList.remove("cs-js"), 3000);
+  </script>
+  <style>
+    .cs {
+      --cs-accent: #f0c531;
+      --cs-dark-bg: #2b2d2e url("open-everydai-r/texture-dark.webp") center / cover;
+      --cs-stat-bg: #393939 url("open-everydai-r/texture-stat.webp") center / 220%;
+    }
+
+    .cs-results__tab {
+      background: #333;
+    }
+  </style>
+</head>
+<body>
+  <nav class="viewer-bar" aria-label="Case study">
+    <a href="../index.html#work">← Back to portfolio</a>
+    <a href="open-everydai.pdf" download>Download PDF</a>
+  </nav>
+
+  <main class="cs">
+    <header class="cs-header cs-dark">
+      <p class="cs-header__name">Marve Afo<span>Product designer</span></p>
+      <img class="cs-header__logo" src="open-everydai-r/vml-logo.svg" width="78" height="24" alt="VML" />
+    </header>
+
+    <section class="cs-hero" aria-labelledby="cs-title">
+      <div class="cs-hero__text">
+        <div class="cs-hero__text-inner">
+          <h1 id="cs-title">How a $3,000 Idea Beat a $300 Million Problem</h1>
+          <div>
+            <h2 class="cs-h3">T.L.D.R.</h2>
+            <p>I redesigned the simulation, brand, and launch campaign for Open Everydai, a training program that helped VML employees practice WPP's AI platform without fear. Built in 7 weeks for $3,000.</p>
+            <p class="cs-hero__awards">Won Several Awards</p>
+            <ul>
+              <li>2 Brandon Hall Group Gold Awards</li>
+              <li>Brandon Hall Group Silver Award</li>
+              <li>LPI Gold for Innovation in Learning</li>
+              <li>Docebo Inspire Award<br />Best Employee Development Program</li>
+              <li class="cs-hero__note">I created the award submission sizzle reel in Adobe After Effects.</li>
+            </ul>
+          </div>
+          <div>
+            <h2 class="cs-h3">Role</h2>
+            <p><strong>Sole product and visual designer</strong><br />on a six-person learning team, reporting to the VP, Global Head of Learning.</p>
+          </div>
+          <div>
+            <h2 class="cs-h3">Key Stakeholders</h2>
+            <ul>
+              <li>VP, Global Head of Learning</li>
+              <li>Global Manager of Learning &amp; Development at VML</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="cs-hero__media">
+        <div class="cs-glow" aria-hidden="true"></div>
+        <div class="cs-video">
+          <img src="open-everydai-r/hero-frame-1x.webp" srcset="open-everydai-r/hero-frame-1x.webp 818w, open-everydai-r/hero-frame.webp 1636w" sizes="(max-width: 900px) 100vw, 818px" width="818" height="460" alt="" fetchpriority="high" />
+          <button type="button" class="cs-video__btn" data-label="Open Everydai sizzle reel">
+            <video src="open-everydai-sizzle.mp4" muted loop playsinline preload="auto"></video>
+            <span class="cs-video__badge" aria-hidden="true"></span>
+          </button>
+        </div>
+        <p class="cs-hero__caption">Figures in video are from the first 3 months after launch</p>
+      </div>
+    </section>
+
+    <section class="cs-row cs-problem" aria-labelledby="cs-problem">
+      <div class="cs-cell cs-problem__title">
+        <div class="cs-cell__inner">
+          <p class="cs-eyebrow">The Problem</p>
+          <h2 class="cs-h2" id="cs-problem">The Fear of<br />Being Replaced</h2>
+        </div>
+      </div>
+      <div class="cs-cell">
+        <div class="cs-cell__inner cs-text-block">
+          <p><strong>A Behavior Problem, Not a Features Problem</strong>WPP invested $300M in WPP Open, its AI platform, and 40 clients worth $895M in annual revenue were already using it. Yet, only 6,056 of 30,000 VML employees were active users at launch (Jan 2025). Employees didn't fear the tool. They feared what it meant for their jobs. Slide decks and screen recordings couldn't fix that. People had to use the platform themselves, enough times that it stopped feeling foreign.</p>
+          <p><strong>The Twist</strong>Security rules blocked practice inside the real platform. So we built a simulation that ran users through the simple everyday tasks that AI could help them with in WPP Open such as image generation, conversational coaching, drafting emails, or analyzing documents.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="cs-decisions" aria-labelledby="cs-decisions">
+      <div class="cs-tabbar">
+        <h2 class="cs-h2 cs-tab cs-tab--card" id="cs-decisions">Design Decisions</h2>
+      </div>
+      <div class="cs-row">
+        <div class="cs-shot cs-dots">
+          <figure>
+            <div>
+              <h3 class="cs-shot__title">Before</h3>
+              <p class="cs-shot__subtitle">Original Simulation Concept</p>
+            </div>
+            <img src="open-everydai-r/before-1x.webp" srcset="open-everydai-r/before-1x.webp 500w, open-everydai-r/before.webp 1000w" sizes="(max-width: 900px) 100vw, 500px" width="500" height="360" alt="Original simulation: a square screenshot on a generic laptop with a teal dialog" loading="lazy" />
+            <figcaption><strong>A Clear Starting Point</strong>The Global Manager of Learning conceptualized the WPP Open simulation as a series of screenshots in a guided user flow. Its square format and generic laptop didn't yet reflect the widescreen platform learners would actually use.</figcaption>
+          </figure>
+        </div>
+        <div class="cs-shot cs-dots">
+          <figure>
+            <div>
+              <h3 class="cs-shot__title">After</h3>
+              <p class="cs-shot__subtitle">Redesigned Simulation Theme</p>
+            </div>
+            <img src="open-everydai-r/after-1x.webp" srcset="open-everydai-r/after-1x.webp 500w, open-everydai-r/after.webp 1000w" sizes="(max-width: 900px) 100vw, 500px" width="500" height="360" alt="Redesigned simulation: a widescreen MacBook with a WPP Open side panel" loading="lazy" />
+            <figcaption><strong>Widescreen, Guided, and Modern</strong>I matched it screen by screen to the real WPP Open platform while keeping the original flow.</figcaption>
+          </figure>
+        </div>
+      </div>
+      <div class="cs-row">
+        <div class="cs-shot cs-dots">
+          <figure>
+            <img src="open-everydai-r/icons-before-1x.webp" srcset="open-everydai-r/icons-before-1x.webp 500w, open-everydai-r/icons-before.webp 1000w" sizes="(max-width: 900px) 100vw, 500px" width="500" height="337" alt="Original screen with large yellow callout bubbles and crossed-circle icons" loading="lazy" />
+            <figcaption><strong>Unclear Iconography</strong>The original icons were ambiguous and certain interactions were wordier than needed.</figcaption>
+          </figure>
+        </div>
+        <div class="cs-shot cs-dots">
+          <figure>
+            <img src="open-everydai-r/icons-after-1x.webp" srcset="open-everydai-r/icons-after-1x.webp 500w, open-everydai-r/icons-after.webp 1000w" sizes="(max-width: 900px) 100vw, 500px" width="500" height="337" alt="Redesigned screen with rounded modals, asterisk icons and a dark overlay" loading="lazy" />
+            <figcaption>
+              <strong>Clearer Icons and CTAs</strong>
+              <ul>
+                <li>The redesign featured information (i) icons that were later changed to asterisks which may be more globally recognizable as a flag for important info.</li>
+                <li>A pulsing animation shows users where to click next.</li>
+                <li>The back button moved left, where users expect it.</li>
+                <li>The skip button was cut down to the essential word “skip.”</li>
+                <li>Modals were redesigned with rounded rectangles to match WPP Open, with a dark overlay to focus attention.</li>
+              </ul>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="cs-row cs-scaling" aria-labelledby="cs-scaling">
+      <div class="cs-glow" aria-hidden="true"></div>
+      <div class="cs-cell">
+        <div class="cs-cell__inner">
+          <p class="cs-eyebrow">Scaling</p>
+          <h2 class="cs-h2" id="cs-scaling">1 Course Became 5</h2>
+          <p>Five courses needed the same polished interactions. Instead of a Figma prototype, I built the dialogue boxes, triggers, and navigation directly in Storyline as a reusable component library, plus a finished reference course. The Global Manager of L&amp;D used it to build the other four, and the L&amp;D team helped translate all five into 8 languages.</p>
+        </div>
+      </div>
+      <div class="cs-cell cs-scaling__board" style="border-left: 0">
+        <img src="open-everydai-r/design-system-1x.webp" srcset="open-everydai-r/design-system-1x.webp 500w, open-everydai-r/design-system.webp 1000w" sizes="(max-width: 900px) 100vw, 500px" width="500" height="404" alt="Storyline component library: six dialog boxes for directing action, explaining errors and offering info, plus navigation icons" loading="lazy" />
+      </div>
+    </section>
+
+    <section class="cs-brand" aria-labelledby="cs-brand">
+      <div class="cs-brand__caption cs-dark">
+        <p><strong id="cs-brand">The Brand Had to Disarm the Fear</strong><br />Generic AI imagery, with cybernetics and purple-blue crypto gradients, looked like the very threat people feared. We chose cool electric blue and yellow on dark backdrops instead, so Open Everydai reads as modern tech but stays approachable, not threatening.</p>
+      </div>
+      <img src="open-everydai-r/brand-1x.webp" srcset="open-everydai-r/brand-1x.webp 1440w, open-everydai-r/brand.webp 2880w" sizes="100vw" width="1440" height="1918" alt="Open Everydai logo explorations and branded course slides in electric blue and yellow on dark backdrops" loading="lazy" />
+    </section>
+
+    <section class="cs-results" aria-labelledby="cs-results">
+      <div class="cs-tabbar cs-dark">
+        <h2 class="cs-h2 cs-tab cs-results__tab" id="cs-results">Results</h2>
+      </div>
+      <div class="cs-results__intro cs-dark">
+        <h2>From Feared to Everyday</h2>
+        <p>Stats reflect the first 3 months after launch</p>
+      </div>
+      <div class="cs-stat">
+        <p class="cs-stat__value">335%</p>
+        <p class="cs-stat__label">growth in WPP Open users, to 26,902</p>
+      </div>
+      <div class="cs-stat">
+        <p class="cs-stat__value">830%</p>
+        <p class="cs-stat__label">growth in engaged sessions</p>
+      </div>
+      <div class="cs-stat">
+        <p class="cs-stat__value">#1</p>
+        <p class="cs-stat__label">VML was the number 1 WPP Open user across the entire WPP network</p>
+      </div>
+      <div class="cs-row cs-awards">
+        <div class="cs-cell">
+          <ul class="cs-cell__inner">
+            <li><img src="open-everydai-r/award-bh-gold.webp" width="86" height="61" alt="" loading="lazy" /><p><strong>Brandon Hall Group Gold Award | 2025</strong>Best Competencies and Skill Development</p></li>
+            <li><img src="open-everydai-r/award-bh-gold.webp" width="86" height="61" alt="" loading="lazy" /><p><strong>Brandon Hall Group Gold Award | 2025</strong>Best Custom Content</p></li>
+            <li><img src="open-everydai-r/award-bh-silver.webp" width="86" height="61" alt="" loading="lazy" /><p><strong>Brandon Hall Group Silver Award | 2026</strong>Best Unique or Innovative L&amp;D Program</p></li>
+          </ul>
+        </div>
+        <div class="cs-cell">
+          <ul class="cs-cell__inner">
+            <li><img src="open-everydai-r/award-lpi.webp" width="80" height="80" alt="" loading="lazy" style="width: 80px" /><p><strong>LPI Gold Award | 2026</strong>Innovation in Learning</p></li>
+            <li><img src="open-everydai-r/award-docebo.webp" width="86" height="114" alt="" loading="lazy" style="width: 56px; margin: 0 15px" /><p><strong>Docebo Inspire Award | 2026</strong>Best Employee Development Program</p></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="cs-row cs-closing" aria-labelledby="cs-practice">
+      <div class="cs-cell cs-yellow">
+        <h2 class="cs-h2" id="cs-practice" style="max-width: 284px">Practice Before Pressure</h2>
+      </div>
+      <div class="cs-cell">
+        <div class="cs-cell__inner cs-text-block">
+          <p><strong>Why It Worked</strong>Every micromethod ended with a button into the live platform, and employees used it more than 7,000 times in the first 3 months.<br />The simulation let employees rehearse the platform before using it for real, and VML went on to lead every WPP agency in adoption.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="cs-row cs-closing cs-reflection" aria-labelledby="cs-reflection">
+      <div class="cs-cell">
+        <h2 class="cs-h2" id="cs-reflection" style="max-width: 423px">Design for the<br />Longest Language</h2>
+      </div>
+      <div class="cs-cell" style="border-left: 0">
+        <div class="cs-cell__inner cs-text-block">
+          <p><strong>If I Had a Second Chance</strong>I'd test a few slides in all 8 languages before building the full courses. Seeing which languages ran longest would have let me plan spacing for text expansion up front, instead of fixing layouts one by one after translation.</p>
+          <p>I’d also spend a lot more time with a deep dive into brand to see what other ways I can visually represent friendly tech over scary A.I.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="case-study.js"></script>
+</body>
+</html>

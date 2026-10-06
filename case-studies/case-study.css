@@ -1,0 +1,891 @@
+/* Responsive case study pages (Open Everydai, Learn.vml, Thrive), built from
+   the Figma frames. Desktop matches the 1440px frames with text held inside
+   160px margins; below 900px the two-column rows stack.
+
+   Each page sets its theme on .cs:
+     --cs-accent       accent cells and bands (Open Everydai yellow, Learn green)
+     --cs-accent-ink   text on the accent
+     --cs-dark-bg      dark bands (header, results), colour + texture
+     --cs-stat-bg      the stat number column */
+.cs {
+  --cs-line: #777;
+  --cs-accent: #f0c531;
+  --cs-accent-ink: var(--color-text);
+  --cs-dark-bg: #2b2d2e;
+  --cs-stat-bg: #393939;
+  --cs-ink: var(--color-text);
+  --cs-muted: var(--color-text-secondary);
+  --cs-dark: #1d1f20;
+  /* Text column: 160px side margins at 1440, never wider than 1120px
+     (wider screens get bigger margins), scaling down to phones */
+  --cs-gutter: max(clamp(20px, 11.1vw, 160px), calc((100vw - 1120px) / 2));
+  /* Padding beside a column divider */
+  --cs-pad: clamp(24px, 3.3vw, 48px);
+  --cs-h2: clamp(28px, 2.7vw, 38px);
+  --cs-body: 16px;
+  overflow: hidden;
+  background: url("dot-grid.png") 0 0 / 20px 20px, var(--color-bg-paper);
+  color: var(--cs-ink);
+  font-size: var(--cs-body);
+  line-height: 1.5;
+}
+
+.cs p,
+.cs h1,
+.cs h2,
+.cs h3,
+.cs ul {
+  margin: 0;
+}
+
+.cs ul {
+  padding-left: 1.5em;
+}
+
+.cs img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.cs-h2 {
+  font-size: var(--cs-h2);
+  font-weight: var(--weight-bold);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.cs-eyebrow {
+  font-weight: var(--weight-bold);
+}
+
+.cs-dots {
+  background: url("dot-grid.png") 0 0 / 20px 20px, var(--color-bg-paper);
+}
+
+.cs-dark {
+  background: var(--cs-dark-bg);
+  color: var(--color-text-inverse);
+}
+
+.cs-accent {
+  background: var(--cs-accent);
+  color: var(--cs-accent-ink);
+}
+
+/* Two-column row used by most sections; stacks on small screens */
+.cs-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-bottom: 1px solid var(--cs-line);
+}
+
+.cs-row > :last-child {
+  border-left: 1px solid var(--cs-line);
+}
+
+/* Outer edges get the page margin, inner edges the divider padding.
+   (nth-last-child skips the absolutely positioned glow in some rows.) */
+.cs-row > :nth-last-child(2) {
+  padding-left: var(--cs-gutter);
+  padding-right: var(--cs-pad);
+}
+
+.cs-row > :last-child {
+  padding-left: var(--cs-pad);
+  padding-right: var(--cs-gutter);
+}
+
+.cs-cell {
+  display: flex;
+  align-items: center;
+  padding-top: clamp(48px, 5.6vw, 80px);
+  padding-bottom: clamp(48px, 5.6vw, 80px);
+}
+
+.cs-cell__inner {
+  width: 100%;
+  max-width: 574px;
+}
+
+.cs-text-block p + p {
+  margin-top: 1.5em;
+}
+
+.cs-text-block strong {
+  display: block;
+}
+
+/* Soft blue light spots from the design (blurred circles, plus-lighter) */
+.cs-glow {
+  position: absolute;
+  width: 1000px;
+  height: 1000px;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(2, 178, 255, 0.32), rgba(2, 178, 255, 0.12) 45%, transparent);
+  mix-blend-mode: plus-lighter;
+  pointer-events: none;
+}
+
+/* Tab-style section labels ("Design Decisions", "Results") */
+.cs-tabbar {
+  display: flex;
+  justify-content: center;
+}
+
+.cs-tab {
+  padding: 20px 40px;
+  background: var(--cs-dark);
+  color: var(--color-text-inverse);
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* Header */
+.cs-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: clamp(120px, 15.4vw, 222px);
+  padding: 10px var(--cs-gutter);
+}
+
+.cs-header__name {
+  font-size: clamp(18px, 1.6vw, 23px);
+  font-weight: var(--weight-semibold);
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+}
+
+.cs-header__name span {
+  display: block;
+  font-size: var(--cs-body);
+  font-weight: var(--weight-regular);
+  letter-spacing: 0;
+}
+
+.cs-header__logo {
+  width: clamp(60px, 5.4vw, 78px);
+}
+
+/* Hero */
+.cs-hero {
+  position: relative;
+  overflow: hidden;
+  /* Own copy of the page background: the reveal animation makes each
+     section its own layer, and the glow's plus-lighter blend needs
+     something inside that layer to lighten */
+  background: url("dot-grid.png") 0 0 / 20px 20px, var(--color-bg-paper);
+  display: grid;
+  grid-template-columns: calc(var(--cs-gutter) + 400px) minmax(0, 1fr);
+  border-bottom: 1px solid var(--cs-line);
+}
+
+.cs-hero__text {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 80px var(--cs-pad) 80px var(--cs-gutter);
+  border-right: 1px solid var(--cs-line);
+  background: var(--color-bg-paper);
+}
+
+.cs-hero__text-inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 41px;
+  max-width: 352px;
+}
+
+.cs-hero h1 {
+  font-size: var(--cs-h2);
+  font-weight: var(--weight-bold);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.cs-h3 {
+  margin-bottom: 4px;
+  font-size: clamp(20px, 1.6vw, 23px);
+  font-weight: var(--weight-semibold);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.cs-hero__awards {
+  margin-top: 1.5em !important;
+  font-weight: var(--weight-bold);
+}
+
+.cs-hero__note {
+  color: #5e889c;
+}
+
+.cs-hero__media {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  padding: 40px var(--cs-gutter) 40px var(--cs-pad);
+}
+
+.cs-hero__media .cs-glow {
+  top: -354px;
+  left: -337px;
+}
+
+/* Box hugs the text and sits centered; the text itself is left-aligned,
+   so it reads left-aligned once it wraps on small screens */
+.cs-hero__caption {
+  position: relative;
+  width: fit-content;
+  max-width: 100%;
+  font-size: clamp(16px, 1.4vw, 20px);
+  text-align: left;
+}
+
+/* Video framed like the Figma hero, tap for sound then pause / play */
+.cs-video {
+  position: relative;
+  width: 100%;
+  max-width: 818px;
+  box-shadow: 0 100px 100px rgba(0, 0, 0, 0.15);
+}
+
+.cs-video__btn {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.cs-video__btn video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cs-video__btn:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+.cs-video__badge {
+  position: absolute;
+  right: var(--space-3);
+  bottom: var(--space-3);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 6px var(--space-3);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.65);
+  color: var(--color-text-inverse);
+  font: var(--weight-medium) var(--text-2xs) / 1 var(--font-sans);
+  pointer-events: none;
+}
+
+.cs-video__badge svg {
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
+}
+
+/* Problem */
+.cs-problem {
+  grid-template-columns: calc(var(--cs-gutter) + 400px) minmax(0, 1fr);
+  min-height: 473px;
+  background: var(--color-bg-paper);
+}
+
+.cs-problem__title {
+  background: var(--cs-accent);
+  color: var(--cs-accent-ink);
+}
+
+.cs-problem__title .cs-cell__inner {
+  max-width: 292px;
+}
+
+.cs-problem .cs-cell__inner {
+  max-width: 631px;
+}
+
+/* Design decisions */
+.cs-decisions .cs-tabbar {
+  height: 83px;
+  background: var(--color-bg-paper);
+}
+
+/* Two image rows in one section read as one block: no line between them */
+.cs-decisions .cs-tabbar + .cs-row:not(:last-child) {
+  border-bottom: 0;
+}
+
+.cs-tab--card {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--cs-line);
+  border-top: 0;
+  background: rgba(31, 34, 36, 0.92);
+}
+
+.cs-shot {
+  display: flex;
+  padding-top: 80px;
+  padding-bottom: 120px;
+}
+
+.cs-shot figure {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  max-width: 500px;
+  margin: 0;
+}
+
+.cs-shot__title {
+  font-size: clamp(24px, 2.1vw, 30px);
+  font-weight: var(--weight-semibold);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.cs-shot__subtitle {
+  margin-top: 8px;
+  color: var(--cs-muted);
+  font-size: clamp(16px, 1.4vw, 20px);
+}
+
+.cs-shot img {
+  width: 100%;
+}
+
+.cs-shot figcaption {
+  color: var(--cs-muted);
+  font-size: 14px;
+}
+
+.cs-shot figcaption strong {
+  display: block;
+}
+
+/* Scaling */
+.cs-scaling {
+  position: relative;
+  /* Keep the glow inside: the reveal animation puts each section on its
+     own layer, where glow spilling past the edge loses its plus-lighter blend */
+  overflow: hidden;
+  background: var(--cs-accent);
+}
+
+.cs-scaling .cs-glow {
+  top: -420px;
+  left: -380px;
+}
+
+.cs-scaling .cs-cell__inner {
+  position: relative;
+  max-width: 422px;
+}
+
+.cs-scaling__board img {
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 100px 100px rgba(0, 0, 0, 0.15);
+}
+
+.cs-scaling .cs-h2 {
+  margin: 8px 0;
+}
+
+/* Brand */
+.cs-brand__caption {
+  position: relative;
+  z-index: 1;
+  padding: 40px var(--cs-gutter);
+  box-shadow: 0 100px 100px rgba(0, 0, 0, 0.5);
+}
+
+.cs-brand__caption p {
+  max-width: 1134px;
+}
+
+.cs-brand img {
+  width: 100%;
+}
+
+/* Results */
+.cs-results .cs-tabbar {
+  height: 82px;
+}
+
+.cs-results__tab {
+  display: flex;
+  align-items: center;
+}
+
+.cs-results__intro {
+  padding: 64px var(--cs-gutter);
+  border-bottom: 1px solid var(--cs-line);
+}
+
+.cs-results__intro h2 {
+  font-size: clamp(36px, 4.45vw, 64px);
+  font-weight: var(--weight-bold);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.cs-results__intro p {
+  margin-top: 8px;
+  font-size: clamp(16px, 1.4vw, 20px);
+}
+
+.cs-stat {
+  display: grid;
+  grid-template-columns: calc(var(--cs-gutter) + 219px) minmax(0, 1fr);
+  min-height: clamp(120px, 13.3vw, 192px);
+  border-bottom: 1px solid var(--cs-line);
+  background: var(--color-bg-paper);
+}
+
+.cs-stat__value {
+  display: flex;
+  align-items: center;
+  padding: 0 40px 0 var(--cs-gutter);
+  background: var(--cs-stat-bg);
+  color: var(--color-text-inverse);
+  font-size: clamp(40px, 4.45vw, 64px);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.cs-stat__label {
+  display: flex;
+  align-items: center;
+  padding: 0 var(--cs-gutter) 0 40px;
+  border-left: 1px solid var(--cs-line);
+  font-size: clamp(16px, 1.4vw, 20px);
+}
+
+.cs-awards ul {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  padding: 0;
+  list-style: none;
+}
+
+.cs-awards li {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.cs-awards img {
+  flex: none;
+  width: 86px;
+  filter: drop-shadow(0 20px 20px rgba(0, 0, 0, 0.25));
+}
+
+.cs-awards strong {
+  display: block;
+}
+
+/* Closing rows */
+.cs-yellow {
+  background: var(--cs-accent);
+}
+
+.cs-closing .cs-cell__inner {
+  max-width: 459px;
+}
+
+.cs-reflection {
+  padding: 40px 0;
+  background: var(--color-bg-paper);
+}
+
+/* ---- Shared pieces used by Learn.vml and Thrive ---- */
+
+/* Rows with a narrow text column and a wide media column, like the hero */
+.cs-row--narrow {
+  grid-template-columns: calc(var(--cs-gutter) + 400px) minmax(0, 1fr);
+}
+
+/* Rows without a divider line */
+.cs-row--open > :last-child {
+  border-left: 0;
+}
+
+/* Cell holding an image: centred in its column */
+.cs-media {
+  justify-content: center;
+}
+
+.cs-media img {
+  width: 100%;
+}
+
+/* Figma "Usual Shadows/100px Drop". A filter (not box-shadow) so it
+   follows the artwork's shape on cut-out PNGs. */
+.cs-shadow,
+.cs-shot img {
+  filter: drop-shadow(0 100px 100px rgba(0, 0, 0, 0.15));
+}
+
+/* Images cut from a textured background: fade the edges into it */
+.cs-feather {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent),
+    linear-gradient(to bottom, transparent, #000 5%, #000 95%, transparent);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent),
+    linear-gradient(to bottom, transparent, #000 5%, #000 95%, transparent);
+  mask-composite: intersect;
+}
+
+/* Full-width image band */
+.cs-full {
+  display: block;
+  width: 100%;
+}
+
+/* Single-column section inside the page margins */
+.cs-section {
+  padding: clamp(48px, 5.6vw, 80px) var(--cs-gutter);
+  border-bottom: 1px solid var(--cs-line);
+}
+
+.cs-section > * + * {
+  margin-top: 24px;
+}
+
+.cs-section .cs-h2 {
+  margin-top: 4px;
+}
+
+/* Accent band with a tab label on top (e.g. "4 Step Fix") */
+.cs-band {
+  position: relative;
+  border-bottom: 1px solid var(--cs-line);
+}
+
+.cs-tab--accent {
+  display: flex;
+  align-items: center;
+  border: 1px solid #333;
+  border-top: 0;
+  background: var(--cs-accent);
+  color: var(--color-text-inverse);
+}
+
+.cs-tab--paper {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--cs-line);
+  border-top: 0;
+  background: var(--color-bg-paper);
+  color: var(--cs-ink);
+}
+
+.cs-tab svg {
+  width: 0.8em;
+  height: 0.8em;
+  margin-left: 12px;
+}
+
+/* Process timeline: dots and labels on a line */
+.cs-steps {
+  display: grid;
+  grid-template-columns: repeat(var(--cs-step-count, 4), 1fr);
+  margin: 0;
+  padding: 40px var(--cs-gutter) 56px;
+  list-style: none;
+  color: var(--color-text-inverse);
+  text-align: center;
+}
+
+.cs-steps li {
+  position: relative;
+  padding-top: 40px;
+}
+
+.cs-steps li::before {
+  content: "";
+  position: absolute;
+  top: 12px;
+  left: 0;
+  right: 0;
+  border-top: 2px solid #111;
+}
+
+.cs-steps li:first-child::before {
+  left: 50%;
+}
+
+.cs-steps li:last-child::before {
+  right: 50%;
+}
+
+.cs-steps li::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 22px;
+  height: 22px;
+  margin-left: -11px;
+  border: 6px solid rgba(255, 255, 255, 0.5);
+  background: #fff;
+  background-clip: padding-box;
+}
+
+/* Bordered findings grid (audit) */
+.cs-boxes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-bottom: 1px solid var(--cs-line);
+}
+
+.cs-boxes > * {
+  padding: 20px 20px 20px 0;
+}
+
+.cs-boxes > :nth-child(2) {
+  padding-left: 40px;
+  border-left: 1px solid var(--cs-line);
+}
+
+.cs-boxes > :nth-child(n + 3) {
+  grid-column: 1 / -1;
+  border-top: 1px solid var(--cs-line);
+}
+
+.cs-boxes strong {
+  display: block;
+}
+
+/* Two images side by side inside the margins */
+/* Pages set --cols to each image's aspect ratio in fr
+   ("minmax(0, 0.99fr) minmax(0, 0.96fr)") so both come out the same height */
+.cs-pair {
+  display: grid;
+  grid-template-columns: var(--cols, 1fr 1fr);
+  gap: clamp(24px, 3.3vw, 48px);
+  align-items: start;
+}
+
+.cs-pair img {
+  width: 100%;
+}
+
+/* Code sample on a dark band */
+.cs-code {
+  margin: 0;
+  overflow-x: auto;
+  color: #9ba3a8;
+  font: 13px / 1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.cs-code .t { color: #7fb7d8; }
+.cs-code .a { color: #9cdcfe; }
+.cs-code .v { color: #ce9178; }
+.cs-code .u { color: #9cdcfe; text-decoration: underline; }
+.cs-code .x { color: #e6e6e6; }
+
+/* Closing row: title plus two text columns */
+.cs-cols3 {
+  display: grid;
+  grid-template-columns: minmax(0, 0.7fr) minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(24px, 3.3vw, 48px);
+  align-items: center;
+  padding: clamp(48px, 5.6vw, 80px) var(--cs-gutter);
+  border-bottom: 1px solid var(--cs-line);
+}
+
+.cs-cols3 strong {
+  display: block;
+}
+
+/* Hero accents */
+.cs-hero h1 .cs-accent-text,
+.cs-accent-text {
+  color: var(--cs-accent-text, var(--cs-accent));
+}
+
+.cs-hero__highlights {
+  margin-top: 1em !important;
+  color: var(--cs-accent-text, var(--cs-accent));
+  font-size: 14px;
+  font-weight: var(--weight-bold);
+}
+
+/* Scroll reveal: .cs-js is set in <head>, .is-visible by case-study.js.
+   The end state keeps a transform so each section stays its own stacking
+   context the whole time (the hero's plus-lighter glow doesn't shift when
+   the animation finishes). */
+@media (prefers-reduced-motion: no-preference) {
+  .cs-js main.cs > * {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  .cs-js main.cs > .is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .cs-js main.cs > .is-instant {
+    transition: none;
+  }
+}
+
+/* Phones and small tablets: stack the columns */
+@media (max-width: 900px) {
+  .cs {
+    --cs-gutter: clamp(20px, 6vw, 40px);
+  }
+
+  .cs-row,
+  .cs-hero,
+  .cs-problem {
+    grid-template-columns: 1fr;
+  }
+
+  .cs-row > :last-child {
+    border-left: 0;
+    border-top: 1px solid var(--cs-line);
+  }
+
+  .cs-row > :nth-last-child(2),
+  .cs-row > :last-child {
+    padding-left: var(--cs-gutter);
+    padding-right: var(--cs-gutter);
+  }
+
+  .cs-hero__text {
+    padding: 56px var(--cs-gutter);
+    border-right: 0;
+    border-bottom: 1px solid var(--cs-line);
+  }
+
+  .cs-hero__text-inner {
+    gap: 32px;
+    max-width: 560px;
+  }
+
+  .cs-hero__media {
+    padding: 56px var(--cs-gutter) 64px;
+    gap: 24px;
+  }
+
+  .cs-problem {
+    min-height: 0;
+  }
+
+  .cs-cell {
+    justify-content: flex-start;
+    padding-top: 48px;
+    padding-bottom: 48px;
+  }
+
+  .cs-problem__title .cs-cell__inner,
+  .cs-scaling .cs-cell__inner,
+  .cs-closing .cs-cell__inner {
+    max-width: none;
+  }
+
+  .cs-shot {
+    padding-top: 48px;
+    padding-bottom: 72px;
+  }
+
+  .cs-shot figure {
+    max-width: 560px;
+  }
+
+  .cs-scaling__board {
+    justify-content: center !important;
+    padding-top: 0 !important;
+  }
+
+  .cs-reflection {
+    padding: 0;
+  }
+
+  .cs-row--narrow {
+    grid-template-columns: 1fr;
+  }
+
+  .cs-row--open > :last-child {
+    border-top: 0;
+  }
+
+  .cs-boxes,
+  .cs-pair,
+  .cs-cols3 {
+    grid-template-columns: 1fr;
+  }
+
+  .cs-boxes > :nth-child(2) {
+    padding-left: 0;
+    border-left: 0;
+    border-top: 1px solid var(--cs-line);
+  }
+
+  .cs-steps {
+    padding: 32px var(--cs-gutter) 40px;
+    font-size: 14px;
+  }
+
+  .cs-stat {
+    grid-template-columns: minmax(0, 132px) minmax(0, 1fr);
+  }
+
+  .cs-stat__value {
+    padding: 0 20px;
+    font-size: 34px;
+  }
+
+  .cs-stat__label {
+    padding: 20px;
+  }
+}
+
+/* Loading wheel, same as the other case study pages */
+.viewer-bar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-bg-dark);
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-inverse);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+}
+
+.viewer-bar a {
+  text-decoration: none;
+}
+
+.viewer-bar a:hover {
+  text-decoration: underline;
+}
