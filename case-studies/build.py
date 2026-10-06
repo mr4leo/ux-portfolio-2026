@@ -21,10 +21,10 @@ DOCS = {
     "open-everydai": "Open Everydai",
     "thrive": "Thrive",
 }
-# Silent looping videos laid over a spot in the PDF: (file, x, y, width, height)
+# Looping videos (silent until tapped) laid over a spot in the PDF: (file, x, y, width, height)
 # in PDF points (the 1440pt-wide Figma frame). Re-measure if the layout moves.
 VIDEOS = {
-    "open-everydai": ("open-everydai-sizzle.mp4", 574, 429, 812, 454),
+    "open-everydai": ("open-everydai-sizzle.mp4", 574, 454.5, 812, 454),
 }
 WIDTH = 2880  # 2x the 1440px Figma frame; phones get the 1440px copies
 SLICE = 2400  # px per slice at 2x, so lower slices can load lazily
@@ -67,9 +67,10 @@ def build(slug, name):
         file, x, y, w, h = VIDEOS[slug]
         pct = lambda v, total: f"{v / total * 100:.4f}%"
         video = (
-            f'<video class="viewer-video" src="{file}" autoplay muted loop playsinline '
-            f'preload="auto" style="left: {pct(x, 1440)}; top: {pct(y, page_height)}; '
-            f'width: {pct(w, 1440)}; height: {pct(h, page_height)};"></video>'
+            f'<button type="button" class="viewer-video" style="left: {pct(x, 1440)}; '
+            f'top: {pct(y, page_height)}; width: {pct(w, 1440)}; height: {pct(h, page_height)};">'
+            f'<video src="{file}" autoplay muted loop playsinline preload="auto"></video>'
+            f'<span class="viewer-video__badge" aria-hidden="true"></span></button>'
         )
 
     paragraphs = "\n".join(

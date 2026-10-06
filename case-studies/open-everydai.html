@@ -49,10 +49,47 @@
       height: auto;
     }
 
-    /* Video playing over its frame in the design (position set by build.py) */
+    /* Video playing over its frame in the design (position set by build.py).
+       The whole frame is a button: tap for sound, then pause / play. */
     .viewer-video {
       position: absolute;
+      padding: 0;
+      border: 0;
+      background: none;
+      cursor: pointer;
+    }
+
+    .viewer-video video {
+      display: block;
+      width: 100%;
+      height: 100%;
       object-fit: cover;
+    }
+
+    .viewer-video:focus-visible {
+      outline: 3px solid var(--color-accent);
+      outline-offset: 3px;
+    }
+
+    .viewer-video__badge {
+      position: absolute;
+      right: var(--space-3);
+      bottom: var(--space-3);
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: 6px var(--space-3);
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.65);
+      color: var(--color-text-inverse);
+      font: var(--weight-medium) var(--text-2xs) / 1 var(--font-sans);
+      pointer-events: none;
+    }
+
+    .viewer-video__badge svg {
+      width: 14px;
+      height: 14px;
+      fill: currentColor;
     }
 
     /* Loading wheel: covers the page until the first slice has loaded */
@@ -104,158 +141,302 @@
 
   <main>
     <h1 class="sr-only">Open Everydai case study</h1>
-    <div class="viewer-pages" aria-hidden="true">
+    <div class="viewer-pages">
       <img src="open-everydai/01-1440.webp" srcset="open-everydai/01-1440.webp 1440w, open-everydai/01-2880.webp 2880w" sizes="(min-width: 1440px) 1440px, 100vw" width="1440" height="1200" alt="" fetchpriority="high" />
       <img src="open-everydai/02-1440.webp" srcset="open-everydai/02-1440.webp 1440w, open-everydai/02-2880.webp 2880w" sizes="(min-width: 1440px) 1440px, 100vw" width="1440" height="1200" alt="" />
       <img src="open-everydai/03-1440.webp" srcset="open-everydai/03-1440.webp 1440w, open-everydai/03-2880.webp 2880w" sizes="(min-width: 1440px) 1440px, 100vw" width="1440" height="1200" alt="" />
-      <img src="open-everydai/04-1440.webp" srcset="open-everydai/04-1440.webp 1440w, open-everydai/04-2880.webp 2880w" sizes="(min-width: 1440px) 1440px, 100vw" width="1440" height="905" alt="" loading="lazy" decoding="async" />
-      <video class="viewer-video" src="open-everydai-sizzle.mp4" autoplay muted loop playsinline preload="auto" style="left: 39.8611%; top: 9.5228%; width: 56.3889%; height: 10.0777%;"></video>
+      <img src="open-everydai/04-1440.webp" srcset="open-everydai/04-1440.webp 1440w, open-everydai/04-2880.webp 2880w" sizes="(min-width: 1440px) 1440px, 100vw" width="1440" height="1200" alt="" loading="lazy" decoding="async" />
+      <img src="open-everydai/05-1440.webp" srcset="open-everydai/05-1440.webp 1440w, open-everydai/05-2880.webp 2880w" sizes="(min-width: 1440px) 1440px, 100vw" width="1440" height="1200" alt="" loading="lazy" decoding="async" />
+      <img src="open-everydai/06-1440.webp" srcset="open-everydai/06-1440.webp 1440w, open-everydai/06-2880.webp 2880w" sizes="(min-width: 1440px) 1440px, 100vw" width="1440" height="1200" alt="" loading="lazy" decoding="async" />
+      <img src="open-everydai/07-1440.webp" srcset="open-everydai/07-1440.webp 1440w, open-everydai/07-2880.webp 2880w" sizes="(min-width: 1440px) 1440px, 100vw" width="1440" height="699" alt="" loading="lazy" decoding="async" />
+      <button type="button" class="viewer-video" style="left: 39.8611%; top: 5.7539%; width: 56.3889%; height: 5.7476%;"><video src="open-everydai-sizzle.mp4" autoplay muted loop playsinline preload="auto"></video><span class="viewer-video__badge" aria-hidden="true"></span></button>
     </div>
     <!-- The case study's text, for screen readers and search engines -->
     <div class="sr-only">
       <p>Marve Afo</p>
       <p>Product designer</p>
-      <p>How a $3,000</p>
-      <p>Idea Beat a $300</p>
-      <p>Million Problem</p>
+      <p>How a $3,000 Idea</p>
+      <p>Beat a $300 Million</p>
+      <p>Problem</p>
       <p>T.L.D.R.</p>
-      <p>I designed the simulation, brand and</p>
-      <p>launch campaign for a training program</p>
-      <p>that turned a feared AI platform into an</p>
-      <p>everyday habit. It was built in 7 weeks for</p>
-      <p>$3,000.</p>
+      <p>I redesigned the simulation, brand, and</p>
+      <p>launch campaign for Open Everydai, a</p>
+      <p>training program that helped VML</p>
+      <p>employees practice WPP&#x27;s AI platform</p>
+      <p>without fear. Built in 7 weeks for $3,000.</p>
       <p>Won Several Awards</p>
-      <p>3 Brandon Hall in 2025</p>
-      <p>Plus 1 Brandon Hall Silver in 2026</p>
-      <p>Docebo&#x27;s Best Employee Development</p>
+      <p>2 Brandon Hall Group Gold Awards</p>
+      <p>Brandon Hall Group Silver Award</p>
+      <p>LPI Gold for Innovation in Learning</p>
+      <p>Docebo Inspire Award</p>
+      <p>Best Employee Development Program</p>
+      <p>I created the award submission sizzle</p>
+      <p>reel in Adobe After Effects.</p>
       <p>Role</p>
       <p>Sole product and visual designer</p>
       <p>on a six-person learning team,</p>
-      <p>reporting to the Global VP of Learning.</p>
+      <p>reporting to the VP, Global Head of</p>
+      <p>Learning.</p>
       <p>Key Stakeholders</p>
       <p>VP, Global Head of Learning</p>
       <p>Global Manager of Learning</p>
       <p>&amp; Development at VML</p>
+      <p>Figures in video are from the first 3</p>
+      <p>mon ths after launch</p>
       <p>The Problem</p>
-      <p>A Fear of</p>
-      <p>Being Replaced</p>
+      <p>Th e F ear o f</p>
+      <p>Bein g R e p la c ed</p>
       <p>A Behavior Problem, Not a Features Problem</p>
-      <p>Employees didn&#x27;t fear the tool. They feared what it meant for their jobs. Slide</p>
-      <p>decks and screen recordings couldn&#x27;t fix that. People had to use the platform</p>
-      <p>themselves, enough times that it stopped feeling foreign.</p>
+      <p>WPP invested $300M in WPP Open, its AI platform, and 40 clients worth $895M</p>
+      <p>in annual revenue were already using it. Yet, only 6,056 of 30,000 VML</p>
+      <p>employees were active users at launch (Jan 2025). Employees didn&#x27;t fear the</p>
+      <p>tool. They feared what it meant for their jobs. Slide decks and screen</p>
+      <p>recordings couldn&#x27;t fix that. People had to use the platform themselves,</p>
+      <p>enough times that it stopped feeling foreign.</p>
       <p>The Twist</p>
-      <p>Security rules blocked practice inside the real platform. So we built a</p>
-      <p>simulation so accurate that users couldn&#x27;t tell it apart from the real thing.</p>
-      <p>D e s ign D eci s ion s</p>
+      <p>Security rules blocked practice inside the real platform.</p>
+      <p>So we built a simulation that ran users through the simple everyday tasks</p>
+      <p>that AI could help them with in WPP Open such as image xgeneration,</p>
+      <p>conversational coaching, drafting emails, or analyzing documents.</p>
+      <p>D e s i g n D e c i s ion s</p>
       <p>Before</p>
-      <p>Original Simulation Theme</p>
+      <p>Original Simulation Concept</p>
       <p>After</p>
-      <p>Redesigned Simulation Theme</p>
-      <p>Widescreen</p>
-      <p>Widescreen, Guided and Modern</p>
-      <p>Matched screenshot by screenshot to the real platform.</p>
-      <p>Square Screens</p>
-      <p>The original draft seemed more like something made for old</p>
-      <p>school CRT monitors.</p>
-      <p>everyda</p>
-      <p>a g e n t s</p>
-      <p>Directing User to Action</p>
-      <p>Explaining User Error</p>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud</p>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud</p>
+      <p>Redesigned Simulation The</p>
+      <p>e</p>
+      <p>m</p>
+      <p>A Clear Starting Point</p>
+      <p>The Global Manager of Learning conceptualized the WPP Open</p>
+      <p>simulation a s a series of sc reenshots in a g uided user flow. Its square</p>
+      <p>format and generi c laptop didn &#x27;t yet reflect the widescreen platform</p>
+      <p>learners wo</p>
+      <p>uld a ctually use.</p>
+      <p>k</p>
+      <p>Widescreen, Guided, and Modern</p>
+      <p>I matched it screen b y sc reen to the real WPP Open platform while</p>
+      <p>eeping the original flo w.</p>
+      <p>Unclear Iconography</p>
+      <p>The original i cons were ambigu</p>
+      <p>wordier than needed.</p>
+      <p>ous and certain interact ion s were</p>
+      <p>Clearer Icons and CTAs</p>
+      <p>The redesign fea tured information (i) icons that were later changed</p>
+      <p>to a st erisks which may be more globall y recognizable a s</p>
+      <p>a flag for importan t info.</p>
+      <p>A pu lsing animation shows users where to click next.</p>
+      <p>The ba ck b utton moved left, where users ex pect it.</p>
+      <p>The sk</p>
+      <p>ip b utton was cut down to the ess entials word “sk</p>
+      <p>ip.”</p>
+      <p>Modals were redesigned with rounded re ct angle s to match WPP</p>
+      <p>Open, with a dark o verlay to fo cus attention.</p>
       <p>Scaling</p>
-      <p>scing elit, sed do re magna aliqua. Ut tion ullamco laboris</p>
-      <p>L orem i</p>
-      <p>sum</p>
-      <p>1 C o u re s Became 5</p>
-      <p>Duis aute irure dolor in dolore eu f ugiat nulla tat non proident, sunt in est laborum.</p>
-      <p>Five courses needed the same polished interactions. My insticint was</p>
-      <p>to build out a prototype in FIgma but teamwork makes the dream</p>
-      <p>work. I packaged the dialogue boxes, triggers and navigation into</p>
-      <p>software the team could also use. I made a reusable Storyline</p>
-      <p>component library, plus a finished reference course. The Global</p>
-      <p>Manager of L&amp;D used it to build the other four.</p>
-      <p>a i a s</p>
-      <p>creative co-conspirator</p>
-      <p>The Brand Had to Disarm the Fear</p>
-      <p>everyda</p>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud ex ercitation ullamco laboris</p>
-      <p>Off ering Inf o to User</p>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud</p>
-      <p>L orem i</p>
-      <p>sum</p>
-      <p>L orem i</p>
+      <p>1 C o u r s e Be c ame 5</p>
+      <p>F</p>
+      <p>ive co</p>
+      <p>urses needed the same polished in teract ion s.</p>
+      <p>Instead of a Figma prototype, I b uilt the dialog ue</p>
+      <p>bo xes, triggers, and na vigation dire ct ly in Storyline</p>
+      <p>as a re usable componen t library, plus a fini shed</p>
+      <p>reference co</p>
+      <p>urse. The Global Manager of L &amp;D used it</p>
+      <p>to b uild the o ther fo ur, and the L &amp;D team helped</p>
+      <p>translate all five in to 8 lang uages.</p>
       <p>Directing User to Action</p>
-      <p>nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in</p>
-      <p>Explaining User Error reprehenderit in voluptate velit esse cillum dolore eu f ugiat nulla</p>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud</p>
+      <p>Lorem ipsum dolor sit amet,</p>
+      <p>consectetur adipiscing elit, sed do</p>
+      <p>eiusmod tempor incididunt ut labore</p>
+      <p>et dolore magna aliqua. Ut enim ad</p>
+      <p>minim veniam, quis nostrud</p>
+      <p>Lorem ipsum</p>
+      <p>Directing User to Action</p>
+      <p>Lorem ipsum dolor sit amet,</p>
+      <p>consectetur adipiscing elit, sed do</p>
+      <p>eiusmod tempor incididunt ut labore</p>
+      <p>et dolore magna aliqua. Ut enim ad</p>
+      <p>minim veniam, quis nostrud</p>
       <p>Primary Choice</p>
-      <p>Alternative Choice</p>
-      <p>agents</p>
-      <p>pariatur. Ex cepteur sint occaecat cupidatat non proident, sunt in culpa qui off icia deserunt mollit anim id est laborum.</p>
-      <p>p</p>
-      <p>p</p>
-      <p>p</p>
-      <p>sum</p>
-      <p>Off ering Inf o to User</p>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud</p>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud</p>
-      <p>Primary Choice</p>
-      <p>Primary Choice</p>
-      <p>Alternative Choice</p>
-      <p>Alternative Choice</p>
+      <p>Alternativ e Choice</p>
       <p>Go Back</p>
-      <p>Generic AI imagery looks like the threat people were worried about. I built a friendly icon system and carried it through every touchpoint.</p>
-      <p>The palette (A cool, electric blue and yellow on dark backdrops) made the platform feel approachable, not corporate or threatening.</p>
-      <p>at VML</p>
-      <p>The laungh o f Brand Design LEARN MORE</p>
-      <p>pen everyda</p>
+      <p>Explaining User Error</p>
+      <p>Lorem ipsum dolor sit amet,</p>
+      <p>consectetur adipiscing elit, sed do</p>
+      <p>eiusmod tempor incididunt ut labore</p>
+      <p>et dolore magna aliqua. Ut enim ad</p>
+      <p>minim veniam, quis nostrud</p>
+      <p>Lorem ipsum</p>
+      <p>Explaining User Error</p>
+      <p>Lorem ipsum dolor sit amet,</p>
+      <p>consectetur adipiscing elit, sed do</p>
+      <p>eiusmod tempor incididunt ut labore</p>
+      <p>et dolore magna aliqua. Ut enim ad</p>
+      <p>minim veniam, quis nostrud</p>
+      <p>Primary Choice</p>
+      <p>Alternativ e Choice</p>
+      <p>Off ering Inf o to User</p>
+      <p>Lorem ipsum dolor sit amet,</p>
+      <p>consectetur adipiscing elit, sed do</p>
+      <p>eiusmod tempor incididunt ut labore</p>
+      <p>et dolore magna aliqua. Ut enim ad</p>
+      <p>minim veniam, quis nostrud</p>
+      <p>Lorem ipsum</p>
+      <p>Off ering Inf o to User</p>
+      <p>Lorem ipsum dolor sit amet,</p>
+      <p>consectetur adipiscing elit, sed do</p>
+      <p>eiusmod tempor incididunt ut labore</p>
+      <p>et dolore magna aliqua. Ut enim ad</p>
+      <p>minim veniam, quis nostrud</p>
+      <p>Primary Choice</p>
+      <p>Alternativ e Choice</p>
+      <p>The Brand Had to Disarm the Fear</p>
+      <p>pen</p>
+      <p>i cing elit, sed do</p>
+      <p>magna aliqua. Ut</p>
+      <p>Generic AI imagery, with cybernetics and purple-blue crypto gradients, looked like the very threat people feared. We chose cool electric blue</p>
+      <p>and yellow on dark backdrops instead, so Open Everydai reads as modern tech but stays approachable, not threatening.</p>
+      <p>tion ullamco laboris</p>
+      <p>Duis aute irure dolor in</p>
+      <p>dolore eu f ugiat nulla</p>
+      <p>tat non proident, sunt in</p>
+      <p>d est laborum.</p>
+      <p>Open</p>
+      <p>o p e n</p>
+      <p>everyd ai everydai everydai</p>
+      <p>Everydai</p>
+      <p>everyda a g e n t s</p>
+      <p>Open</p>
+      <p>Open</p>
       <p>everyda</p>
-      <p>a g e n t s</p>
+      <p>Everydai</p>
+      <p>a i a s</p>
+      <p>Everydai daily</p>
+      <p>creative co-conspirator</p>
+      <p>Everydai</p>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do</p>
+      <p>eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut</p>
+      <p>enim ad minim veniam, quis nostrud e x ercitation ullamco laboris</p>
+      <p>agents</p>
+      <p>nisi ut aliquip e x ea commodo consequat. Duis aute irure dolor in</p>
+      <p>reprehenderit in voluptate velit esse cillum dolore eu f ugiat nulla</p>
+      <p>pen</p>
+      <p>culpa qui o ff icia deserunt mollit anim id est laborum.</p>
+      <p>EVERY</p>
+      <p>everyd ai</p>
+      <p>pariatur. Ex cepteur sint occaecat cupidatat non proident, sunt in</p>
+      <p>Everydai</p>
+      <p>DAI</p>
+      <p>pen</p>
+      <p>pen</p>
+      <p>everyda</p>
+      <p>pen</p>
+      <p>everyda</p>
+      <p>everyda</p>
+      <p>The love of Brand Design at VML</p>
+      <p>LEARN MORE</p>
+      <p>pen</p>
       <p>a i a s yo u r</p>
       <p>creative co-conspirator</p>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud ex ercitation ullamco laboris</p>
-      <p>nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in</p>
-      <p>reprehenderit in voluptate velit esse cillum dolore eu f ugiat nulla</p>
-      <p>pariatur. Ex cepteur sint occaecat cupidatat non proident, sunt in culpa qui off icia deserunt mollit anim id est laborum.</p>
-      <p>a i a s</p>
-      <p>creative co-conspirator</p>
-      <p>Re f lection s</p>
-      <p>Brandon Hall Award</p>
+      <p>pen</p>
       <p>everyda</p>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscin eiusmod tempor incididunt ut labore et dolore m enim ad minim veniam, quis nostrud ex ercitatio</p>
-      <p>nisi ut aliquip ex ea commodo consequat. Dui</p>
-      <p>Prestigious international honor that recognizes the best in</p>
-      <p>Human Capital Management.</p>
+      <p>everyda</p>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do</p>
+      <p>eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut</p>
+      <p>enim ad minim veniam, quis nostrud e x ercitation ullamco laboris</p>
+      <p>nisi ut aliquip e x ea commodo consequat. Duis aute irure dolor in</p>
+      <p>reprehenderit in voluptate velit esse cillum dolore eu f ugiat nulla</p>
+      <p>everyda a g e n t s</p>
+      <p>pariatur. Ex cepteur sint occaecat cupidatat non proident, sunt in</p>
+      <p>culpa qui o ff icia deserunt mollit anim id est laborum.</p>
+      <p>R e s u lt s</p>
+      <p>F rom F eared to Ev er y da y</p>
+      <p>Stats reflect the first 3</p>
+      <p>a i a s</p>
+      <p>33 5%</p>
+      <p>mon ths after launch</p>
+      <p>creative co-conspirator</p>
+      <p>everyda</p>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscin</p>
+      <p>eiusmod tempor incididunt ut labore et dolore m</p>
+      <p>enim ad minim veniam, quis nostrud e x ercitatio</p>
+      <p>83 0%gro wth in engaged sess ion s</p>
       <p>agents</p>
-      <p>reprehenderit in voluptate velit esse cillum do pariatur. Ex cepteur sint occaecat cupidatat culpa qui off icia deserunt mollit anim id es</p>
-      <p>Brandon Hall Award</p>
-      <p>Best Unique or Innovative L&amp;D Program</p>
-      <p>Brandon Hall Award</p>
-      <p>Best Competencies and Skill Development</p>
-      <p>Brandon Hall Award</p>
-      <p>Best Custom Content</p>
-      <p>The laungh o f Brand</p>
+      <p>gro wth in WPP Open users, to 26,902</p>
+      <p>nisi ut aliquip e x ea commodo consequat. Dui</p>
+      <p>reprehenderit in voluptate velit esse cillum do</p>
+      <p>pariatur. Ex cepteur sint occaecat cupidatat</p>
+      <p>culpa qui o ff icia deserunt mollit anim id es</p>
+      <p>pen</p>
+      <p>everyda</p>
+      <p>#1VML was the n umber 1 WPP Open user across the en tire WPP network</p>
+      <p>The laungh of Brand</p>
       <p>LEARN MORE</p>
-      <p>Thinking Back</p>
-      <p>C lo s ing Th o u g h t s</p>
+      <p>Brandon Hall Group Gold Award | 2025</p>
+      <p>Best Competencies and Skill Development Brandon Hall Group Gold Award | 2025</p>
+      <p>Best Custom Con tent</p>
+      <p>Brandon Hall Group Silver Award | 2026</p>
+      <p>Best Uniqu e or Inno vative L &amp;D Program</p>
+      <p>Pra c ti c e Be f ore</p>
+      <p>Pre ss u re</p>
+      <p>LPI Gold Award | 2026</p>
+      <p>Inno vation in Learning</p>
+      <p>Docebo Inspire Award | 2026</p>
+      <p>Best Employee Development Program</p>
+      <p>Why It Worked</p>
+      <p>Ev ery microm</p>
+      <p>ethod ended with a b utton in to</p>
+      <p>the live platform, and e mployees used it more</p>
+      <p>than 7,000 tim</p>
+      <p>es in the first 3</p>
+      <p>mon ths.</p>
+      <p>The simulation le t employees rehearse the</p>
+      <p>platform before using i t for real, and VML went</p>
+      <p>on to lead e very WPP agen cy in ado ption.</p>
+      <p>D e s i g n f or t h e</p>
+      <p>L on g e s t L an g u a g e</p>
       <p>If I Had a Second Chance</p>
-      <p>pen everyda</p>
-      <p>We we’re so crunched for time, I wish we got to get in real</p>
-      <p>user testing. But too be honest, we lucked out. Everything</p>
-      <p>still went smoothly. We pulled in help from the rest of the</p>
-      <p>learning team to help quadruple check everything was</p>
-      <p>working.</p>
+      <p>I&#x27;d test a few slides in all 8 languages before building the</p>
+      <p>full courses. Seeing which languages ran longest would</p>
+      <p>have let me plan spacing for text expansion up front,</p>
+      <p>instead of fixing layouts one by one after translation.</p>
+      <p>I’d also spend a lot more time with a deep dive into</p>
+      <p>brand to see what other ways I can visually represent</p>
+      <p>friendly tech over scary A.I.</p>
     </div>
   </main>
 
   <script>
-    // Respect reduced motion: no autoplay, offer controls instead.
-    const video = document.querySelector(".viewer-video");
-    if (video && matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      video.removeAttribute("autoplay");
-      video.pause();
-      video.controls = true;
+    // Video: plays silently on loop. First tap turns the sound on, then each
+    // tap pauses / plays. Reduced motion: starts paused, tap to play.
+    const player = document.querySelector(".viewer-video");
+    if (player) {
+      const video = player.querySelector("video");
+      const badge = player.querySelector(".viewer-video__badge");
+      const ICONS = {
+        sound: '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 8v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z"/>',
+        pause: '<path d="M6 5h4v14H6zm8 0h4v14h-4z"/>',
+        play: '<path d="M7 4v16l13-8z"/>',
+      };
+      const update = () => {
+        const [icon, label] =
+          video.paused ? ["play", "Play"] : video.muted ? ["sound", "Tap for sound"] : ["pause", "Pause"];
+        badge.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[icon]}</svg>${label}`;
+        player.setAttribute("aria-label", `${label}: case study video`);
+      };
+
+      if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        video.removeAttribute("autoplay");
+        video.pause();
+      }
+      player.addEventListener("click", () => {
+        if (video.paused || video.muted) {
+          video.muted = false;
+          video.play();
+        } else {
+          video.pause();
+        }
+      });
+      ["play", "pause", "volumechange"].forEach((e) => video.addEventListener(e, update));
+      update();
     }
 
     // Hide the loading wheel once the first slice is on screen (or fails).

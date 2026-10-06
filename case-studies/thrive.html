@@ -37,6 +37,7 @@
     }
 
     .viewer-pages {
+      position: relative;
       max-width: 1440px;
       margin: 0 auto;
       background: var(--color-bg-white);
@@ -46,6 +47,49 @@
       display: block;
       width: 100%;
       height: auto;
+    }
+
+    /* Video playing over its frame in the design (position set by build.py).
+       The whole frame is a button: tap for sound, then pause / play. */
+    .viewer-video {
+      position: absolute;
+      padding: 0;
+      border: 0;
+      background: none;
+      cursor: pointer;
+    }
+
+    .viewer-video video {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .viewer-video:focus-visible {
+      outline: 3px solid var(--color-accent);
+      outline-offset: 3px;
+    }
+
+    .viewer-video__badge {
+      position: absolute;
+      right: var(--space-3);
+      bottom: var(--space-3);
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: 6px var(--space-3);
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.65);
+      color: var(--color-text-inverse);
+      font: var(--weight-medium) var(--text-2xs) / 1 var(--font-sans);
+      pointer-events: none;
+    }
+
+    .viewer-video__badge svg {
+      width: 14px;
+      height: 14px;
+      fill: currentColor;
     }
 
     /* Loading wheel: covers the page until the first slice has loaded */
@@ -97,7 +141,7 @@
 
   <main>
     <h1 class="sr-only">Thrive case study</h1>
-    <div class="viewer-pages" aria-hidden="true">
+    <div class="viewer-pages">
       <img src="thrive/01-1440.webp" srcset="thrive/01-1440.webp 1440w, thrive/01-2880.webp 2880w" sizes="(min-width: 1440px) 1440px, 100vw" width="1440" height="1200" alt="" fetchpriority="high" />
       <img src="thrive/02-1440.webp" srcset="thrive/02-1440.webp 1440w, thrive/02-2880.webp 2880w" sizes="(min-width: 1440px) 1440px, 100vw" width="1440" height="1200" alt="" />
       <img src="thrive/03-1440.webp" srcset="thrive/03-1440.webp 1440w, thrive/03-2880.webp 2880w" sizes="(min-width: 1440px) 1440px, 100vw" width="1440" height="1200" alt="" />
@@ -107,6 +151,7 @@
       <img src="thrive/07-1440.webp" srcset="thrive/07-1440.webp 1440w, thrive/07-2880.webp 2880w" sizes="(min-width: 1440px) 1440px, 100vw" width="1440" height="1200" alt="" loading="lazy" decoding="async" />
       <img src="thrive/08-1440.webp" srcset="thrive/08-1440.webp 1440w, thrive/08-2880.webp 2880w" sizes="(min-width: 1440px) 1440px, 100vw" width="1440" height="1200" alt="" loading="lazy" decoding="async" />
       <img src="thrive/09-1440.webp" srcset="thrive/09-1440.webp 1440w, thrive/09-2880.webp 2880w" sizes="(min-width: 1440px) 1440px, 100vw" width="1440" height="447" alt="" loading="lazy" decoding="async" />
+      
     </div>
     <!-- The case study's text, for screen readers and search engines -->
     <div class="sr-only">
@@ -702,6 +747,40 @@
   </main>
 
   <script>
+    // Video: plays silently on loop. First tap turns the sound on, then each
+    // tap pauses / plays. Reduced motion: starts paused, tap to play.
+    const player = document.querySelector(".viewer-video");
+    if (player) {
+      const video = player.querySelector("video");
+      const badge = player.querySelector(".viewer-video__badge");
+      const ICONS = {
+        sound: '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 8v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z"/>',
+        pause: '<path d="M6 5h4v14H6zm8 0h4v14h-4z"/>',
+        play: '<path d="M7 4v16l13-8z"/>',
+      };
+      const update = () => {
+        const [icon, label] =
+          video.paused ? ["play", "Play"] : video.muted ? ["sound", "Tap for sound"] : ["pause", "Pause"];
+        badge.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[icon]}</svg>${label}`;
+        player.setAttribute("aria-label", `${label}: case study video`);
+      };
+
+      if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        video.removeAttribute("autoplay");
+        video.pause();
+      }
+      player.addEventListener("click", () => {
+        if (video.paused || video.muted) {
+          video.muted = false;
+          video.play();
+        } else {
+          video.pause();
+        }
+      });
+      ["play", "pause", "volumechange"].forEach((e) => video.addEventListener(e, update));
+      update();
+    }
+
     // Hide the loading wheel once the first slice is on screen (or fails).
     const first = document.querySelector(".viewer-pages img");
     const done = () => document.documentElement.classList.add("is-loaded");
