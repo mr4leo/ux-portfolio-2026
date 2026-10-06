@@ -22,3 +22,6 @@ images/Favicon Update.jpeg
 images/Head Shot - Minimal Illustration.png
 images/arrow-down.svg
 images/portfolio-hero-mobile*.png
+
+# Case-study source exports: sliced into WebP by case-studies/build.py
+case-studies/*.png

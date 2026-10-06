@@ -4,7 +4,10 @@ Run after replacing a PDF in case-studies/:
     python3 case-studies/build.py
 
 For each PDF it writes <slug>.html and <slug>/NN-1440.webp + NN-2880.webp.
-Needs macOS (Swift renders the PDF) and Pillow.
+If <slug>.png (a 2x Figma export, 2880px wide) sits next to the PDF, the
+visuals come from it instead: sharper than the PDF render. The PDF still
+supplies the page text and the download.
+Needs macOS (Swift reads the PDF) and Pillow.
 """
 
 import html
@@ -14,6 +17,8 @@ import tempfile
 from pathlib import Path
 
 from PIL import Image
+
+Image.MAX_IMAGE_PIXELS = None  # full-page exports are tens of megapixels
 
 HERE = Path(__file__).resolve().parent
 DOCS = {
@@ -39,10 +44,22 @@ def build(slug, name):
     out.mkdir()
 
     with tempfile.TemporaryDirectory() as tmp:
+        png = HERE / f"{slug}.png"
         subprocess.run(
-            ["swift", str(HERE / "render-pdf.swift"), str(HERE / f"{slug}.pdf"), tmp, str(WIDTH), str(SLICE)],
+            ["swift", str(HERE / "render-pdf.swift"), str(HERE / f"{slug}.pdf"), tmp,
+             "0" if png.exists() else str(WIDTH), str(SLICE)],
             check=True,
         )
+        if png.exists():
+            full = Image.open(png)
+            if full.width != WIDTH:
+                raise SystemExit(f"{png.name} is {full.width}px wide; export it at 2x ({WIDTH}px)")
+            if full.mode != "RGB":
+                bg = Image.new("RGB", full.size, "white")
+                bg.paste(full, mask=full.convert("RGBA").getchannel("A"))
+                full = bg
+            for i, top in enumerate(range(0, full.height, SLICE), 1):
+                full.crop((0, top, WIDTH, min(top + SLICE, full.height))).save(Path(tmp) / f"{i:02d}.png")
         imgs = []
         for i, png in enumerate(sorted(Path(tmp).glob("*.png"))):
             big = Image.open(png).convert("RGB")

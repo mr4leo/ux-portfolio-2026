@@ -1,5 +1,6 @@
 // Renders page 1 of a PDF into horizontal PNG slices, and writes its text.
 // Usage: swift render-pdf.swift <in.pdf> <out-dir> <width-px> <slice-height-px>
+// A width of 0 skips rendering and only writes the text.
 // Called by build.py; run that instead.
 import CoreGraphics
 import Foundation
@@ -18,11 +19,11 @@ let outDir = URL(fileURLWithPath: args[2])
 try FileManager.default.createDirectory(at: outDir, withIntermediateDirectories: true)
 
 let box = cgPage.getBoxRect(.mediaBox)
-let scale = CGFloat(width) / box.width
+let scale = CGFloat(max(width, 1)) / box.width
 let totalHeight = Int((box.height * scale).rounded())
 
 var index = 0
-for top in stride(from: 0, to: totalHeight, by: sliceHeight) {
+for top in stride(from: 0, to: width > 0 ? totalHeight : 0, by: sliceHeight) {
   index += 1
   let height = min(sliceHeight, totalHeight - top)
   let ctx = CGContext(data: nil, width: width, height: height, bitsPerComponent: 8, bytesPerRow: 0,
