@@ -218,17 +218,13 @@
   font-weight: var(--weight-bold);
 }
 
-.cs-hero__note {
-  color: #5e889c;
-}
-
 .cs-hero__media {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 40px;
+  gap: 20px;
   padding: 40px var(--cs-gutter) 40px var(--cs-pad);
 }
 
@@ -237,14 +233,13 @@
   left: -337px;
 }
 
-/* Box hugs the text and sits centered; the text itself is left-aligned,
-   so it reads left-aligned once it wraps on small screens */
+/* Caption runs the width of the video, left-aligned under it */
 .cs-hero__caption {
   position: relative;
-  width: fit-content;
-  max-width: 100%;
-  font-size: clamp(16px, 1.4vw, 20px);
-  text-align: left;
+  width: 100%;
+  max-width: 818px;
+  line-height: 1.25;
+  color: #000;
 }
 
 /* Video framed like the Figma hero, tap for sound then pause / play */
@@ -253,6 +248,17 @@
   width: 100%;
   max-width: 818px;
   box-shadow: 0 100px 100px rgba(0, 0, 0, 0.15);
+}
+
+/* Videos swell slightly under the pointer, a cue that they're clickable */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .cs-video:has(video) {
+    transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  .cs-video:has(video):hover {
+    transform: scale(1.03);
+  }
 }
 
 .cs-video__btn {
@@ -264,6 +270,32 @@
   border: 0;
   background: none;
   cursor: pointer;
+}
+
+/* Silent intro animation over its still frame: plays once, a click replays it */
+.cs-video__replay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.cs-video__replay:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+.cs-video__loop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
 }
 
 .cs-video__btn video {
@@ -789,7 +821,6 @@
 
   .cs-hero__media {
     padding: 56px var(--cs-gutter) 64px;
-    gap: 24px;
   }
 
   .cs-problem {

@@ -47,7 +47,8 @@ EXPORTS = {
         "topbar-old": "Thrive Orig.png",
         "topbar-new": "Header.png",
         "tabs": "MY SELF Side menu.png",
-        "table": "Layout.png",
+        "table": "Table.png",
+        "feedback": "Feedback Req.png",  # overlaps the table
         "test-board": "Outter Stickies.png",
         "award-worklife": ("Work Life - Employee Growth 2025.png", 180),
         "award-worklife-finalist": ("Work Life - Gamification 2028.png", 180),

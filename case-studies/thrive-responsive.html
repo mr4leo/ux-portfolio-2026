@@ -12,6 +12,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../styles.css" />
+  <script src="../page-transition.js"></script>
   <link rel="stylesheet" href="case-study.css" />
   <script>
     // Hide sections until case-study.js reveals them (shown anyway after 3s
@@ -67,6 +68,31 @@
 
     .th-trio img {
       width: 100%;
+    }
+
+    /* Step table with the Feedback Requests card overlapping its top right
+       corner, each with its own shadow (positions from the 831x664 Figma frame) */
+    .th-table {
+      position: relative;
+      aspect-ratio: 831 / 664;
+    }
+
+    .th-trio .th-table img {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 86.4%;
+    }
+
+    .th-trio .th-table .th-table__card {
+      top: 0;
+      right: 0;
+      bottom: auto;
+      left: auto;
+      width: 27.2%;
+      /* The standard shadow scaled to the card's size (offset equals blur, so
+         nothing shows above it) */
+      filter: drop-shadow(0 30px 30px rgba(0, 0, 0, 0.15));
     }
 
     .th-quote {
@@ -187,7 +213,6 @@
 <body>
   <nav class="viewer-bar" aria-label="Case study">
     <a href="../index.html#work">← Back to portfolio</a>
-    <a href="thrive.pdf" download>Download PDF</a>
   </nav>
 
   <main class="cs">
@@ -222,10 +247,15 @@
         </div>
       </div>
       <div class="cs-hero__media">
-        <div class="cs-glow" aria-hidden="true"></div>
         <div class="cs-video">
           <img src="thrive-r/hero-frame-1x.webp" srcset="thrive-r/hero-frame-1x.webp 818w, thrive-r/hero-frame.webp 1636w" sizes="(max-width: 900px) 100vw, 818px" width="818" height="459" alt="Thrive at VML title card on a purple stepped pattern" fetchpriority="high" />
+          <button type="button" class="cs-video__replay" aria-label="Replay the Thrive intro animation">
+            <video class="cs-video__loop" src="thrive-loop.mp4" muted playsinline preload="auto"></video>
+          </button>
         </div>
+        <p class="cs-hero__caption">I created this GIF as part of the marketing materials used to promote 1 of Thrive’s more recent iterations.</p>
+        <!-- After the thumbnail so the orb lightens its top left corner -->
+        <div class="cs-glow" aria-hidden="true"></div>
       </div>
     </section>
 
@@ -338,7 +368,10 @@
         <p><strong>Locking Future Steps Kept Users on Track</strong>Testers could click into any step, even ones they weren't ready for. Now only the current step is clickable, so users can't go the wrong way. (Highlighted in yellow)</p>
         <p><strong>Clearer Statuses Showed What Needed Attention</strong>Six statuses, a feedback request checklist, and each quarter's lock date put everything due in one view.</p>
       </div>
-      <img class="cs-shadow" src="thrive-r/table-1x.webp" srcset="thrive-r/table-1x.webp 415w, thrive-r/table.webp 830w" sizes="(max-width: 900px) 100vw, 415px" width="415" height="332" alt="The new step table by quarter, with the current step highlighted in yellow and status keys" loading="lazy" />
+      <div class="th-table">
+        <img class="cs-shadow" src="thrive-r/table-1x.webp" srcset="thrive-r/table-1x.webp 359w, thrive-r/table.webp 718w" sizes="(max-width: 900px) 87vw, 359px" width="359" height="302" alt="The new step table by quarter, with the current step highlighted in yellow and status keys" loading="lazy" />
+        <img class="cs-shadow th-table__card" src="thrive-r/feedback-1x.webp" srcset="thrive-r/feedback-1x.webp 113w, thrive-r/feedback.webp 226w" sizes="(max-width: 900px) 28vw, 113px" width="113" height="185" alt="Feedback Requests checklist with one colleague's feedback completed" loading="lazy" />
+      </div>
     </section>
 
     <section class="cs-row" aria-labelledby="th-videos">

@@ -45,6 +45,20 @@ if (reduceMotion || !("IntersectionObserver" in window)) {
 }
 window.csReady = true;
 
+// Silent intro animations: play once on arrival (after the page transition
+// has cleared; never with reduced motion), then each click plays it once more.
+document.querySelectorAll(".cs-video__replay").forEach((button) => {
+  const video = button.querySelector("video");
+  const playOnce = () => {
+    video.currentTime = 0;
+    video.play().catch(() => {});
+  };
+  button.addEventListener("click", playOnce);
+  if (reduceMotion) return;
+  const entering = document.documentElement.classList.contains("pt-enter");
+  setTimeout(playOnce, entering ? 450 : 0);
+});
+
 document.querySelectorAll(".cs-video__btn").forEach((player) => {
   const video = player.querySelector("video");
   const badge = player.querySelector(".cs-video__badge");
