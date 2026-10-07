@@ -182,31 +182,82 @@
       gap: 24px;
       width: 100%;
       max-width: 590px;
-      padding-top: 32px;
     }
 
     .lv-board img {
       width: 100%;
     }
 
-    .lv-note {
+    /* Blue plus-lighter glows from Figma, drawn as each section's ::after so
+       they stay out of the layout. Each is clipped to its section so the
+       reveal animation can't break the blend; the one across the Decisions /
+       Governance seam is split into two halves. */
+    .lv-glowed {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .lv-glowed::after {
+      content: "";
       position: absolute;
-      top: 0;
-      left: -24px;
-      width: 104px;
-      margin: 0 !important;
-      padding: 8px 8px 22px;
-      background: #f9f9f7 linear-gradient(135deg, transparent calc(100% - 22px), #f1c75b calc(100% - 22px)) no-repeat;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-      font-size: 9px;
-      line-height: 1.4;
+      width: 1000px;
+      height: 1000px;
+      border-radius: 50%;
+      background: radial-gradient(closest-side, rgba(2, 178, 255, 0.32), rgba(2, 178, 255, 0.12) 45%, transparent);
+      mix-blend-mode: plus-lighter;
+      pointer-events: none;
+    }
+
+    .lv-glow--limits::after {
+      width: 890px;
+      height: 890px;
+      top: calc(99px - 445px);
+      left: calc(50% + 92px - 445px);
+    }
+
+    /* Centered 34px above the seam, 177px right of the two-thirds line */
+    .lv-glow--seam-top::after {
+      bottom: -466px;
+      left: calc(66.67% + 177px - 500px);
+    }
+
+    .lv-glow--seam-bottom::after {
+      top: -534px;
+      left: calc(66.67% + 177px - 500px);
+    }
+
+    /* The note pins to the cell's top left corner, clear of the boards */
+    .lv-board-cell {
+      position: relative;
+      /* Boards start below the note, overlapping only its folded corner */
+      padding-top: 138px;
     }
 
     @media (max-width: 900px) {
-      .lv-note {
-        left: 0;
+      /* Stacked: the boards sit under the note's left edge, so clear it */
+      .lv-board-cell {
+        padding-top: 166px;
       }
     }
+
+    .lv-note {
+      position: absolute;
+      z-index: 1;
+      top: 0;
+      left: 0;
+      /* Square, like the Figma sticky */
+      width: 150px;
+      aspect-ratio: 1;
+      margin: 0 !important;
+      padding: 16px 16px 0;
+      /* Paper with its bottom right corner folded back (the yellow flap) */
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 150 150'%3E%3Cpath d='M.5 .5H149.5V110L110 149.5H.5Z' fill='%23f4f4f1' stroke='%23bdbdb8'/%3E%3Cpath d='M110 110H149.5L110 149.5Z' fill='%23f7d18a'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat;
+      filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.12));
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      font-size: 10px;
+      line-height: 1.4;
+    }
+
 
     .lv-note span {
       color: #8a3ffc;
@@ -378,16 +429,16 @@
           <p style="margin-top: 12px">With the audit done, I facilitated a session introducing learning directors from four global regions to FigJam, so we could share and compare sitemap needs in one place. I then helped each region build lo-fi mockups of their own LMS pages.</p>
         </div>
       </div>
-      <div class="cs-cell cs-media">
+      <div class="cs-cell cs-media lv-board-cell">
+        <p class="lv-note">Hi <span>@Marve Afo</span>, links 2 and 3 will be merged into 1 link when learn.vml is officially launched. We are planning to upload recordings into the course itself.</p>
         <div class="lv-board">
           <img class="cs-shadow" src="learn-vml-r/board-latam-1x.webp" srcset="learn-vml-r/board-latam-1x.webp 275w, learn-vml-r/board-latam.webp 550w" sizes="(max-width: 900px) 48vw, 275px" width="275" height="464" alt="LATAM's FigJam board: lo-fi wireframes of their LMS pages" loading="lazy" />
           <img class="cs-shadow" src="learn-vml-r/board-apac-1x.webp" srcset="learn-vml-r/board-apac-1x.webp 291w, learn-vml-r/board-apac.webp 582w" sizes="(max-width: 900px) 48vw, 291px" width="291" height="464" alt="APAC's FigJam board with a zoomed-in 'Welcome to wire framing 101' guide" loading="lazy" />
-          <p class="lv-note">Hi <span>@Marve Afo</span>, links 2 and 3 will be merged into 1 link when learn.vml is officially launched. We are planning to upload recordings into the course itself.</p>
         </div>
       </div>
     </section>
 
-    <section class="cs-row cs-row--open cs-accent" aria-labelledby="lv-limits">
+    <section class="cs-row cs-row--open cs-accent lv-glowed lv-glow--limits" aria-labelledby="lv-limits">
       <div class="cs-cell cs-media">
         <img src="learn-vml-r/limits-1x.webp" srcset="learn-vml-r/limits-1x.webp 664w, learn-vml-r/limits.webp 1328w" sizes="(max-width: 900px) 100vw, 664px" width="664" height="492" alt="Docebo's content blocks rebuilt as a Figma component library with swap-in textures and swatches" loading="lazy" />
       </div>
@@ -416,7 +467,7 @@
       </div>
     </section>
 
-    <section class="cs-decisions" aria-labelledby="lv-decisions">
+    <section class="cs-decisions cs-dots lv-glowed lv-glow--seam-top" aria-labelledby="lv-decisions">
       <div class="cs-tabbar">
         <h2 class="cs-h2 cs-tab cs-tab--paper" id="lv-decisions">The Decisions</h2>
       </div>
@@ -436,7 +487,7 @@
       </div>
     </section>
 
-    <section class="cs-row cs-row--narrow cs-row--open" aria-labelledby="lv-governance">
+    <section class="cs-row cs-row--narrow cs-row--open cs-dots lv-glowed lv-glow--seam-bottom" aria-labelledby="lv-governance">
       <div class="cs-cell">
         <div class="cs-cell__inner">
           <h2 class="cs-h2" id="lv-governance">Governance Made the System Last</h2>
