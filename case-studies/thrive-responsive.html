@@ -159,6 +159,20 @@
       width: 100%;
     }
 
+    /* Animated bell over the bar, placed from the Figma header (550 × 31):
+       a 14px box at x 395.7, y 7.5 */
+    .th-newbar__bar {
+      position: relative;
+    }
+
+    .th-bell img {
+      position: absolute;
+      left: 71.944%;
+      top: 24.3%;
+      width: 2.545%;
+      height: auto;
+    }
+
     /* The view switcher tabs hang under the bar at the same scale
        (107 of the bar's 550px) */
     .th-bars .th-tabs {
@@ -250,7 +264,7 @@
         <div class="cs-video">
           <img src="thrive-r/hero-frame-1x.webp" srcset="thrive-r/hero-frame-1x.webp 818w, thrive-r/hero-frame.webp 1636w" sizes="(max-width: 900px) 100vw, 818px" width="818" height="459" alt="Thrive at VML title card on a purple stepped pattern" fetchpriority="high" />
           <button type="button" class="cs-video__replay" aria-label="Replay the Thrive intro animation">
-            <video class="cs-video__loop" src="thrive-loop.mp4" muted playsinline preload="auto"></video>
+            <video class="cs-video__loop" src="thrive-r/intro-loop.mp4" muted playsinline preload="auto"></video>
           </button>
         </div>
         <p class="cs-hero__caption">I created this GIF as part of the marketing materials used to promote 1 of Thrive’s more recent iterations.</p>
@@ -346,7 +360,14 @@
           <div class="th-bars">
           <img class="cs-shadow" src="thrive-r/topbar-old-1x.webp" srcset="thrive-r/topbar-old-1x.webp 550w, thrive-r/topbar-old.webp 1100w" sizes="(max-width: 900px) 100vw, 550px" width="550" height="23" alt="Old top bar crowded with buttons and filters" loading="lazy" />
           <div class="th-newbar cs-shadow">
-            <img src="thrive-r/topbar-new-1x.webp" srcset="thrive-r/topbar-new-1x.webp 550w, thrive-r/topbar-new.webp 1100w" sizes="(max-width: 900px) 100vw, 550px" width="550" height="31" alt="New top bar with a single help icon" loading="lazy" />
+            <div class="th-newbar__bar">
+              <img src="thrive-r/topbar-new-1x.webp" srcset="thrive-r/topbar-new-1x.webp 550w, thrive-r/topbar-new.webp 1100w" sizes="(max-width: 900px) 100vw, 550px" width="550" height="31" alt="New top bar with a notification bell and a single help icon" loading="lazy" />
+              <!-- The bell rings on a loop; reduced motion gets it at rest -->
+              <picture class="th-bell">
+                <source media="(prefers-reduced-motion: reduce)" srcset="thrive-r/bell-still.webp" />
+                <img src="thrive-r/bell.webp" width="56" height="56" alt="" loading="lazy" />
+              </picture>
+            </div>
             <img class="th-tabs" src="thrive-r/tabs-1x.webp" srcset="thrive-r/tabs-1x.webp 107w, thrive-r/tabs.webp 214w" sizes="(max-width: 900px) 19.5vw, 107px" width="107" height="24" alt="My To Do and My Team tabs" loading="lazy" />
           </div>
         </div>
@@ -395,7 +416,11 @@
 
     <section class="cs-row" aria-labelledby="th-confetti">
       <div class="cs-cell cs-media">
-        <img class="cs-shadow" src="thrive-r/confetti-1x.webp" srcset="thrive-r/confetti-1x.webp 564w, thrive-r/confetti.webp 1128w" sizes="(max-width: 900px) 100vw, 564px" width="564" height="324" alt="All Done! confirmation with confetti" loading="lazy" />
+        <!-- Silent screen recording over its still: loops while on screen -->
+        <div class="cs-loop cs-shadow">
+          <img src="thrive-r/confetti-1x.webp" srcset="thrive-r/confetti-1x.webp 564w, thrive-r/confetti.webp 1128w" sizes="(max-width: 900px) 100vw, 564px" width="564" height="324" alt="All Done! confirmation with confetti falling" loading="lazy" />
+          <video src="thrive-r/confetti.mp4" muted loop playsinline preload="metadata" aria-hidden="true"></video>
+        </div>
       </div>
       <div class="cs-cell">
         <div class="cs-cell__inner th-items">
@@ -433,7 +458,7 @@
         <div class="cs-video">
           <img src="thrive-r/onboarding-poster-1x.webp" srcset="thrive-r/onboarding-poster-1x.webp 564w, thrive-r/onboarding-poster.webp 1128w" sizes="(max-width: 900px) 100vw, 564px" width="564" height="318" alt="" loading="lazy" />
           <button type="button" class="cs-video__btn" data-label="Thrive onboarding video">
-            <video src="thrive-tutorial.mp4" poster="thrive-r/onboarding-poster-1x.webp" muted loop playsinline preload="metadata"></video>
+            <video src="thrive-r/tutorial.mp4" poster="thrive-r/onboarding-poster-1x.webp" muted loop playsinline preload="metadata"></video>
             <span class="cs-video__badge" aria-hidden="true"></span>
           </button>
         </div>

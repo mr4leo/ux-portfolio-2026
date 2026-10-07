@@ -331,6 +331,26 @@
   fill: currentColor;
 }
 
+/* Silent screen recording laid over its still frame; loops while on screen */
+.cs-loop {
+  position: relative;
+  width: 100%;
+}
+
+.cs-loop img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.cs-loop video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 /* Problem */
 .cs-problem {
   grid-template-columns: calc(var(--cs-gutter) + 400px) minmax(0, 1fr);

@@ -1,12 +1,12 @@
 """Turn each case-study PDF into a fast web page of WebP slices.
 
-Run after replacing a PDF in case-studies/:
+Run after replacing a PDF in case-studies/exports/<slug>/:
     python3 case-studies/build.py
 
 For each PDF it writes <slug>.html and <slug>/NN-1440.webp + NN-2880.webp.
 If <slug>.png (a 2x Figma export, 2880px wide) sits next to the PDF, the
 visuals come from it instead: sharper than the PDF render. The PDF still
-supplies the page text and the download.
+supplies the page text. Sources live in exports/<slug>/ and are not deployed.
 Needs macOS (Swift reads the PDF) and Pillow.
 """
 
@@ -29,7 +29,7 @@ DOCS = {
 # Looping videos (silent until tapped) laid over a spot in the PDF: (file, x, y, width, height)
 # in PDF points (the 1440pt-wide Figma frame). Re-measure if the layout moves.
 VIDEOS = {
-    "open-everydai": ("open-everydai-sizzle.mp4", 574, 454.5, 812, 454),
+    "open-everydai": ("open-everydai-r/sizzle.mp4", 574, 454.5, 812, 454),
 }
 WIDTH = 2880  # 2x the 1440px Figma frame; phones get the 1440px copies
 SLICE = 2400  # px per slice at 2x, so lower slices can load lazily
@@ -44,9 +44,10 @@ def build(slug, name):
     out.mkdir()
 
     with tempfile.TemporaryDirectory() as tmp:
-        png = HERE / f"{slug}.png"
+        src = HERE / "exports" / slug
+        png = src / f"{slug}.png"
         subprocess.run(
-            ["swift", str(HERE / "render-pdf.swift"), str(HERE / f"{slug}.pdf"), tmp,
+            ["swift", str(HERE / "render-pdf.swift"), str(src / f"{slug}.pdf"), tmp,
              "0" if png.exists() else str(WIDTH), str(SLICE)],
             check=True,
         )

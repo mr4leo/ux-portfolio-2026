@@ -36,7 +36,7 @@ def tighten(img, thresh=40, density=0.04):
 
 
 def main(slug):
-    full = Image.open(HERE / f"{slug}.png").convert("RGB")
+    full = Image.open(HERE / "exports" / slug / f"{slug}.png").convert("RGB")
     out = HERE / f"{slug}-r"
     out.mkdir(exist_ok=True)
     for name, ((x0, y0, x1, y1), tight) in CROPS[slug].items():
