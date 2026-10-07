@@ -265,6 +265,90 @@ document.querySelectorAll(".cs-loop").forEach((player) => {
   }, { threshold: 0.25 }).observe(player);
 });
 
+// Swipe: thumb flicks scroll a long screenshot through a phone screen.
+// Each flick is a short drag that speeds up as the thumb pushes, then a
+// release that coasts and slows to a stop exponentially, the way a phone's
+// momentum scroll does, with no jump in speed at the hand-off. Down in two
+// flicks, a few seconds at the bottom, one long flick back up, and around.
+// Plays while on screen; a click pauses / plays, as with the silent loops.
+const DRAG = 0.16; // seconds the thumb is on the glass
+const COAST = 0.42; // momentum time constant, seconds
+const flick = (from, to) => {
+  // Coast long enough that the last stretch is imperceptible, normalised so
+  // it lands exactly on `to`
+  const tail = COAST * 6;
+  const coast = COAST / (1 - Math.exp(-tail / COAST));
+  const v = (to - from) / (DRAG / 3 + coast); // speed at release
+  const dragged = (v * DRAG) / 3;
+  return {
+    duration: DRAG + tail,
+    at: (t) => from + (t < DRAG
+      ? (v * t ** 3) / (3 * DRAG ** 2)
+      : dragged + v * coast * (1 - Math.exp(-(t - DRAG) / COAST))),
+  };
+};
+const hold = (at, duration) => ({ duration, at: () => at });
+// Positions are fractions of the full scroll
+// Each flick's coast already ends in a second or so of near-stillness
+const SWIPE_STEPS = [hold(0, 1), flick(0, 0.52), hold(0.52, 0.2), flick(0.52, 1), hold(1, 2.4), flick(1, 0), hold(0, 0.4)];
+const SWIPE_LOOP = SWIPE_STEPS.reduce((sum, step) => sum + step.duration, 0);
+const swipeAt = (t) => {
+  t %= SWIPE_LOOP;
+  for (const step of SWIPE_STEPS) {
+    if (t < step.duration) return step.at(t);
+    t -= step.duration;
+  }
+  return 0;
+};
+
+document.querySelectorAll(".cs-swipe").forEach((player) => {
+  const screen = player.querySelector(".cs-swipe__screen");
+  const feed = player.querySelector(".cs-swipe__feed");
+  const badge = player.querySelector(".cs-video__badge");
+  const name = player.dataset.label || "case study screen";
+  let playing = false, held = false;
+  let time = 0, last = 0, frame = 0;
+
+  const draw = () => {
+    const range = feed.offsetHeight - screen.clientHeight;
+    feed.style.transform = `translateY(${-swipeAt(time) * Math.max(range, 0)}px)`;
+  };
+  const tick = (now) => {
+    time += Math.min(now - last, 100) / 1000; // a dropped tab doesn't jump ahead
+    last = now;
+    draw();
+    frame = requestAnimationFrame(tick);
+  };
+  const set = (on) => {
+    playing = on;
+    cancelAnimationFrame(frame);
+    if (on) {
+      last = performance.now();
+      frame = requestAnimationFrame(tick);
+    }
+    const [icon, label] = on ? ["pause", "Pause"] : ["play", "Play"];
+    badge.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[icon]}</svg>${label}`;
+    player.setAttribute("aria-label", `${label}: ${name}`);
+  };
+
+  // Once paused by a click it stays paused, even scrolled away and back
+  player.addEventListener("click", () => {
+    held = playing;
+    set(!playing);
+  });
+  addEventListener("resize", draw);
+  set(false);
+
+  if (reduceMotion) return;
+  new IntersectionObserver(([entry]) => {
+    if (entry.isIntersecting) {
+      if (!held) set(true);
+    } else if (playing) {
+      set(false);
+    }
+  }, { threshold: 0.25 }).observe(player);
+});
+
 document.querySelectorAll(".cs-video__btn").forEach((player) => {
   const video = player.querySelector("video");
   const badge = player.querySelector(".cs-video__badge");

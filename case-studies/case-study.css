@@ -362,6 +362,67 @@
   object-fit: cover;
 }
 
+/* Swipe: a long screenshot scrolled inside a phone frame by thumb flicks,
+   looping; a click pauses / plays (case-study.js runs the motion). The frame
+   is drawn twice: underneath, with its screen filled in so the whole phone
+   can cast a shadow, and on top for the notch.
+   --screen-* place the frame's screen opening, as fractions of the frame. */
+.cs-swipe {
+  position: relative;
+  display: block;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.cs-swipe:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 6px;
+}
+
+.cs-swipe__frame {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+}
+
+.cs-swipe__back {
+  position: absolute;
+  inset: 0;
+}
+
+.cs-swipe__back::after {
+  content: "";
+  position: absolute;
+  top: var(--screen-top);
+  left: var(--screen-left);
+  width: var(--screen-width);
+  height: var(--screen-height);
+  border-radius: var(--screen-radius);
+  background: #000;
+}
+
+.cs-swipe__screen {
+  position: absolute;
+  top: var(--screen-top);
+  left: var(--screen-left);
+  width: var(--screen-width);
+  height: var(--screen-height);
+  overflow: hidden;
+  border-radius: var(--screen-radius);
+  background: #fff;
+}
+
+.cs-swipe__feed {
+  display: block;
+  width: 100%;
+  height: auto;
+  will-change: transform;
+}
+
 /* Hold to magnify: pressing and holding on a .cs-magnify group shows a round
    glass lens with a 2.5x copy of it (animations and all) under the pointer.
    case-study.js builds the lens and moves it. */
