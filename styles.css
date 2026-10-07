@@ -147,6 +147,7 @@
   --shadow-device: 0 30px 50px rgba(0, 0, 0, 0.32), 0 70px 120px rgba(0, 0, 0, 0.22);
   --shadow-pen: drop-shadow(0 22px 18px rgba(0, 0, 0, 0.45)); /* filter */
   --shadow-portrait: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.28)); /* filter */
+  --shadow-portrait-cast: drop-shadow(32px 16px 32px rgba(0, 0, 0, 0.75)); /* filter: falls off to the right */
 
   /* ---- Layout ---- */
   --max-width: 832px;
@@ -555,14 +556,16 @@ small {
 .tablet__portrait {
   position: absolute;
   z-index: 4;
-  bottom: -4px;
+  /* The crown (33.2% down the image) sits at a fixed 209px from the screen
+     top, just into the bottom of "designed", whatever the screen's width */
+  top: calc(209px - 0.332 * 86.5%);
   left: 50%;
-  /* Sized by screen height so the head always reaches the third headline line */
+  /* Sized by screen height so the shoulders always run off the bottom */
   width: auto;
-  height: 84%;
+  height: 86.5%;
   max-width: none;
   transform: translateX(-50%);
-  filter: var(--shadow-portrait);
+  filter: var(--shadow-portrait-cast);
 }
 
 .scroll-button {
@@ -985,8 +988,13 @@ small {
     font-size: var(--text-display-fluid);
   }
 
+  /* The headline shrinks with the window here but the screen doesn't, so
+     the portrait is sized from the headline: crown just into "designed"
+     (about 2.03 lines below the 40px padding), shoulders off the bottom */
   .tablet__portrait {
-    height: 90%;
+    top: auto;
+    bottom: -4px;
+    height: calc((100% + 4px - 28px - 2.03 * var(--text-display-fluid)) / 0.668);
   }
 
   .hero__intro {
@@ -1064,7 +1072,7 @@ small {
   }
 
   .tablet__portrait {
-    height: 100%;
+    height: 103%;
   }
 
   .project-nav {
