@@ -416,11 +416,13 @@
 
     <section class="cs-row" aria-labelledby="th-confetti">
       <div class="cs-cell cs-media">
-        <!-- Silent screen recording over its still: loops while on screen -->
-        <div class="cs-loop cs-shadow">
+        <!-- Silent screen recording over its still: loops while on screen,
+             a click pauses / plays -->
+        <button type="button" class="cs-loop cs-shadow" data-label="All Done! confetti recording">
           <img src="thrive-r/confetti-1x.webp" srcset="thrive-r/confetti-1x.webp 564w, thrive-r/confetti.webp 1128w" sizes="(max-width: 900px) 100vw, 564px" width="564" height="324" alt="All Done! confirmation with confetti falling" loading="lazy" />
           <video src="thrive-r/confetti.mp4" muted loop playsinline preload="metadata" aria-hidden="true"></video>
-        </div>
+          <span class="cs-video__badge" aria-hidden="true"></span>
+        </button>
       </div>
       <div class="cs-cell">
         <div class="cs-cell__inner th-items">

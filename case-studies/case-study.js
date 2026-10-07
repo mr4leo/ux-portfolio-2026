@@ -61,17 +61,40 @@ document.querySelectorAll(".cs-video__replay").forEach((button) => {
   setTimeout(playOnce, entering ? 600 : 0);
 });
 
-// Silent loops: play while on screen, never with reduced motion (the still
-// underneath shows instead)
-document.querySelectorAll(".cs-loop video").forEach((video) => {
-  if (reduceMotion) {
-    video.remove();
-    return;
-  }
+// Silent loops: play while on screen; a click pauses / plays. Once paused by
+// a click they stay paused. With reduced motion they wait paused until clicked.
+document.querySelectorAll(".cs-loop").forEach((player) => {
+  const video = player.querySelector("video");
+  const badge = player.querySelector(".cs-video__badge");
+  const name = player.dataset.label || "case study recording";
+  let held = false;
+
+  const update = () => {
+    const [icon, label] = video.paused ? ["play", "Play"] : ["pause", "Pause"];
+    badge.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[icon]}</svg>${label}`;
+    player.setAttribute("aria-label", `${label}: ${name}`);
+  };
+
+  player.addEventListener("click", () => {
+    if (video.paused) {
+      held = false;
+      video.play().catch(() => {});
+    } else {
+      held = true;
+      video.pause();
+    }
+  });
+  ["play", "pause"].forEach((e) => video.addEventListener(e, update));
+  update();
+
+  if (reduceMotion) return;
   new IntersectionObserver(([entry]) => {
-    if (entry.isIntersecting) video.play().catch(() => {});
-    else video.pause();
-  }, { threshold: 0.25 }).observe(video);
+    if (entry.isIntersecting) {
+      if (!held) video.play().catch(() => {});
+    } else {
+      video.pause();
+    }
+  }, { threshold: 0.25 }).observe(player);
 });
 
 document.querySelectorAll(".cs-video__btn").forEach((player) => {

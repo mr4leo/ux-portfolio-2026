@@ -331,10 +331,21 @@
   fill: currentColor;
 }
 
-/* Silent screen recording laid over its still frame; loops while on screen */
+/* Silent screen recording laid over its still frame; loops while on screen,
+   a click pauses / plays */
 .cs-loop {
   position: relative;
+  display: block;
   width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.cs-loop:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 3px;
 }
 
 .cs-loop img {
