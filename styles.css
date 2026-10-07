@@ -866,6 +866,27 @@ small {
   font-weight: var(--weight-bold);
 }
 
+/* "MA" monogram links home and swells on hover */
+.footer__home {
+  color: inherit;
+}
+
+.footer__home strong {
+  display: inline-block;
+  transition: transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.footer__home:hover strong,
+.footer__home:focus-visible strong {
+  transform: scale(1.12);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .footer__home strong {
+    transition: none;
+  }
+}
+
 .footer__details > div {
   padding: var(--space-2) var(--space-3);
   border-left: 1px solid var(--color-border);

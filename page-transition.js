@@ -119,6 +119,8 @@
     try {
       sessionStorage.setItem(KEY, dir);
       sessionStorage.setItem(scrollKey(location.pathname), String(scrollY));
+      // Home links (the footer monogram) open the home page at the top
+      if (link.hasAttribute("data-home")) sessionStorage.removeItem(scrollKey(url.pathname));
       // Going back to a remembered spot: skip the link's #anchor scroll
       if (dir === "down" && sessionStorage.getItem(scrollKey(url.pathname)) !== null) url.hash = "";
     } catch {}
