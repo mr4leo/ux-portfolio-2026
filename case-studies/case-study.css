@@ -362,6 +362,99 @@
   object-fit: cover;
 }
 
+/* Hold to magnify: pressing and holding on a .cs-magnify group shows a round
+   glass lens with a 2.5x copy of it (animations and all) under the pointer.
+   case-study.js builds the lens and moves it. */
+.cs-magnify-wrap {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 550px;
+}
+
+.cs-magnify {
+  cursor: zoom-in;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.cs-magnify img {
+  -webkit-user-drag: none;
+}
+
+/* The lens is the cursor while a mouse holds it open */
+.cs-magnify.is-magnifying {
+  cursor: none;
+}
+
+.cs-magnify:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 6px;
+}
+
+.cs-zoom__hint {
+  align-self: flex-end;
+  margin: 28px 0 0;
+  color: var(--color-text-muted);
+  font-size: 14px;
+  line-height: 1;
+}
+
+/* Placed by its centre: JS sets translate to the point it magnifies. The
+   dot grid is drawn 2.5x too (JS lines it up with the page's). */
+.cs-lens {
+  --cs-lens-size: clamp(140px, 38vw, 200px);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 50;
+  width: var(--cs-lens-size);
+  height: var(--cs-lens-size);
+  margin: calc(var(--cs-lens-size) / -2) 0 0 calc(var(--cs-lens-size) / -2);
+  overflow: hidden;
+  border-radius: 50%;
+  background: url("dot-grid.png") 0 0 / 50px 50px, var(--color-bg-paper);
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.1),
+    0 4px 10px rgba(0, 0, 0, 0.09),
+    0 18px 40px -8px rgba(0, 0, 0, 0.26);
+  opacity: 0;
+  scale: 0.85;
+  pointer-events: none;
+  transition: opacity 0.2s ease, scale 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.cs-lens.is-open {
+  opacity: 1;
+  scale: 1;
+}
+
+/* Glass: a thin light rim and a soft highlight across the top */
+.cs-lens::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(ellipse 75% 45% at 50% 4%, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0) 70%);
+  box-shadow:
+    inset 0 0 0 1.5px rgba(255, 255, 255, 0.85),
+    inset 0 -8px 18px rgba(0, 0, 0, 0.06);
+}
+
+.cs-lens__view {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: 0 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cs-lens {
+    transition: none;
+  }
+}
+
 /* Problem */
 .cs-problem {
   grid-template-columns: calc(var(--cs-gutter) + 400px) minmax(0, 1fr);
@@ -380,6 +473,15 @@
 
 .cs-problem .cs-cell__inner {
   max-width: 631px;
+}
+
+/* Two-column rows stacked directly above a centred tab move their divider
+   onto the tab's left edge (case-study.js measures the tab) */
+@media (min-width: 901px) {
+  .cs-hero.cs-split,
+  .cs-row.cs-split {
+    grid-template-columns: var(--cs-split) minmax(0, 1fr);
+  }
 }
 
 /* Design decisions */

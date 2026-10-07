@@ -357,7 +357,9 @@
       </div>
       <div class="cs-row">
         <div class="cs-cell cs-media">
-          <div class="th-bars">
+          <!-- Hold to magnify: a lens shows the bars, ringing bell and all, at 2.5x -->
+          <div class="cs-magnify-wrap">
+          <div class="th-bars cs-magnify" tabindex="0" role="group" aria-label="Old and new top bars. Enter or Space magnifies, arrow keys move the lens.">
           <img class="cs-shadow" src="thrive-r/topbar-old-1x.webp" srcset="thrive-r/topbar-old-1x.webp 550w, thrive-r/topbar-old.webp 1100w" sizes="(max-width: 900px) 100vw, 550px" width="550" height="23" alt="Old top bar crowded with buttons and filters" loading="lazy" />
           <div class="th-newbar cs-shadow">
             <div class="th-newbar__bar">
@@ -370,7 +372,9 @@
             </div>
             <img class="th-tabs" src="thrive-r/tabs-1x.webp" srcset="thrive-r/tabs-1x.webp 107w, thrive-r/tabs.webp 214w" sizes="(max-width: 900px) 19.5vw, 107px" width="107" height="24" alt="My To Do and My Team tabs" loading="lazy" />
           </div>
-        </div>
+          </div>
+          <p class="cs-zoom__hint" aria-hidden="true">[ Hold to magnify ]</p>
+          </div>
         </div>
         <div class="cs-cell">
           <div class="cs-cell__inner th-items">
