@@ -910,6 +910,11 @@ small {
   color: var(--color-link);
 }
 
+.footer__link:hover,
+.footer__link:focus-visible {
+  text-decoration: underline;
+}
+
 .footer__details span {
   display: inline-block;
   margin: var(--space-1) var(--space-1) 0 0;

@@ -913,10 +913,21 @@
   font-weight: var(--weight-medium);
 }
 
+/* Swells on hover, like the footer monogram; grows from the arrow side */
 .viewer-bar a {
+  display: inline-block;
   text-decoration: none;
+  transform-origin: left center;
+  transition: transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
-.viewer-bar a:hover {
-  text-decoration: underline;
+.viewer-bar a:hover,
+.viewer-bar a:focus-visible {
+  transform: scale(1.06);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .viewer-bar a {
+    transition: none;
+  }
 }
