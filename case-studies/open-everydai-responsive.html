@@ -30,6 +30,25 @@
     .cs-results__tab {
       background: #333;
     }
+
+    /* Brand: the logo explorations (one transparent sheet) run as wide as the
+       caption text above, on the halftone backdrop; the course slides follow. As in
+       the original spread, the caption above covers the top of the badges, and
+       the logos are shown in black and white. */
+    .oe-logos {
+      display: flex;
+      justify-content: center;
+      padding: 0 0 clamp(56px, 8.3vw, 120px);
+      background: #262626 url("open-everydai-r/brand-backdrop.webp") center / cover;
+    }
+
+    .cs-brand .oe-logos img {
+      --w: min(100% - 2 * var(--cs-gutter), 1134px);
+      width: var(--w);
+      /* About 15% of the badges sit under the caption */
+      margin-top: calc(var(--w) * -0.031);
+      filter: grayscale(1);
+    }
   </style>
 </head>
 <body>
@@ -167,9 +186,13 @@
 
     <section class="cs-brand" aria-labelledby="cs-brand">
       <div class="cs-brand__caption cs-dark">
-        <p><strong id="cs-brand">The Brand Had to Disarm the Fear</strong><br />Generic AI imagery, with cybernetics and purple-blue crypto gradients, looked like the very threat people feared. We chose cool electric blue and yellow on dark backdrops instead, so Open Everydai reads as modern tech but stays approachable, not threatening.</p>
+        <p><strong id="cs-brand">The Brand Had to Disarm the Fear</strong><br />Generic A.I. imagery, with cybernetics and purple-blue crypto gradients, looked like the very threat people feared. We chose cool electric blue and yellow on dark backdrops instead, so Open Everydai reads as modern tech but stays approachable, not threatening.</p>
+        <p>The VP, Global Head of Learning also drafted a tiny, square, 4 panel symbol to represent the initiative.</p>
       </div>
-      <img src="open-everydai-r/brand-1x.webp" srcset="open-everydai-r/brand-1x.webp 1440w, open-everydai-r/brand.webp 2880w" sizes="100vw" width="1440" height="1918" alt="Open Everydai logo explorations and branded course slides in electric blue and yellow on dark backdrops" loading="lazy" />
+      <div class="oe-logos">
+        <img src="open-everydai-r/brand-logos-1x.webp" srcset="open-everydai-r/brand-logos-1x.webp 1094w, open-everydai-r/brand-logos.webp 2189w" sizes="min(100vw, 1134px)" width="2189" height="1647" alt="Open Everydai logo explorations: circular badges, stacked and single-line wordmarks, an Open daily variant, EVERY DAI, and a square four-panel symbol, in black and white" loading="lazy" />
+      </div>
+      <img src="open-everydai-r/brand-slides-1x.webp" srcset="open-everydai-r/brand-slides-1x.webp 1440w, open-everydai-r/brand-slides.webp 2880w" sizes="100vw" width="1440" height="1024" alt="Branded course slides in electric blue and yellow on dark backdrops" loading="lazy" />
     </section>
 
     <section class="cs-results" aria-labelledby="cs-results">
