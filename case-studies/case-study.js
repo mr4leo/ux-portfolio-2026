@@ -22,8 +22,10 @@ if (reduceMotion || !("IntersectionObserver" in window)) {
 } else {
   // On screen at load: reveal in sequence. Measured now rather than in the
   // observer, whose first report can arrive a few frames late.
+  // Arriving through the page transition, which animates them itself: show at once.
   const onScreen = sections.filter((el) => el.getBoundingClientRect().top < innerHeight);
-  onScreen.forEach((el, i) => setTimeout(() => show(el), 120 * i));
+  const transition = document.documentElement.classList.contains("pt-cover");
+  onScreen.forEach((el, i) => (transition ? show(el, true) : setTimeout(() => show(el), 120 * i)));
   // Scroll speed in px/ms, smoothed over recent frames
   let speed = 0, lastY = scrollY, lastT = performance.now();
   addEventListener("scroll", () => {
@@ -55,8 +57,8 @@ document.querySelectorAll(".cs-video__replay").forEach((button) => {
   };
   button.addEventListener("click", playOnce);
   if (reduceMotion) return;
-  const entering = document.documentElement.classList.contains("pt-enter");
-  setTimeout(playOnce, entering ? 450 : 0);
+  const entering = document.documentElement.classList.contains("pt-cover");
+  setTimeout(playOnce, entering ? 600 : 0);
 });
 
 document.querySelectorAll(".cs-video__btn").forEach((player) => {

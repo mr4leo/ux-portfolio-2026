@@ -1,31 +1,30 @@
-// Page transition between the portfolio and the case studies (trial).
-// Leaving: the page slides about half a screen (slower than the panel, for a
-// parallax feel) and fades while a dark panel wipes over it.
-// Arriving: the panel carries on off the screen while the new page slides
-// and fades into place. Upward into a case study, downward back out.
+// Page transition between the portfolio and the case studies.
+// A dark mask wipes across the screen while the page's text and images
+// slide and fade on their own, slightly out of step with it:
+// Leaving: the elements start first, easing into motion, and the mask
+// follows to cover them. Arriving: the mask clears first and the elements
+// trail behind it, still easing to a stop once the screen is uncovered.
+// Upward into a case study, downward back out to the portfolio.
 // Load this in <head> on every page that takes part.
 (() => {
   if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-  // The mask runs at twice the original 900ms speed. Arriving, the page
-  // keeps sliding and fading in after the mask has cleared, so the reveal
-  // reads as two staggered layers: the mask, then the content.
-  const MASK = 450;
-  const PAGE_DELAY = 200;
-  const PAGE_IN = 600;
+  const MASK = 450; // mask wipe, each way
+  const LEAD = 80; // leaving: elements start this long before the mask
+  const EL_OUT = 450; // leaving: element slide and fade
+  const LAG = 100; // arriving: elements start this long after the mask
+  const EL_IN = 600; // arriving: element slide and fade
   const KEY = "page-transition";
   // Remembered scroll positions, keyed so "/" and "/index.html" match
   const scrollKey = (path) => "page-transition-scroll:" + path.replace(/index\.html$/, "");
   const root = document.documentElement;
 
-  // Mask and page share a strong ease-in-out curve; the fade runs on a
-  // gentler one so content dims as it starts moving and settles in last.
-  const MOVE = "cubic-bezier(.76, 0, .24, 1)";
-  const FADE = "cubic-bezier(.45, 0, .55, 1)";
-  // Arriving content: quick start, long soft landing after the mask is gone
-  const SETTLE = "cubic-bezier(.33, 1, .68, 1)";
+  const MOVE = "cubic-bezier(.76, 0, .24, 1)"; // mask: strong ease in-out
+  const ACCEL = "cubic-bezier(.55, 0, .75, .4)"; // leaving elements: ease into motion
+  const SETTLE = "cubic-bezier(.33, 1, .68, 1)"; // arriving elements: soft landing
   const style = document.createElement("style");
   style.textContent = `
+    html.pt-cover::after,
     html.pt-enter::after,
     html.pt-exit::after {
       content: "";
@@ -35,23 +34,45 @@
       background: var(--color-bg-dark, #1d1f20);
       pointer-events: none;
     }
-    html.pt-exit::after { animation: pt-panel-in ${MASK}ms ${MOVE} both; }
-    html.pt-enter::after { animation: pt-panel-out ${MASK}ms ${MOVE} both; }
-    html.pt-exit body { animation: pt-page-out ${MASK}ms ${MOVE} both, pt-fade-out ${MASK}ms ${FADE} both; }
-    html.pt-enter body { animation: pt-page-in ${PAGE_IN}ms ${SETTLE} ${PAGE_DELAY}ms both, pt-fade-in ${PAGE_IN}ms ${SETTLE} ${PAGE_DELAY}ms both; }
-    html.pt-enter, html.pt-exit { overflow-x: hidden; }
-    /* --pt-dir: 1 moves everything up (into a case study), -1 down (back) */
-    @keyframes pt-panel-in { from { transform: translateY(calc(var(--pt-dir, 1) * 100%)); } to { transform: none; } }
-    @keyframes pt-panel-out { to { transform: translateY(calc(var(--pt-dir, 1) * -100%)); } }
-    @keyframes pt-page-out { to { transform: translateY(calc(var(--pt-dir, 1) * -55vh)); } }
-    @keyframes pt-page-in { from { transform: translateY(calc(var(--pt-dir, 1) * 55vh)); } }
-    @keyframes pt-fade-out { to { opacity: 0; } }
-    @keyframes pt-fade-in { from { opacity: 0; } }
+    html.pt-exit::after { animation: pt-mask-in ${MASK}ms ${MOVE} ${LEAD}ms both; }
+    html.pt-enter::after { animation: pt-mask-out ${MASK}ms ${MOVE} both; }
+    html.pt-exit .pt-el { animation: pt-el-out ${EL_OUT}ms ${ACCEL} both; }
+    html.pt-enter .pt-el { animation: pt-el-in ${EL_IN}ms ${SETTLE} ${LAG}ms both; }
+    html.pt-cover, html.pt-enter, html.pt-exit { overflow-x: hidden; }
+    /* --pt-dir: 1 moves everything up (into a case study), -1 down (back).
+       The element keyframes leave out the resting state, so elements land
+       on whatever the page's own scripts have set. */
+    /* A short slide, so neighbouring text never drifts over each other */
+    @keyframes pt-mask-in { from { transform: translateY(calc(var(--pt-dir, 1) * 100%)); } to { transform: none; } }
+    @keyframes pt-mask-out { to { transform: translateY(calc(var(--pt-dir, 1) * -100%)); } }
+    @keyframes pt-el-out { to { translate: 0 calc(var(--pt-dir, 1) * -60px); opacity: 0; } }
+    @keyframes pt-el-in { from { translate: 0 calc(var(--pt-dir, 1) * 60px); opacity: 0; } }
   `;
   document.head.append(style);
   const setDir = (dir) => root.style.setProperty("--pt-dir", dir === "down" ? "-1" : "1");
 
-  // Arriving from a transition: start covered, then reveal
+  // The text and images on screen, outermost only (a figure moves with its
+  // image, a link with its icon), so nothing slides twice
+  const SEL = "h1, h2, h3, h4, p, li, img, video, svg, picture, canvas, figure, blockquote, a, button, .cs-video, .th-table";
+  let tagged = [];
+  const tag = () => {
+    const all = [...document.body.querySelectorAll(SEL)];
+    const set = new Set(all);
+    tagged = all.filter((el) => {
+      for (let p = el.parentElement; p && p !== document.body; p = p.parentElement) {
+        if (set.has(p)) return false;
+      }
+      const r = el.getBoundingClientRect();
+      return r.width > 0 && r.bottom > 0 && r.top < innerHeight;
+    });
+    tagged.forEach((el) => el.classList.add("pt-el"));
+  };
+  const untag = () => {
+    tagged.forEach((el) => el.classList.remove("pt-el"));
+    tagged = [];
+  };
+
+  // Arriving from a transition: covered until the page is parsed, then reveal
   let arriving = null;
   try {
     arriving = sessionStorage.getItem(KEY);
@@ -59,28 +80,30 @@
   } catch {}
   if (arriving) {
     setDir(arriving);
+    root.classList.add("pt-cover");
     // Back on the portfolio: return to where the visitor left it, instead of
     // scrolling down from the top through the tablet intro again
     let saved = null;
     try { saved = sessionStorage.getItem(scrollKey(location.pathname)); } catch {}
-    if (arriving === "down" && saved !== null) {
-      history.scrollRestoration = "manual";
-      document.addEventListener("DOMContentLoaded", () => {
+    const restore = arriving === "down" && saved !== null;
+    if (restore) history.scrollRestoration = "manual";
+    document.addEventListener("DOMContentLoaded", () => {
+      if (restore) {
         root.style.scrollBehavior = "auto";
         scrollTo(0, +saved);
         root.style.scrollBehavior = "";
-      });
-    }
-    root.classList.add("pt-enter");
-    setTimeout(() => {
-      root.classList.remove("pt-enter");
-      // Scroll-linked effects measured positions while the page was offset
-      window.ScrollTrigger?.refresh();
-    }, PAGE_DELAY + PAGE_IN + 50);
+      }
+      tag();
+      root.classList.replace("pt-cover", "pt-enter");
+      setTimeout(() => {
+        root.classList.remove("pt-enter");
+        untag();
+        window.ScrollTrigger?.refresh();
+      }, LAG + EL_IN + 50);
+    });
   }
 
-  // Leaving: links to other pages on this site. Into a case study the
-  // motion runs upward; back out to the portfolio it runs downward.
+  // Leaving: links to other pages on this site
   document.addEventListener("click", (e) => {
     const link = e.target.closest?.("a[href]");
     if (!link || e.defaultPrevented || e.button !== 0) return;
@@ -101,12 +124,16 @@
     } catch {}
     setDir(dir);
     root.classList.remove("pt-enter");
+    untag();
+    tag();
     root.classList.add("pt-exit");
-    setTimeout(() => { location.href = url.href; }, MASK);
+    setTimeout(() => { location.href = url.href; }, LEAD + MASK);
   });
 
   // Coming back through the browser's back/forward cache: uncover the page
   addEventListener("pageshow", (e) => {
-    if (e.persisted) root.classList.remove("pt-exit");
+    if (!e.persisted) return;
+    root.classList.remove("pt-exit");
+    untag();
   });
 })();
