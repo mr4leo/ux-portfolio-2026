@@ -798,6 +798,8 @@ small {
   font-size: var(--text-xs);
   font-weight: var(--weight-bold);
   text-decoration: none;
+  /* Hover fill eases in and out */
+  transition: color 0.35s ease-in-out, background-color 0.35s ease-in-out;
 }
 
 /* The same arrow as the hero button, turned to point right; drawn with
