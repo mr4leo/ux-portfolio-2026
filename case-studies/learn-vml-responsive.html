@@ -203,10 +203,9 @@
       width: 100%;
     }
 
-    /* Blue plus-lighter glows from Figma, drawn as each section's ::after so
-       they stay out of the layout. Each is clipped to its section so the
-       reveal animation can't break the blend; the one across the Decisions /
-       Governance seam is split into two halves. */
+    /* Blue plus-lighter glow from Figma, drawn as the section's ::after so
+       it stays out of the layout, and clipped to its section so the reveal
+       animation can't break the blend */
     .lv-glowed {
       position: relative;
       overflow: hidden;
@@ -228,17 +227,6 @@
       height: 890px;
       top: calc(99px - 445px);
       left: calc(50% + 92px - 445px);
-    }
-
-    /* Centered 34px above the seam, 177px right of the two-thirds line */
-    .lv-glow--seam-top::after {
-      bottom: -466px;
-      left: calc(66.67% + 177px - 500px);
-    }
-
-    .lv-glow--seam-bottom::after {
-      top: -534px;
-      left: calc(66.67% + 177px - 500px);
     }
 
     /* The note pins to the cell's top left corner, clear of the boards */
@@ -482,7 +470,7 @@
       </div>
     </section>
 
-    <section class="cs-decisions cs-dots lv-glowed lv-glow--seam-top" aria-labelledby="lv-decisions">
+    <section class="cs-decisions cs-dots" aria-labelledby="lv-decisions">
       <div class="cs-tabbar">
         <h2 class="cs-h2 cs-tab cs-tab--paper" id="lv-decisions">The Decisions</h2>
       </div>
@@ -502,7 +490,7 @@
       </div>
     </section>
 
-    <section class="cs-row cs-row--narrow cs-row--open cs-dots lv-glowed lv-glow--seam-bottom" aria-labelledby="lv-governance">
+    <section class="cs-row cs-row--narrow cs-row--open cs-dots" aria-labelledby="lv-governance">
       <div class="cs-cell">
         <div class="cs-cell__inner">
           <h2 class="cs-h2" id="lv-governance">Governance Made the System Last</h2>
@@ -510,7 +498,13 @@
         </div>
       </div>
       <div class="cs-cell cs-media">
-        <img class="cs-shadow" src="learn-vml-r/toolkit-1x.webp" srcset="learn-vml-r/toolkit-1x.webp 715w, learn-vml-r/toolkit.webp 1430w" sizes="(max-width: 900px) 100vw, 715px" width="715" height="471" alt="Content Creator Toolkit course page" loading="lazy" />
+        <!-- Silent screen recording over its first frame: loops while on
+             screen, a click pauses / plays -->
+        <button type="button" class="cs-loop cs-shadow" data-label="Content Creator Toolkit scroll-through recording">
+          <img src="learn-vml-r/toolkit-scroll-poster-1x.webp" srcset="learn-vml-r/toolkit-scroll-poster-1x.webp 672w, learn-vml-r/toolkit-scroll-poster.webp 1280w" sizes="(max-width: 900px) 100vw, 672px" width="1280" height="720" alt="Content Creator Toolkit course page, from its title screen" loading="lazy" />
+          <video src="learn-vml-r/toolkit-scroll.mp4" muted loop playsinline preload="metadata" aria-hidden="true"></video>
+          <span class="cs-video__badge" aria-hidden="true"></span>
+        </button>
       </div>
     </section>
 
