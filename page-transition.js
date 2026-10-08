@@ -142,7 +142,8 @@
     if (link.hasAttribute("download")) return;
     const url = new URL(link.href, location.href);
     if (url.origin !== location.origin || url.pathname === location.pathname) return;
-    if (!/(\.html|\/)$/.test(url.pathname)) return;
+    // Pages only: "/", "/x.html" or a clean URL like "/case-studies/thrive"
+    if (!/(\.html|\/|\/[^./]+)$/.test(url.pathname)) return;
 
     e.preventDefault();
     const dir = url.pathname.includes("/case-studies/") ? "up" : "down";

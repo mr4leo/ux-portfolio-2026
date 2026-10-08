@@ -1,0 +1,12 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
+    { "source": "/case-studies/learn-vml-responsive", "destination": "/case-studies/learn-vml", "permanent": true },
+    { "source": "/case-studies/learn-vml-responsive.html", "destination": "/case-studies/learn-vml", "permanent": true },
+    { "source": "/case-studies/thrive-responsive", "destination": "/case-studies/thrive", "permanent": true },
+    { "source": "/case-studies/thrive-responsive.html", "destination": "/case-studies/thrive", "permanent": true },
+    { "source": "/case-studies/open-everydai-responsive", "destination": "/case-studies/open-everydai", "permanent": true },
+    { "source": "/case-studies/open-everydai-responsive.html", "destination": "/case-studies/open-everydai", "permanent": true }
+  ]
+}
