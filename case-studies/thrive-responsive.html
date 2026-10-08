@@ -37,6 +37,12 @@
       --cs-dark-bg: var(--th-purple) url("thrive-r/texture-purple.webp") center / cover;
     }
 
+    /* Results: no box around the label, so the bar reads as one band */
+    .th-results-tab {
+      border: 0;
+      background: none;
+    }
+
     .th-pink {
       background: var(--th-pink) url("thrive-r/texture-pink.webp") center / cover;
     }
@@ -481,7 +487,7 @@
 
     <section class="cs-results" aria-labelledby="th-results">
       <div class="cs-tabbar cs-dark" style="height: 83px">
-        <h2 class="cs-h2 cs-tab cs-tab--accent" id="th-results">Results</h2>
+        <h2 class="cs-h2 cs-tab cs-tab--accent th-results-tab" id="th-results">Results</h2>
       </div>
       <div class="cs-row">
         <div class="cs-cell">
