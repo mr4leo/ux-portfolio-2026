@@ -465,7 +465,7 @@
 /* Placed by its centre: JS sets translate to the point it magnifies. The
    dot grid is drawn 2.5x too (JS lines it up with the page's). */
 .cs-lens {
-  --cs-lens-size: clamp(140px, 38vw, 200px);
+  --cs-lens-size: clamp(168px, 45.6vw, 240px);
   position: fixed;
   top: 0;
   left: 0;
