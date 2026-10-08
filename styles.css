@@ -1250,7 +1250,9 @@ small {
       contain: inline-size;
     }
 
-    .hero__tools-ruler {
+    /* Illustrator is desktop-only */
+    .hero__tools-ruler,
+    .hero__tool--desktop {
       display: none;
     }
 
