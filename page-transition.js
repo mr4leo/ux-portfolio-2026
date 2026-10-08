@@ -77,16 +77,24 @@
   // (upward, as into a case study), held until its images have loaded (at
   // most FIRST_WAIT) so the wipe uncovers a finished hero.
   const FIRST_WAIT = 1500;
-  let arriving = null, first = false;
-  try {
-    arriving = sessionStorage.getItem(KEY);
-    sessionStorage.removeItem(KEY);
-    first = !arriving && !sessionStorage.getItem("page-transition-visited") &&
-      !location.pathname.includes("/case-studies/");
-    sessionStorage.setItem("page-transition-visited", "1");
-  } catch {}
-  if (first) arriving = "up";
-  if (arriving) {
+  const domReady = new Promise((resolve) => {
+    if (document.readyState !== "loading") resolve();
+    else document.addEventListener("DOMContentLoaded", resolve, { once: true });
+  });
+  const arrive = () => {
+    let arriving = null, first = false;
+    try {
+      arriving = sessionStorage.getItem(KEY);
+      sessionStorage.removeItem(KEY);
+      first = !arriving && !sessionStorage.getItem("page-transition-visited") &&
+        !location.pathname.includes("/case-studies/");
+      sessionStorage.setItem("page-transition-visited", "1");
+    } catch {}
+    if (first) arriving = "up";
+    if (!arriving) {
+      root.classList.remove("pt-cover");
+      return;
+    }
     setDir(arriving);
     root.classList.add("pt-cover");
     // Back on the portfolio: return to where the visitor left it, instead of
@@ -100,8 +108,7 @@
       addEventListener("load", resolve, { once: true });
       setTimeout(resolve, FIRST_WAIT);
     });
-    document.addEventListener("DOMContentLoaded", async () => {
-      await loaded;
+    domReady.then(() => loaded).then(() => {
       if (restore) {
         root.style.scrollBehavior = "auto";
         scrollTo(0, +saved);
@@ -115,6 +122,15 @@
         window.ScrollTrigger?.refresh();
       }, LAG + EL_IN + 50);
     });
+  };
+  // Chrome may load the page in the background while the address is still
+  // being typed (prerendering). Its storage is a throwaway copy until the
+  // page is shown, so decide and play only then, kept covered meanwhile.
+  if (document.prerendering) {
+    root.classList.add("pt-cover");
+    document.addEventListener("prerenderingchange", arrive, { once: true });
+  } else {
+    arrive();
   }
 
   // Leaving: links to other pages on this site
