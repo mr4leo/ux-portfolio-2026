@@ -25,7 +25,7 @@
                    --color-accent-highlight selection box behind "designed"
                                             (decorative, any background)
      Patterns      --color-dot-light, --color-dot-dark (dotted backgrounds)
-     Tablet        --color-device-body, --color-device-stroke,
+     Tablet        --color-device-stroke,
                    --gradient-device-screen, --effect-glow, --effect-glare
 
    TYPE
@@ -53,12 +53,13 @@
   /* ---- Color: backgrounds ---- */
   --color-bg-white: #ffffff;
   --color-bg-paper: #f6f6f3;
-  --color-bg-dark: #1d1f20;
+  --color-bg-dark: #1d1f20; /* deepest: footer, tabs, tablet screen */
+  --color-bg-dark-2: #2b2d2e; /* bands: case-study headers, code, stats */
   --color-bg-card: rgba(31, 34, 36, 0.92);
 
   /* ---- Color: text ---- */
   --color-text: #111314;
-  --color-text-inverse: #ffffff;
+  --color-text-inverse: var(--color-bg-white);
   --color-text-muted: #999fa0;
   --color-text-secondary: #6b7072; /* 5:1 on white */
   --color-link: var(--color-accent);
@@ -67,7 +68,7 @@
   /* ---- Color: borders (on dark) ---- */
   --color-border-subtle: rgba(255, 255, 255, 0.06);
   --color-border: rgba(255, 255, 255, 0.15);
-  --color-border-strong: #ffffff;
+  --color-border-strong: var(--color-bg-white);
   --color-border-light: rgba(20, 22, 22, 0.16);
 
   /* ---- Color: status ---- */
@@ -83,7 +84,6 @@
   --color-dot-dark: rgba(255, 255, 255, 0.09);
 
   /* ---- Color: hero tablet ---- */
-  --color-device-body: #303536;
   --color-device-stroke: #55595b;
   --gradient-device-screen: linear-gradient(100deg, #1c2c36 0%, #2b363d 50%, #4a5054 100%);
   --effect-glow: radial-gradient(
@@ -467,7 +467,7 @@ small {
 
 .tablet__controls i {
   position: absolute;
-  background: var(--color-device-body);
+  background: var(--color-bg-dark-2);
 }
 
 .tablet__controls i:nth-child(1),

@@ -23,11 +23,17 @@
   <style>
     /* Learn.vml theme (Figma node 224:70333): map-topography green */
     .cs {
-      --cs-accent: #838f65 url("learn-vml-r/texture-green.webp") center / cover;
-      --cs-accent-text: #838e64;
+      /* Learn.vml palette: map green, plus the card's sage and stone */
+      --lv-green: #838f65;
+      --lv-sage: #b5bf9c;
+      --lv-stone: #c2c4b8;
+      --cs-step-ring: var(--lv-sage);
+      --cs-step-ink: var(--color-text);
+      --cs-accent: var(--lv-green) url("learn-vml-r/texture-green.webp") center / cover;
+      --cs-accent-text: var(--lv-green);
       --cs-accent-ink: var(--color-text-inverse);
-      --cs-dark-bg: #838f65 url("learn-vml-r/texture-green.webp") center / cover;
-      --cs-stat-bg: #838f65 url("learn-vml-r/texture-green.webp") center / cover;
+      --cs-dark-bg: var(--lv-green) url("learn-vml-r/texture-green.webp") center / cover;
+      --cs-stat-bg: var(--lv-green) url("learn-vml-r/texture-green.webp") center / cover;
     }
 
     /* Sneak Peek: both screenshots at their natural (equal) height
@@ -105,7 +111,7 @@
       aspect-ratio: 1636 / 920;
       padding: 0;
       border: 0;
-      background: #000;
+      background: var(--color-text);
       cursor: pointer;
     }
 
@@ -119,10 +125,10 @@
       position: absolute;
     }
 
-    .lv-card__block--a { top: 0.652%; left: 0.367%; width: 75.244%; height: 23.696%; background: #b5bf9c; }
-    .lv-card__block--b { top: 0.652%; left: 75.978%; width: 23.655%; height: 23.696%; background: #c2c4b8; }
-    .lv-card__block--c { top: 25.435%; left: 0.183%; width: 23.044%; height: 17.283%; background: #c2c4b8; }
-    .lv-card__block--d { top: 43.370%; left: 0.183%; width: 23.044%; height: 56.304%; background: #f5f5f5; }
+    .lv-card__block--a { top: 0.652%; left: 0.367%; width: 75.244%; height: 23.696%; background: var(--lv-sage); }
+    .lv-card__block--b { top: 0.652%; left: 75.978%; width: 23.655%; height: 23.696%; background: var(--lv-stone); }
+    .lv-card__block--c { top: 25.435%; left: 0.183%; width: 23.044%; height: 17.283%; background: var(--lv-stone); }
+    .lv-card__block--d { top: 43.370%; left: 0.183%; width: 23.044%; height: 56.304%; background: var(--color-bg-paper); }
 
     /* The blocks swap proportions together, at different speeds for a
        parallax feel: the top row's split slides left until it meets the
@@ -219,7 +225,7 @@
     }
 
     .lv-paper-tex {
-      background: #f6f6f3 url("learn-vml-r/texture-paper.webp") center / cover;
+      background: var(--color-bg-paper) url("learn-vml-r/texture-paper.webp") center / cover;
     }
 
     .lv-list p + p {
@@ -232,7 +238,7 @@
 
     .lv-brand-note {
       padding: 40px var(--cs-gutter);
-      background: #b5bf9c;
+      background: var(--lv-sage);
     }
 
     /* Brand band (Figma 1440x1024): the caption sits on top of the concept
@@ -244,7 +250,7 @@
       position: relative;
       aspect-ratio: 1440 / 1024;
       overflow: hidden;
-      background: #838f65 url("learn-vml-r/texture-green.webp") center / cover;
+      background: var(--lv-green) url("learn-vml-r/texture-green.webp") center / cover;
     }
 
     .lv-brand .lv-brand-note {
@@ -299,7 +305,7 @@
     .lv-code-band {
       position: relative;
       overflow: hidden;
-      background: #2b2e30;
+      background: var(--color-bg-dark-2);
       color: var(--color-text-inverse);
       border-bottom: 1px solid var(--cs-line);
     }

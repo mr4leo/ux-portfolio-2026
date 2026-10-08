@@ -23,19 +23,27 @@
   <style>
     /* Thrive theme (Figma node 172:40652): VML purple */
     .cs {
-      --cs-accent: #723066 url("thrive-r/texture-purple.webp") center / cover;
-      --cs-accent-text: #733167;
+      --th-purple: #723066;
+      --th-pink: #d6c6d3;
+      /* 4 Step Fix (Figma): white line, dots and tab outline; light rings
+         around purple centres */
+      --cs-step-line: var(--color-bg-white);
+      --cs-step-ring: var(--color-bg-paper);
+      --cs-step-core: var(--th-purple);
+      --cs-tab-line: var(--color-bg-white);
+      --cs-accent: var(--th-purple) url("thrive-r/texture-purple.webp") center / cover;
+      --cs-accent-text: var(--th-purple);
       --cs-accent-ink: var(--color-text-inverse);
-      --cs-dark-bg: #723066 url("thrive-r/texture-purple.webp") center / cover;
+      --cs-dark-bg: var(--th-purple) url("thrive-r/texture-purple.webp") center / cover;
     }
 
     .th-pink {
-      background: #d6c6d3 url("thrive-r/texture-pink.webp") center / cover;
+      background: var(--th-pink) url("thrive-r/texture-pink.webp") center / cover;
     }
 
     .th-highlights {
       margin-top: 1em !important;
-      color: #733167;
+      color: var(--th-purple);
     }
 
     .th-caption {

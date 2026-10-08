@@ -23,12 +23,12 @@
   <style>
     .cs {
       --cs-accent: #f0c531;
-      --cs-dark-bg: #2b2d2e url("open-everydai-r/texture-dark.webp") center / cover;
-      --cs-stat-bg: #393939 url("open-everydai-r/texture-stat.webp") center / 220%;
+      --cs-dark-bg: var(--color-bg-dark-2) url("open-everydai-r/texture-dark.webp") center / cover;
+      --cs-stat-bg: var(--color-bg-dark-2) url("open-everydai-r/texture-stat.webp") center / 220%;
     }
 
     .cs-results__tab {
-      background: #333;
+      background: var(--color-bg-dark-2);
     }
 
     /* Brand: the logo explorations (one transparent sheet) run as wide as the
@@ -39,7 +39,7 @@
       display: flex;
       justify-content: center;
       padding: 0 0 clamp(56px, 8.3vw, 120px);
-      background: #262626 url("open-everydai-r/brand-backdrop.webp") center / cover;
+      background: var(--color-bg-dark-2) url("open-everydai-r/brand-backdrop.webp") center / cover;
     }
 
     .cs-brand .oe-logos img {

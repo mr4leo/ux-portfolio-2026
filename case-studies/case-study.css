@@ -8,14 +8,13 @@
      --cs-dark-bg      dark bands (header, results), colour + texture
      --cs-stat-bg      the stat number column */
 .cs {
-  --cs-line: #777;
+  --cs-line: var(--color-text);
   --cs-accent: #f0c531;
   --cs-accent-ink: var(--color-text);
-  --cs-dark-bg: #2b2d2e;
-  --cs-stat-bg: #393939;
+  --cs-dark-bg: var(--color-bg-dark-2);
+  --cs-stat-bg: var(--color-bg-dark-2);
   --cs-ink: var(--color-text);
   --cs-muted: var(--color-text-secondary);
-  --cs-dark: #1d1f20;
   /* Text column: 160px side margins at 1440, never wider than 1120px
      (wider screens get bigger margins), scaling down to phones */
   --cs-gutter: max(clamp(20px, 11.1vw, 160px), calc((100vw - 1120px) / 2));
@@ -135,7 +134,7 @@
 
 .cs-tab {
   padding: 20px 40px;
-  background: var(--cs-dark);
+  background: var(--color-bg-dark);
   color: var(--color-text-inverse);
   text-align: center;
   white-space: nowrap;
@@ -239,7 +238,7 @@
   width: 100%;
   max-width: 818px;
   line-height: 1.25;
-  color: #000;
+  color: var(--color-text);
 }
 
 /* Video framed like the Figma hero, tap for sound then pause / play */
@@ -402,7 +401,7 @@
   width: var(--screen-width);
   height: var(--screen-height);
   border-radius: var(--screen-radius);
-  background: #000;
+  background: var(--color-text);
 }
 
 .cs-swipe__screen {
@@ -413,7 +412,7 @@
   height: var(--screen-height);
   overflow: hidden;
   border-radius: var(--screen-radius);
-  background: #fff;
+  background: var(--color-bg-white);
 }
 
 .cs-swipe__feed {
@@ -568,7 +567,7 @@
   align-items: center;
   border: 1px solid var(--cs-line);
   border-top: 0;
-  background: rgba(31, 34, 36, 0.92);
+  background: var(--color-bg-card);
 }
 
 .cs-shot {
@@ -816,7 +815,7 @@
 .cs-tab--accent {
   display: flex;
   align-items: center;
-  border: 1px solid #333;
+  border: 1px solid var(--cs-tab-line, var(--cs-line));
   border-top: 0;
   background: var(--cs-accent);
   color: var(--color-text-inverse);
@@ -851,37 +850,56 @@
   50% { transform: scaleY(0.1); }
 }
 
-/* Process timeline: dots and labels on a line */
+/* Process timeline (Figma "4 Step Fix"): a black line through every
+   checkpoint, capped by a dot at each end. A
+   checkpoint is an opaque square in --cs-step-ring (each page's lighter
+   accent) around a small --cs-step-core square. Pages can recolour the
+   line and dots (--cs-step-line) and labels (--cs-step-ink). */
 .cs-steps {
+  --line: var(--cs-step-line, var(--color-text));
+  /* How far the end dots sit outside the first / last checkpoint's centre:
+     a share of each step's width (cqw), so the dot and the line's cut-off
+     measure it the same way */
+  --dot: max(22cqw, 26px);
   display: grid;
   grid-template-columns: repeat(var(--cs-step-count, 4), 1fr);
   margin: 0;
   padding: 40px var(--cs-gutter) 56px;
   list-style: none;
-  color: var(--color-text-inverse);
+  color: var(--cs-step-ink, var(--color-text-inverse));
   text-align: center;
 }
 
 .cs-steps li {
   position: relative;
-  padding-top: 40px;
+  container-type: inline-size;
+  padding-top: 44px;
 }
 
+/* The line through each checkpoint */
 .cs-steps li::before {
   content: "";
   position: absolute;
   top: 12px;
   left: 0;
   right: 0;
-  border-top: 2px solid #111;
+  height: 8px;
+  background: linear-gradient(var(--line), var(--line)) 0 50% / 100% 2px no-repeat;
 }
 
+/* It starts and ends on a dot, just outside the first and last checkpoint */
 .cs-steps li:first-child::before {
-  left: 50%;
+  clip-path: inset(0 0 0 calc(50% - var(--dot) - 4px));
+  background:
+    radial-gradient(circle closest-side, var(--line) 98%, transparent) calc(50% - var(--dot)) 50% / 8px 8px no-repeat,
+    linear-gradient(var(--line), var(--line)) 0 50% / 100% 2px no-repeat;
 }
 
 .cs-steps li:last-child::before {
-  right: 50%;
+  clip-path: inset(0 calc(50% - var(--dot) - 4px) 0 0);
+  background:
+    radial-gradient(circle closest-side, var(--line) 98%, transparent) calc(50% + var(--dot)) 50% / 8px 8px no-repeat,
+    linear-gradient(var(--line), var(--line)) 0 50% / 100% 2px no-repeat;
 }
 
 .cs-steps li::after {
@@ -889,12 +907,12 @@
   position: absolute;
   top: 0;
   left: 50%;
-  width: 22px;
-  height: 22px;
-  margin-left: -11px;
-  border: 6px solid rgba(255, 255, 255, 0.5);
-  background: #fff;
-  background-clip: padding-box;
+  box-sizing: border-box;
+  width: 32px;
+  height: 32px;
+  margin-left: -16px;
+  border: 10px solid var(--cs-step-ring, var(--color-bg-paper));
+  background: var(--cs-step-core, var(--color-bg-white));
 }
 
 /* Bordered findings grid (audit) */
@@ -940,7 +958,7 @@
 .cs-code {
   margin: 0;
   overflow-x: auto;
-  color: #9ba3a8;
+  color: var(--color-text-muted);
   font: 13px / 1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
