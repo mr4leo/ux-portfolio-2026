@@ -96,8 +96,8 @@ sidewaysPhone.addEventListener("change", updateRuler);
 
 // ---- Live texture: the hero screen's dotted waves slowly undulate --------
 // Draws the same texture the CSS uses onto a canvas inside .tablet__texture,
-// warped by three looping waves (the math of images/abstract-abyss-loop-*,
-// see abstract-abyss-loop-generator.py). It inherits the layer's multiply
+// warped by three looping waves (the math of images/source/abstract-abyss-loop-*,
+// see images/source/abstract-abyss-loop-generator.py). It inherits the layer's multiply
 // blend and opacity. Phones get waves twice as tall, since their screen is
 // much smaller. It only runs while the hero's screen is showing its texture;
 // with reduced motion, or without WebGL, the still CSS image stays.
