@@ -114,9 +114,9 @@ document.querySelectorAll(".cs-tab svg").forEach((eye) => {
 
 // Hold to magnify: pressing and holding on a .cs-magnify group shows a round
 // lens with a 2.5x copy of it (built on first use, so animations play inside)
-// centred on the pointer; letting go fades it out. On touch it's centred on
-// the finger too (so every part of the image can be reached) and the page
-// holds still while it's up; a finger that moves
+// centred on the pointer; letting go fades it out. On touch the finger
+// anchors the lens's bottom centre, so the lens sits just above it, never
+// under the fingertip, and the page holds still while it's up; a finger that moves
 // before the hold registers scrolls as usual. Keyboard: Enter or Space opens
 // and closes it, arrow keys move it (Shift for bigger steps), Escape closes it.
 const MAGNIFY = 2.5;
@@ -128,6 +128,7 @@ document.querySelectorAll(".cs-magnify").forEach((el) => {
   let view = null;
   let active = false;
   let px = 0, py = 0; // the magnified point, relative to el
+  let touching = false; // a finger, not a mouse or pen, is driving it
 
   // The page's dot grid, so the lens can draw it magnified in line
   let grid = el.parentElement;
@@ -158,14 +159,17 @@ document.querySelectorAll(".cs-magnify").forEach((el) => {
     const R = lens.offsetWidth / 2;
     view.style.width = `${r.width}px`;
     view.style.transform = `translate(${R - px * MAGNIFY}px, ${R - py * MAGNIFY}px) scale(${MAGNIFY})`;
-    lens.style.translate = `${r.left + px}px ${r.top + py}px`;
+    // Touch: the finger sits at the lens's bottom centre, the magnified
+    // point at its centre
+    lens.style.translate = `${r.left + px}px ${r.top + py - (touching ? R : 0)}px`;
     if (grid) {
       const g = grid.getBoundingClientRect();
       lens.style.backgroundPosition = `${R + (g.left - r.left - px) * MAGNIFY}px ${R + (g.top - r.top - py) * MAGNIFY}px`;
     }
   };
 
-  const open = () => {
+  const open = (touch = false) => {
+    touching = touch;
     if (!view) build();
     active = true;
     el.classList.add("is-magnifying");
@@ -206,7 +210,7 @@ document.querySelectorAll(".cs-magnify").forEach((el) => {
     const t = e.touches[0];
     start = { x: t.clientX, y: t.clientY };
     hold = setTimeout(() => {
-      open();
+      open(true);
       moveTo(start.x, start.y);
     }, 200);
   }, { passive: true });
