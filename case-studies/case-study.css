@@ -510,6 +510,13 @@
   transform-origin: 0 0;
 }
 
+/* A single image magnified: the copy fills the lens view's width */
+.cs-lens__view > img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .cs-lens {
     transition: none;
@@ -828,6 +835,20 @@
   width: 0.8em;
   height: 0.8em;
   margin-left: 12px;
+}
+
+/* The Sneak Peek eye blinks (a quick close and open) when case-study.js
+   adds .is-blinking: once it's fully in view, then every 7.5s */
+.cs-tab svg {
+  transform-origin: 50% 50%;
+}
+
+.cs-tab svg.is-blinking {
+  animation: cs-blink 0.4s ease-in-out;
+}
+
+@keyframes cs-blink {
+  50% { transform: scaleY(0.1); }
 }
 
 /* Process timeline: dots and labels on a line */

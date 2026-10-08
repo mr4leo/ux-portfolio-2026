@@ -55,6 +55,11 @@
       }
     }
 
+    /* The magnify hint sits right under the Closer Look subtitle */
+    .cs-shot .cs-zoom__hint.lv-closer-hint {
+      margin: 6px 0 0;
+    }
+
     /* Problem row split evenly, each side's text filling its half */
     .cs-problem.lv-even {
       grid-template-columns: 1fr 1fr;
@@ -286,14 +291,27 @@
       }
     }
 
+    /* Blue plus-lighter glow behind the heading, clipped to the band so
+       the reveal animation can't break the blend */
     .lv-code-band {
+      position: relative;
+      overflow: hidden;
       background: #2b2e30;
       color: var(--color-text-inverse);
       border-bottom: 1px solid var(--cs-line);
     }
 
     .lv-code-band .cs-row {
+      position: relative;
       border-bottom: 0;
+    }
+
+    /* Figma: a 408px circle, its left edge 55px right of the text's left
+       edge and its top on the band's top. The glow (1000px) is centred on
+       that circle's centre. */
+    .lv-code-band .cs-glow {
+      top: calc(204px - 500px);
+      left: calc(var(--cs-gutter) + 55px + 204px - 500px);
     }
 
     .lv-hero-mock {
@@ -493,8 +511,12 @@
           <div>
             <h3 class="cs-shot__title">A Closer Look</h3>
             <p class="cs-shot__subtitle">Revised home page with highlighted callouts</p>
+            <p class="cs-zoom__hint lv-closer-hint" aria-hidden="true">[ Hold to magnify ]</p>
           </div>
-          <img src="learn-vml-r/closer-look-1x.webp" srcset="learn-vml-r/closer-look-1x.webp 382w, learn-vml-r/closer-look.webp 764w" sizes="(max-width: 900px) 100vw, 382px" width="382" height="727" alt="Revised home page with callouts: 1 navigation bar, 2 hero, 3 live text" loading="lazy" />
+          <!-- Hold to magnify: a lens shows the callouts at 2.5x -->
+          <div class="cs-magnify" tabindex="0" role="group" aria-label="Revised home page with callouts. Enter or Space magnifies, arrow keys move the lens.">
+            <img src="learn-vml-r/closer-look-1x.webp" srcset="learn-vml-r/closer-look-1x.webp 382w, learn-vml-r/closer-look.webp 764w" sizes="(max-width: 900px) 100vw, 382px" width="382" height="728" alt="Revised home page with callouts: 1 navigation bar, 2 hero, 3 live text" loading="lazy" />
+          </div>
         </figure>
       </div>
       <div class="cs-cell">
@@ -683,6 +705,7 @@
     </section>
 
     <section class="lv-code-band" aria-labelledby="lv-coded">
+      <div class="cs-glow" aria-hidden="true"></div>
       <div class="cs-row cs-row--narrow cs-row--open">
         <div class="cs-cell">
           <div class="cs-cell__inner">

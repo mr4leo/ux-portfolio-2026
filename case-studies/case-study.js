@@ -91,10 +91,32 @@ document.querySelectorAll(".cs-tabbar").forEach((bar) => {
   addEventListener("resize", align);
 });
 
+// Sneak Peek eyes blink as soon as they're fully in view, then every 7.5s
+// while they stay in view. Never with reduced motion.
+document.querySelectorAll(".cs-tab svg").forEach((eye) => {
+  if (reduceMotion) return;
+  let timer = 0;
+  const blink = () => {
+    eye.classList.remove("is-blinking");
+    void eye.getBoundingClientRect(); // restart the animation
+    eye.classList.add("is-blinking");
+  };
+  eye.addEventListener("animationend", () => eye.classList.remove("is-blinking"));
+  // Watches the tab, not the eye: the squint itself would change the eye's
+  // visible area and set the observer off again
+  new IntersectionObserver(([entry]) => {
+    clearInterval(timer);
+    if (entry.intersectionRatio < 1) return;
+    blink();
+    timer = setInterval(blink, 7500);
+  }, { threshold: 1 }).observe(eye.closest(".cs-tab"));
+});
+
 // Hold to magnify: pressing and holding on a .cs-magnify group shows a round
 // lens with a 2.5x copy of it (built on first use, so animations play inside)
-// following the pointer; letting go fades it out. On touch the lens sits above
-// the finger and the page holds still while it's up; a finger that moves
+// centred on the pointer; letting go fades it out. On touch it's centred on
+// the finger too (so every part of the image can be reached) and the page
+// holds still while it's up; a finger that moves
 // before the hold registers scrolls as usual. Keyboard: Enter or Space opens
 // and closes it, arrow keys move it (Shift for bigger steps), Escape closes it.
 const MAGNIFY = 2.5;
@@ -105,7 +127,7 @@ document.querySelectorAll(".cs-magnify").forEach((el) => {
   lens.setAttribute("aria-hidden", "true");
   let view = null;
   let active = false;
-  let px = 0, py = 0, lift = 0; // the magnified point, relative to el; lens offset above it
+  let px = 0, py = 0; // the magnified point, relative to el
 
   // The page's dot grid, so the lens can draw it magnified in line
   let grid = el.parentElement;
@@ -136,16 +158,15 @@ document.querySelectorAll(".cs-magnify").forEach((el) => {
     const R = lens.offsetWidth / 2;
     view.style.width = `${r.width}px`;
     view.style.transform = `translate(${R - px * MAGNIFY}px, ${R - py * MAGNIFY}px) scale(${MAGNIFY})`;
-    lens.style.translate = `${r.left + px}px ${Math.max(R + 8, r.top + py - lift)}px`;
+    lens.style.translate = `${r.left + px}px ${r.top + py}px`;
     if (grid) {
       const g = grid.getBoundingClientRect();
       lens.style.backgroundPosition = `${R + (g.left - r.left - px) * MAGNIFY}px ${R + (g.top - r.top - py) * MAGNIFY}px`;
     }
   };
 
-  const open = (touch) => {
+  const open = () => {
     if (!view) build();
-    lift = touch ? lens.offsetWidth / 2 + 36 : 0;
     active = true;
     el.classList.add("is-magnifying");
   };
@@ -167,7 +188,7 @@ document.querySelectorAll(".cs-magnify").forEach((el) => {
     if (e.pointerType === "touch" || e.button !== 0) return;
     e.preventDefault(); // no text selection or image drag
     el.setPointerCapture(e.pointerId);
-    open(false);
+    open();
     moveTo(e.clientX, e.clientY);
   });
   el.addEventListener("pointermove", (e) => {
@@ -185,7 +206,7 @@ document.querySelectorAll(".cs-magnify").forEach((el) => {
     const t = e.touches[0];
     start = { x: t.clientX, y: t.clientY };
     hold = setTimeout(() => {
-      open(true);
+      open();
       moveTo(start.x, start.y);
     }, 200);
   }, { passive: true });
@@ -212,7 +233,7 @@ document.querySelectorAll(".cs-magnify").forEach((el) => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
       if (active) return close();
-      open(false);
+      open();
       moveTo(r.left + r.width / 2, r.top + r.height / 2);
     } else if (e.key === "Escape") {
       close();
