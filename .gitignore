@@ -29,3 +29,6 @@ case-studies/*.png
 
 # Figma exports: converted to WebP by case-studies/use-exports.py
 case-studies/exports/
+
+# Figma plugin for syncing the site's styles: a separate tool, not deployed
+portfolio-2026-figma-styles/
