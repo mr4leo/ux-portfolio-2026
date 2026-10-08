@@ -265,6 +265,84 @@ document.querySelectorAll(".cs-loop").forEach((player) => {
   }, { threshold: 0.25 }).observe(player);
 });
 
+// Ambient loops: background video playing while on screen. With
+// data-crossfade="<seconds>" a second copy starts from the top before the
+// end and the two dissolve into each other, so a clip whose last frame
+// doesn't match its first still loops without a jump; the copies alternate,
+// each fading to the opacity the stylesheet gives the video. Inside a button
+// with a badge, a click pauses / plays like the other recordings, and once
+// paused it stays paused. With reduced motion it waits on its poster until
+// clicked.
+document.querySelectorAll(".cs-ambient").forEach((first) => {
+  const fade = parseFloat(first.dataset.crossfade) || 0;
+  const player = first.closest("button");
+  const badge = player?.querySelector(".cs-video__badge");
+  let videos = [first];
+  let onScreen = false, playing = false, held = reduceMotion;
+  if (fade) {
+    first.removeAttribute("loop");
+    const second = first.cloneNode();
+    second.style.opacity = "0";
+    first.after(second);
+    videos = [first, second];
+    videos.forEach((v) => (v.style.transition = `opacity ${fade}s linear`));
+  } else {
+    first.loop = true;
+  }
+  let current = 0, handing = false;
+  const active = () => videos[current];
+
+  const handOff = () => {
+    if (handing) return;
+    handing = true;
+    const out = active();
+    current = (current + 1) % videos.length;
+    const next = active();
+    next.currentTime = 0;
+    if (playing) next.play().catch(() => {});
+    next.style.opacity = "";
+    out.style.opacity = "0";
+    setTimeout(() => {
+      out.pause();
+      handing = false;
+    }, fade * 1000);
+  };
+  if (fade) {
+    videos.forEach((v) => {
+      v.addEventListener("timeupdate", () => {
+        if (v === active() && v.duration && v.duration - v.currentTime <= fade) handOff();
+      });
+      v.addEventListener("ended", () => v === active() && handOff());
+    });
+  }
+
+  // Mid-fade both copies are showing, so both play or pause
+  const set = (on) => {
+    playing = on;
+    videos.forEach((v) => {
+      if (on && (v === active() || handing)) v.play().catch(() => {});
+      else v.pause();
+    });
+    if (!badge) return;
+    // Lets anything else in the player (CSS animations) pause along with it
+    player.classList.toggle("is-playing", on);
+    const [icon, label] = on ? ["pause", "Pause"] : ["play", "Play"];
+    badge.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[icon]}</svg>${label}`;
+    player.setAttribute("aria-label", `${label}: ${player.dataset.label || "background animation"}`);
+  };
+  player?.addEventListener("click", () => {
+    held = playing;
+    set(!playing);
+  });
+  set(false);
+
+  new IntersectionObserver(([entry]) => {
+    onScreen = entry.isIntersecting;
+    if (onScreen && !held) set(true);
+    else if (!onScreen && playing) set(false);
+  }).observe(first.parentElement);
+});
+
 // Swipe: thumb flicks scroll a long screenshot through a phone screen.
 // Each flick is a short drag that speeds up as the thumb pushes, then a
 // release that coasts and slows to a stop exponentially, the way a phone's

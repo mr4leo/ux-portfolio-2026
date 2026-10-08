@@ -38,6 +38,23 @@
       max-width: 100%;
     }
 
+    /* Before and After each sit in the middle of their column (even
+       padding both sides, so the middle is the column's middle), headings
+       lined up with each screenshot */
+    @media (min-width: 901px) {
+      .cs-row > .lv-peek-before,
+      .cs-row > .lv-peek-after {
+        justify-content: center;
+        padding-right: var(--cs-pad);
+        padding-left: var(--cs-pad);
+      }
+
+      .lv-peek-before figure,
+      .lv-peek-after figure {
+        width: auto;
+      }
+    }
+
     /* Problem row split evenly, each side's text filling its half */
     .cs-problem.lv-even {
       grid-template-columns: 1fr 1fr;
@@ -71,6 +88,126 @@
 
     .lv-phone .cs-swipe__back {
       filter: drop-shadow(0 100px 100px rgba(0, 0, 0, 0.5));
+    }
+
+    /* Hero card: black ground showing through as the rules between blocks;
+       block edges measured from the card export (1636 x 920) */
+    .lv-card {
+      display: block;
+      aspect-ratio: 1636 / 920;
+      padding: 0;
+      border: 0;
+      background: #000;
+      cursor: pointer;
+    }
+
+    .lv-card:focus-visible {
+      outline: 3px solid var(--color-accent);
+      outline-offset: 3px;
+    }
+
+    .lv-card__block,
+    .lv-card__map {
+      position: absolute;
+    }
+
+    .lv-card__block--a { top: 0.652%; left: 0.367%; width: 75.244%; height: 23.696%; background: #b5bf9c; }
+    .lv-card__block--b { top: 0.652%; left: 75.978%; width: 23.655%; height: 23.696%; background: #c2c4b8; }
+    .lv-card__block--c { top: 25.435%; left: 0.183%; width: 23.044%; height: 17.283%; background: #c2c4b8; }
+    .lv-card__block--d { top: 43.370%; left: 0.183%; width: 23.044%; height: 56.304%; background: #f5f5f5; }
+
+    /* The blocks swap proportions together, at different speeds for a
+       parallax feel: the top row's split slides left until it meets the
+       left column's divider (grey grows to ~75% of the row) in 1.6s, while
+       the left column's split slides down to the mirror point (grey grows
+       to ~75% of the column) in 2.4s. Both hold, then return at the same
+       two speeds. One 10s cycle, eased in and out, paused with the card. */
+    .lv-card__block {
+      animation: 10s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+    }
+
+    .lv-card__block--a { animation-name: lv-block-a; }
+    .lv-card__block--b { animation-name: lv-block-b; }
+    .lv-card__block--c { animation-name: lv-block-c; }
+    .lv-card__block--d { animation-name: lv-block-d; }
+
+    /* The whole card floats gently up and down, as if breathing. Uses the
+       translate property so the hover swell (transform: scale) still adds
+       on top. */
+    .lv-card {
+      /* 50 BPM: one rise or fall per beat (1.2s) */
+      animation: lv-card-float 1.2s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate;
+    }
+
+    @keyframes lv-card-float {
+      from { translate: 0 10px; }
+      to { translate: 0 -10px; }
+    }
+
+    .lv-card:not(.is-playing),
+    .lv-card:not(.is-playing) .lv-card__block {
+      animation-play-state: paused;
+    }
+
+    /* Top row: 1.6s out, hold, 1.6s back */
+    @keyframes lv-block-a {
+      0%, 61%, 100% { width: 75.244%; }
+      16%, 45% { width: 22.860%; }
+    }
+
+    @keyframes lv-block-b {
+      0%, 61%, 100% { left: 75.978%; width: 23.655%; }
+      16%, 45% { left: 23.594%; width: 76.039%; }
+    }
+
+    /* Left column: 2.4s out, hold, 2.4s back */
+    @keyframes lv-block-c {
+      0%, 69%, 100% { height: 17.283%; }
+      24%, 45% { height: 56.304%; }
+    }
+
+    @keyframes lv-block-d {
+      0%, 69%, 100% { top: 43.370%; height: 56.304%; }
+      24%, 45% { top: 82.391%; height: 17.283%; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .lv-card,
+      .lv-card__block {
+        animation: none;
+      }
+    }
+
+    /* The panel: Figma's green, with the topography recording (dark lines
+       on white) multiplied over it at 50% */
+    .lv-card__map {
+      top: 25.435%;
+      left: 23.533%;
+      width: 76.284%;
+      height: 74.239%;
+      overflow: hidden;
+      background: #859165;
+    }
+
+    .lv-card__map video {
+      position: absolute;
+      inset: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      mix-blend-mode: multiply;
+      opacity: 0.5;
+    }
+
+    /* Wordmark centred, 394 of the panel's 1140px */
+    .lv-card__map img {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 34.565%;
+      height: auto;
+      transform: translate(-50%, -50%);
     }
 
     .lv-paper-tex {
@@ -308,9 +445,19 @@
       </div>
       <div class="cs-hero__media">
         <div class="cs-glow" aria-hidden="true"></div>
-        <div class="cs-video">
-          <img src="learn-vml-r/hero-frame-1x.webp" srcset="learn-vml-r/hero-frame-1x.webp 818w, learn-vml-r/hero-frame.webp 1636w" sizes="(max-width: 900px) 100vw, 818px" width="818" height="460" alt="Learn.VML title card on a map-topography texture" fetchpriority="high" />
-        </div>
+        <!-- The Learn.VML card (Figma "Learn.VML Thumbnail", 1488 x 837),
+             built in HTML so its panel can hold the moving topography -->
+        <button type="button" class="cs-video lv-card" data-label="Learn.VML title card with moving map topography">
+          <span class="lv-card__block lv-card__block--a"></span>
+          <span class="lv-card__block lv-card__block--b"></span>
+          <span class="lv-card__block lv-card__block--c"></span>
+          <span class="lv-card__block lv-card__block--d"></span>
+          <div class="lv-card__map">
+            <video class="cs-ambient" src="learn-vml-r/topography.mp4" poster="learn-vml-r/topography-poster.webp" muted playsinline preload="auto" aria-hidden="true" data-crossfade="2"></video>
+            <img src="learn-vml-r/learn-wordmark.svg" width="395" height="56" alt="" />
+          </div>
+          <span class="cs-video__badge" aria-hidden="true"></span>
+        </button>
       </div>
     </section>
 
@@ -319,7 +466,7 @@
         <h2 class="cs-h2 cs-tab cs-tab--paper" id="lv-peek">Sneak Peek<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg></h2>
       </div>
       <div class="cs-row">
-        <div class="cs-shot cs-dots">
+        <div class="cs-shot cs-dots lv-peek-before">
           <figure>
             <div>
               <h3 class="cs-shot__title">Before</h3>
@@ -328,7 +475,7 @@
             <img class="lv-peek-img" src="learn-vml-r/before-1x.webp" srcset="learn-vml-r/before-1x.webp 374w, learn-vml-r/before.webp 748w" sizes="(max-width: 900px) 100vw, 374px" width="374" height="742" alt="The original LMS home page: crowded banners, image-based text and a long list of quick links" loading="lazy" />
           </figure>
         </div>
-        <div class="cs-shot cs-dots">
+        <div class="cs-shot cs-dots lv-peek-after">
           <figure>
             <div>
               <h3 class="cs-shot__title">After</h3>
