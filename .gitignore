@@ -1,8 +1,8 @@
 .DS_Store
 .vscode/
 
-# Home page sources (original PNGs, mocks, the texture-loop generator and its
-# large loops, retired artwork): kept locally, not committed or deployed.
+# Home page sources (original PNGs, PSDs, mocks, the texture-loop generator
+# and its large loops, retired artwork): kept locally, not committed or deployed.
 # The site uses the WebP versions in images/.
 images/source/
 
@@ -14,3 +14,9 @@ case-studies/exports/
 
 # Figma plugin for syncing the site's styles: a separate tool, not deployed
 portfolio-2026-figma-styles/
+
+# Design working files, wherever they land: never committed (often hundreds of MB)
+*.psd
+*.psb
+*.ai
+*.indd
