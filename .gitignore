@@ -10,10 +10,10 @@ images/source/
 images/laptop-screen-mockup-design/
 images/Head Shot Blue Light 2.psd
 
-# Case-study source exports: sliced into WebP by case-studies/build.py
+# Case-study source exports
 case-studies/*.png
 
-# Figma exports: converted to WebP by case-studies/use-exports.py
+# Figma exports and retired assets
 case-studies/exports/
 
 # Figma plugin for syncing the site's styles: a separate tool, not deployed
@@ -24,3 +24,19 @@ portfolio-2026-figma-styles/
 *.psb
 *.ai
 *.indd
+*.fig
+
+# Not part of the live site: kept locally only
+# - the old image-slice case-study pages and their slices (unlinked)
+case-studies/learn-vml.html
+case-studies/thrive.html
+case-studies/open-everydai.html
+case-studies/learn-vml/
+case-studies/thrive/
+case-studies/open-everydai/
+# - build tools and the page template
+case-studies/*.py
+case-studies/*.swift
+case-studies/template.html
+# - working notes
+docs/
