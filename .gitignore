@@ -6,6 +6,10 @@
 # The site uses the WebP versions in images/.
 images/source/
 
+# Design working files kept beside the site's images: not committed or deployed
+images/laptop-screen-mockup-design/
+images/Head Shot Blue Light 2.psd
+
 # Case-study source exports: sliced into WebP by case-studies/build.py
 case-studies/*.png
 
