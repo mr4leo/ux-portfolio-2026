@@ -323,10 +323,84 @@ small {
   font-weight: var(--weight-bold);
 }
 
-.hero__pen {
-  width: min(40%, 20rem);
-  height: auto;
-  filter: var(--shadow-pen);
+/* Measuring rulers (the phone headline's, and the one over the tools):
+   a dashed line with end ticks and a handwritten label. script.js writes
+   each line's measured width into its label. */
+.hero__ruler-line {
+  position: relative;
+  display: block;
+  height: 1px;
+  background: repeating-linear-gradient(
+    to right,
+    currentColor 0 4px,
+    transparent 4px 7px
+  );
+}
+
+.hero__ruler-line::before,
+.hero__ruler-line::after {
+  content: "";
+  position: absolute;
+  top: -3px;
+  width: 1px;
+  height: 7px;
+  background: currentColor;
+}
+
+.hero__ruler-line::before {
+  left: 0;
+}
+
+.hero__ruler-line::after {
+  right: 0;
+}
+
+.hero__ruler-value {
+  display: block;
+  margin-top: var(--space-1);
+  font-family: var(--font-script);
+  font-size: var(--text-2xs);
+  font-style: italic;
+}
+
+/* Tools, where the stylus used to be: a ruler measuring the row (label on
+   top, as the stylus artwork had it) over black app-icon squares with white
+   marks */
+.hero__tools-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.hero__tools-ruler {
+  color: var(--color-signature);
+  line-height: var(--leading-none);
+  text-align: center;
+}
+
+.hero__tools-ruler .hero__ruler-value {
+  margin: 0 0 var(--space-1);
+}
+.hero__tools {
+  display: flex;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hero__tools svg {
+  display: block;
+  width: 42px;
+  height: 42px;
+  filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.18));
+}
+
+.hero__tools text {
+  font-family: var(--font-sans);
+  font-size: 21px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
 }
 
 .tablet {
@@ -1064,9 +1138,6 @@ small {
     gap: var(--space-3);
   }
 
-  .hero__pen {
-    width: 48%;
-  }
 
   .tablet__screen {
     min-height: 390px;
@@ -1147,7 +1218,7 @@ small {
     font-size: var(--text-xs);
   }
 
-  .hero__pen,
+  .hero__tools-wrap,
   .hero__intro,
   .signature,
   .tablet__controls,
@@ -1155,6 +1226,47 @@ small {
   .tablet__portrait,
   .scroll-button {
     display: none;
+  }
+
+  /* Upright phones: the tool icons (without their ruler) sit above the
+     role, the row exactly as wide as the role text. The grid column sizes to
+     the text alone (the row's inline-size containment keeps it out of the
+     sum), then the icons share that width evenly. --hero-fixed grows by
+     the row so the card still fits. */
+  @media (max-width: 520px) {
+    .hero__inner {
+      --hero-fixed: 248px;
+    }
+
+    .hero__meta {
+      display: grid;
+      justify-content: start;
+      gap: 8px;
+    }
+
+    .hero__tools-wrap {
+      display: flex;
+      order: -1;
+      contain: inline-size;
+    }
+
+    .hero__tools-ruler {
+      display: none;
+    }
+
+    .hero__tools {
+      gap: 4px;
+    }
+
+    .hero__tools li {
+      flex: 1;
+    }
+
+    .hero__tools svg {
+      width: 100%;
+      height: auto;
+      filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.18));
+    }
   }
 
   /* The real h1 stays in the screen for screen readers; sighted users get
@@ -1393,43 +1505,6 @@ small {
     text-align: center;
   }
 
-  /* Dashed measuring line with end ticks */
-  .hero__ruler-line {
-    position: relative;
-    display: block;
-    height: 1px;
-    background: repeating-linear-gradient(
-      to right,
-      currentColor 0 4px,
-      transparent 4px 7px
-    );
-  }
-
-  .hero__ruler-line::before,
-  .hero__ruler-line::after {
-    content: "";
-    position: absolute;
-    top: -3px;
-    width: 1px;
-    height: 7px;
-    background: currentColor;
-  }
-
-  .hero__ruler-line::before {
-    left: 0;
-  }
-
-  .hero__ruler-line::after {
-    right: 0;
-  }
-
-  .hero__ruler-value {
-    display: block;
-    margin-top: var(--space-1);
-    font-family: var(--font-script);
-    font-size: var(--text-2xs);
-    font-style: italic;
-  }
 }
 
 /* Card footer vs the card's own width: tighten when it narrows, then give

@@ -57,14 +57,24 @@ function bindPlainAnchors() {
   });
 }
 
-// ---- Phone hero ruler: size it and label it with the width it measures -----
+// ---- Hero rulers: size the phone one; label each with the width it measures
 // Upright phones: CSS sizes it to the headline's "end to end". Sideways
 // phones: it sits above the profile card and measures the card.
 const sidewaysPhone = window.matchMedia("(orientation: landscape) and (max-height: 500px)");
 
 function updateRuler() {
   const ruler = document.querySelector(".hero__ruler");
-  if (!ruler) return;
+  if (ruler) placeRuler(ruler);
+  // Every ruler showing (this one, or the one over the desktop tools) gets
+  // the width its line measures
+  document.querySelectorAll(".hero__ruler-line").forEach((line) => {
+    if (!line.offsetParent) return;
+    line.parentElement.querySelector(".hero__ruler-value").textContent =
+      `${Math.round(line.getBoundingClientRect().width)}px`;
+  });
+}
+
+function placeRuler(ruler) {
   ruler.style.width = "";
   if (!ruler.offsetParent) return; // hidden (desktop, short phones)
   if (sidewaysPhone.matches) {
@@ -78,9 +88,6 @@ function updateRuler() {
     ruler.style.left = "";
     ruler.style.top = "";
   }
-  const line = ruler.querySelector(".hero__ruler-line");
-  ruler.querySelector(".hero__ruler-value").textContent =
-    `${Math.round(line.getBoundingClientRect().width)}px`;
 }
 updateRuler();
 document.fonts.ready.then(updateRuler);

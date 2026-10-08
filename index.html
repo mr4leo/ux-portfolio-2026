@@ -37,7 +37,21 @@
             <!-- Phones: the signature sits under the role (the desktop one is at the bottom) -->
             <p class="hero__signature-top">Marve Afo</p>
           </div>
-          <img class="hero__pen" data-anim="desk-stylus" src="images/Frame - Pen.png" width="339" height="42" alt="" />
+          <!-- Tools: black rounded squares with white marks (phones hide this row) -->
+          <div class="hero__tools-wrap" data-anim="desk-stylus">
+          <div class="hero__tools-ruler" aria-hidden="true">
+            <span class="hero__ruler-value">288px</span>
+            <span class="hero__ruler-line"></span>
+          </div>
+          <ul class="hero__tools" aria-label="Tools">
+            <li><svg viewBox="0 0 48 48" role="img" aria-label="Figma"><rect width="48" height="48" rx="11" fill="#000" /><g transform="translate(14.5 9.75) scale(0.5)" stroke="#000" stroke-width="1.6"><path d="M19 0H9.5a9.5 9.5 0 0 0 0 19H19z" fill="#fff" /><path d="M19 0h9.5a9.5 9.5 0 0 1 0 19H19z" fill="#fff" /><path d="M19 19H9.5a9.5 9.5 0 0 0 0 19H19z" fill="#fff" /><circle cx="28.5" cy="28.5" r="9.5" fill="#fff" /><path d="M19 38H9.5a9.5 9.5 0 1 0 9.5 9.5z" fill="#fff" /></g></svg></li>
+            <li><svg viewBox="0 0 48 48" role="img" aria-label="Photoshop"><rect width="48" height="48" rx="11" fill="#000" /><text x="24" y="31.5" text-anchor="middle" fill="#fff">Ps</text></svg></li>
+            <li><svg viewBox="0 0 48 48" role="img" aria-label="After Effects"><rect width="48" height="48" rx="11" fill="#000" /><text x="24" y="31.5" text-anchor="middle" fill="#fff">Ae</text></svg></li>
+            <li><svg viewBox="0 0 48 48" role="img" aria-label="Illustrator"><rect width="48" height="48" rx="11" fill="#000" /><text x="24" y="31.5" text-anchor="middle" fill="#fff">Ai</text></svg></li>
+            <li><svg viewBox="0 0 48 48" role="img" aria-label="InDesign"><rect width="48" height="48" rx="11" fill="#000" /><text x="24" y="31.5" text-anchor="middle" fill="#fff">Id</text></svg></li>
+            <li><svg viewBox="0 0 48 48" role="img" aria-label="HTML"><rect width="48" height="48" rx="11" fill="#000" /><path transform="translate(12 11) scale(1.0833)" d="M1.5 0h21l-1.91 21.563L11.977 24l-8.564-2.438L1.5 0zm7.031 9.75l-.232-2.718 10.059.003.23-2.622L5.412 4.41l.698 8.01h9.126l-.326 3.426-2.91.804-2.955-.81-.188-2.11H6.248l.33 4.171L12 19.351l5.379-1.443.744-8.157H8.531z" fill="#fff" /></svg></li>
+          </ul>
+          </div>
         </header>
 
         <!-- Phones show the tablet as a white profile card. The card's background and
