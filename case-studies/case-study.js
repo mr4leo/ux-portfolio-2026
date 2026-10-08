@@ -48,17 +48,27 @@ if (reduceMotion || !("IntersectionObserver" in window)) {
 window.csReady = true;
 
 // Silent intro animations: play once on arrival (after the page transition
-// has cleared; never with reduced motion), then each click plays it once more.
+// has cleared; never with reduced motion). The badge pauses / plays like
+// the other videos; once it has finished, Play runs it again from the start.
 document.querySelectorAll(".cs-video__replay").forEach((button) => {
   const video = button.querySelector("video");
-  const playOnce = () => {
-    video.currentTime = 0;
+  const badge = button.querySelector(".cs-video__badge");
+  const name = button.dataset.label || "intro animation";
+  const update = () => {
+    const [icon, label] = video.paused ? ["play", "Play"] : ["pause", "Pause"];
+    if (badge) badge.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[icon]}</svg>${label}`;
+    button.setAttribute("aria-label", `${label}: ${name}`);
+  };
+  const play = () => {
+    if (video.ended) video.currentTime = 0;
     video.play().catch(() => {});
   };
-  button.addEventListener("click", playOnce);
+  button.addEventListener("click", () => (video.paused ? play() : video.pause()));
+  ["play", "pause", "ended"].forEach((e) => video.addEventListener(e, update));
+  update();
   if (reduceMotion) return;
   const entering = document.documentElement.classList.contains("pt-cover");
-  setTimeout(playOnce, entering ? 600 : 0);
+  setTimeout(play, entering ? 600 : 0);
 });
 
 // Dividers meet tabs: when a centred tab hangs below a row on the shared
