@@ -72,12 +72,20 @@
     tagged = [];
   };
 
-  // Arriving from a transition: covered until the page is parsed, then reveal
-  let arriving = null;
+  // Arriving from a transition: covered until the page is parsed, then reveal.
+  // The first page of a visit, if it's the portfolio, gets the same reveal
+  // (upward, as into a case study), held until its images have loaded (at
+  // most FIRST_WAIT) so the wipe uncovers a finished hero.
+  const FIRST_WAIT = 1500;
+  let arriving = null, first = false;
   try {
     arriving = sessionStorage.getItem(KEY);
     sessionStorage.removeItem(KEY);
+    first = !arriving && !sessionStorage.getItem("page-transition-visited") &&
+      !location.pathname.includes("/case-studies/");
+    sessionStorage.setItem("page-transition-visited", "1");
   } catch {}
+  if (first) arriving = "up";
   if (arriving) {
     setDir(arriving);
     root.classList.add("pt-cover");
@@ -87,7 +95,13 @@
     try { saved = sessionStorage.getItem(scrollKey(location.pathname)); } catch {}
     const restore = arriving === "down" && saved !== null;
     if (restore) history.scrollRestoration = "manual";
-    document.addEventListener("DOMContentLoaded", () => {
+    const loaded = new Promise((resolve) => {
+      if (!first || document.readyState === "complete") return resolve();
+      addEventListener("load", resolve, { once: true });
+      setTimeout(resolve, FIRST_WAIT);
+    });
+    document.addEventListener("DOMContentLoaded", async () => {
+      await loaded;
       if (restore) {
         root.style.scrollBehavior = "auto";
         scrollTo(0, +saved);
