@@ -115,9 +115,24 @@
       align-items: flex-start;
     }
 
-    .th-quote img {
+    .th-differently li + li {
+      margin-top: 12px;
+    }
+
+    /* The VML mark in a white speech bubble (Figma): drawn as a shape so
+       its outline takes the lightest grey, and the soft shadow follows the
+       bubble, tail included */
+    .th-quote__bubble {
       flex: none;
-      width: 53px;
+      width: 79px;
+      height: 108px;
+      overflow: visible;
+      filter: drop-shadow(0 14px 30px rgba(0, 0, 0, 0.24));
+    }
+
+    .th-quote__bubble path {
+      fill: var(--color-bg-white);
+      stroke: var(--color-border-light);
     }
 
     .th-quote blockquote {
@@ -268,7 +283,7 @@
           <div>
             <h2 class="cs-h3">Key Stakeholders</h2>
             <ul>
-              <li><strong>Product Manager:</strong> Global Director, Talent and Org Effectiveness</li>
+              <li><strong>Product Manager (PM):</strong> Global Director, Talent and Org Effectiveness</li>
               <li><strong>Brand Sign-Off:</strong> Executive Director, Global Marcomms</li>
             </ul>
           </div>
@@ -313,7 +328,7 @@
               <p class="cs-shot__subtitle">Original Thrive Home Screen</p>
             </div>
             <img src="thrive-r/before-1x.webp" srcset="thrive-r/before-1x.webp 500w, thrive-r/before.webp 1000w" sizes="(max-width: 900px) 100vw, 500px" width="500" height="391" style="aspect-ratio: 500 / 391" alt="Original Thrive home screen: purple everywhere, a crowded top bar and a circular step diagram" loading="lazy" />
-            <figcaption class="th-caption"><strong>Everything Competing at Once</strong>Plenty purple, a crowded top bar, and every step shown at once left little clear to focus on.</figcaption>
+            <figcaption class="th-caption"><strong>Everything Competing at Once</strong>Heavy purple, a crowded top bar, and every step shown at once made it hard to know where to look.</figcaption>
           </figure>
         </div>
         <div class="cs-shot cs-dots">
@@ -323,7 +338,7 @@
               <p class="cs-shot__subtitle">Redesigned Thrive Home Screen</p>
             </div>
             <img src="thrive-r/after-1x.webp" srcset="thrive-r/after-1x.webp 500w, thrive-r/after.webp 1000w" sizes="(max-width: 900px) 100vw, 500px" width="500" height="391" alt="Redesigned Thrive home screen: white space, sidebar tabs, Start Here videos and a step table" loading="lazy" />
-            <figcaption class="th-caption"><strong>More White Space, Less Competition</strong>More white space and a cooler background sharpened the visual hierarchy so content could stand out, like the A.I. coach added to the hero display for easy access.</figcaption>
+            <figcaption class="th-caption"><strong>More White Space, Less Competition</strong>More white space and a cooler background sharpened the visual hierarchy, giving room for new additions like the A.I. coach (Nadia) in the <em>Start Here</em> row.</figcaption>
           </figure>
         </div>
       </div>
@@ -353,7 +368,7 @@
       <div>
         <p class="cs-eyebrow">Testing</p>
         <h2 class="cs-h2" id="th-testing">What Users Told Us</h2>
-        <p style="margin-top: 8px">I wrote the test plan and ran four 45-minute moderated sessions with my PM, serving as the primary note taker. The findings were consistent. People weren't sure where to start, and they could jump into any step regardless of what they'd completed. Some didn't recognize the onboarding videos as videos, clicking the language and download icons instead of play, because nothing on the card said "watch this."</p>
+        <p style="margin-top: 8px">I wrote the test plan and ran four 45-minute moderated sessions with my PM as I took detailed observation notes. The findings were consistent. People weren't sure where to start, and they could jump into any step regardless of what they'd completed. Some didn't recognize the onboarding videos as videos, clicking the language and download icons instead of play, because nothing on the card said "watch this."</p>
       </div>
       <div style="margin-top: 48px">
         <h3 class="cs-shot__title">User Testing Notes</h3>
@@ -454,7 +469,7 @@
         <div class="cs-cell__inner">
           <p class="cs-eyebrow">Prototype</p>
           <h2 class="cs-h2" id="th-prototype">A.I. Summaries Managers Trusted</h2>
-          <p style="margin-top: 12px">My PM explained the initial flows. I refined them and turned them into real Figma mockups across multiple rounds. Managers read every submission first, generating a summary was optional, and they could edit it before using it. Employees and managers both knew where A.I. was involved. This process saved managers time on reading and manually combining and summarizing feedback from as many as 10 direct reports.</p>
+          <p style="margin-top: 12px">My PM explained the initial flows. I refined them and turned them into real Figma mockups across multiple rounds. Managers read every employee feedback submission first, generating a summary was optional, and they could edit it before using it. Employees and managers both knew where A.I. was involved. This process saved managers time on reading and manually combining and summarizing feedback from as many as 10 direct reports.</p>
         </div>
       </div>
       <div class="cs-cell cs-media">
@@ -471,7 +486,7 @@
         <div class="cs-cell__inner">
           <p class="cs-eyebrow">Onboarding</p>
           <h2 class="cs-h2" id="th-onboarding">1 Video Led to 10 More</h2>
-          <p style="margin-top: 12px">I produced the first 3 onboarding videos with on-screen callouts showing exactly where to look. A production team used those 3 initial videos as the template for the remainder of Thrive tutorial videos.</p>
+          <p style="margin-top: 12px">I produced the first 3 onboarding videos in Adobe After Effects with on-screen callouts showing exactly where to look. My PM provided a script and I sourced the voice over from WPP Open's A.I. voice generator. A production team used those 3 initial videos as the template for the remainder of Thrive tutorial videos.</p>
         </div>
       </div>
       <div class="cs-cell cs-media">
@@ -498,7 +513,7 @@
         </div>
         <div class="cs-cell">
           <figure class="cs-cell__inner th-quote" style="margin: 0">
-            <img src="thrive-r/quote-mark-1x.webp" width="53" height="58" alt="" loading="lazy" />
+            <svg class="th-quote__bubble" viewBox="0 0 79 108" aria-hidden="true"><path d="M.5.5h78v83H63L49.5 107.5V83.5H.5z" /><image href="thrive-r/quote-mark.webp" x="13" y="13" width="53" height="58" /></svg>
             <blockquote>“A brilliant and practical use of A.I.… With 10 direct reports it’s a time-saver... the perfect example of Human-assisted not Human-replacing.”<cite>— Global Chief Strategy Officer</cite></blockquote>
           </figure>
         </div>
@@ -528,7 +543,11 @@
       </div>
       <div class="cs-cell">
         <div class="cs-cell__inner cs-text-block">
-          <p><strong>What I'd Do Differently</strong>I'd push for a quick validation round before launch. Development time was expensive, but testing a Figma prototype wasn't. Even two or three sessions would have confirmed the redesign fixed what the first four found. The feedback from managers suggests it did. I'd just rather have known before launch.</p>
+          <p><strong>What I'd Do Differently</strong></p>
+          <ul class="th-differently">
+            <li>I'd push for a quick validation round before launch. Development time was expensive, but testing a Figma prototype wasn't. Even two or three sessions would have confirmed the redesign fixed what the first four found.</li>
+            <li>I'd also gather before-and-after metrics, like completion rates and time on task, so the impact of the UX could be measured, not just felt. Manager feedback suggests it worked. I'd just rather have proved it.</li>
+          </ul>
         </div>
       </div>
     </section>
