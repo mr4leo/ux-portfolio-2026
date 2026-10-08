@@ -1,37 +1,34 @@
+# The repo holds only what the live site uses. Everything below stays on
+# disk locally (and in git history) but is never committed or deployed.
+
+# ---- System and tooling
 .DS_Store
 .vscode/
+.vercel/
 
-# Home page sources (original PNGs, PSDs, mocks, the texture-loop generator
-# and its large loops, retired artwork): kept locally, not committed or deployed.
-# The site uses the WebP versions in images/.
-images/source/
-
-# Design working files kept beside the site's images: not committed or deployed
-images/laptop-screen-mockup-design/
-images/Head Shot Blue Light 2.psd
-
-# Case-study source exports
-case-studies/*.png
-
-# Figma exports and retired assets
-case-studies/exports/
-
-# Figma plugin for syncing the site's styles: a separate tool, not deployed
-portfolio-2026-figma-styles/
-
-# Design working files, wherever they land: never committed (often hundreds of MB)
+# ---- Design working files, wherever they land (often hundreds of MB)
 *.psd
 *.psb
 *.ai
 *.indd
 *.fig
 
-# Not part of the live site: kept locally only
-# - the old image-slice case-study pages and their slices now live in
-#   case-studies/exports/<slug>/old-page/ (covered by exports/ above)
-# - build tools and the page template
+# ---- Home page sources: original PNGs, mocks, retired artwork, and the
+# texture-loop generator with its large loops (the site uses the WebPs in images/)
+images/source/
+images/laptop-screen-mockup-design/
+
+# ---- Case-study sources: Figma exports, raw media, retired assets and the
+# old image-slice pages (exports/<slug>/old-page/)
+case-studies/exports/
+# Loose PNGs (dot-grid.png is committed on purpose)
+case-studies/*.png
+
+# ---- Build tools, page template and working notes
 case-studies/*.py
 case-studies/*.swift
 case-studies/template.html
-# - working notes
 docs/
+
+# ---- Figma plugin for syncing the site's styles: a separate tool
+portfolio-2026-figma-styles/
