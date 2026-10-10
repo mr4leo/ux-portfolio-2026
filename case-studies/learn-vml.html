@@ -99,6 +99,15 @@
       width: 196px;
     }
 
+    /* The phone sits in the middle of its column (even padding both sides,
+       so the middle is the column's middle) */
+    .cs-row > .lv-phone-cell {
+      display: flex;
+      justify-content: center;
+      padding-right: var(--cs-pad);
+      padding-left: var(--cs-pad);
+    }
+
     .lv-phone .cs-swipe__back {
       filter: drop-shadow(0 100px 100px rgba(0, 0, 0, 0.5));
     }
@@ -692,7 +701,7 @@
           <p style="margin-top: 12px">I redesigned every page for mobile using a single block: the smallest of Docebo's four sizes. It fit the screen perfectly, so stacking it gave every page a clean, consistent layout that kept the branding and hierarchy intact.</p>
         </div>
       </div>
-      <div class="cs-cell cs-media">
+      <div class="cs-cell cs-media lv-phone-cell">
         <!-- A thumb swipes down the stacked blocks and back up, on a loop -->
         <button type="button" class="cs-swipe lv-phone" data-label="Learn.VML on a phone, swiping through stacked small blocks">
           <span class="cs-swipe__back"><img class="cs-swipe__frame" src="learn-vml-r/mobile-frame.webp" width="378" height="790" alt="" loading="lazy" /></span>
