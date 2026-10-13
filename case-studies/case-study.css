@@ -62,6 +62,14 @@
   background: url("dot-grid.png") 0 0 / 20px 20px, var(--color-bg-paper);
 }
 
+/* Text panels that sit straight on the page (solo text sections and the
+   text side of divided rows) use the flat paper colour; the dot grid stays
+   behind visuals. Opt-in, because text cells inside a coloured band must
+   stay transparent so the band shows through. */
+.cs-paper {
+  background: var(--color-bg-paper);
+}
+
 .cs-dark {
   background: var(--cs-dark-bg);
   color: var(--color-text-inverse);
@@ -163,8 +171,12 @@
   letter-spacing: 0;
 }
 
-.cs-header__logo {
-  width: clamp(60px, 5.4vw, 78px);
+/* VML lockup (spark + wordmark), sized by height so it keeps the old
+   wordmark's 18.5-24px height and grows wider for the spark. Two
+   classes so it outranks .cs img's height: auto. */
+.cs-header .cs-header__logo {
+  width: auto;
+  height: clamp(18.46px, 1.662vw, 24px);
 }
 
 /* Hero */
