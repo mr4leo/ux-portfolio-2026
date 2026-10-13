@@ -803,6 +803,11 @@ small {
   text-decoration: none;
 }
 
+/* Phones swap the longer names for short ones (see max-width: 520px) */
+.project-nav__short {
+  display: none;
+}
+
 .project-nav__thumb {
   display: block;
   width: 32px;
@@ -1204,9 +1209,18 @@ small {
     scroll-margin-top: 116px;
   }
 
-  /* Very narrow screens: let "Open Everydai" wrap rather than overflow */
+  /* Very narrow screens: short names ("Everydai", "C. Savers") so every
+     label fits on one line; still allowed to wrap rather than overflow */
   .project-nav a {
     white-space: normal;
+  }
+
+  .project-nav__full {
+    display: none;
+  }
+
+  .project-nav__short {
+    display: inline;
   }
 
   .footer {
