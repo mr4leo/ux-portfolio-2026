@@ -956,12 +956,52 @@ small {
   align-self: end;
   overflow: hidden;
   background: var(--color-bg-dark);
+  container-type: inline-size;
 }
 
-.project-visual > img {
+/* Project thumbnail: four colour panels and the project's image (bottom
+   right), split by dark strokes (--color-bg-dark) of one even weight. Built from the
+   1488 x 837 Figma frame; the tracks and stroke keep its proportions.
+   Swap a project's look with the --thumb-1..4 colours and the <img>:
+   1 top wide, 2 top right, 3 left upper, 4 left lower. */
+.thumb {
+  --thumb-stroke: calc(6 / 1488 * 100cqw);
+  display: grid;
+  grid-template-columns: 339fr 774fr 351fr;
+  grid-template-rows: 198fr 145fr 469fr;
+  gap: var(--thumb-stroke);
+  padding: var(--thumb-stroke);
+  aspect-ratio: 1488 / 837;
+  background: var(--color-bg-dark);
+}
+
+.thumb > span:nth-child(1) {
+  grid-area: 1 / 1 / 2 / 3;
+  background: var(--thumb-1);
+}
+
+.thumb > span:nth-child(2) {
+  grid-area: 1 / 3 / 2 / 4;
+  background: var(--thumb-2);
+}
+
+.thumb > span:nth-child(3) {
+  grid-area: 2 / 1 / 3 / 2;
+  background: var(--thumb-3);
+}
+
+.thumb > span:nth-child(4) {
+  grid-area: 3 / 1 / 4 / 2;
+  background: var(--thumb-4);
+}
+
+.thumb > img {
+  grid-area: 2 / 2 / 4 / 4;
   display: block;
   width: 100%;
-  height: auto;
+  height: 100%;
+  min-height: 0;
+  object-fit: cover;
 }
 
 .footer {
