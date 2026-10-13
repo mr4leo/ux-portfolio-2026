@@ -77,6 +77,10 @@
   // (upward, as into a case study), held until its images have loaded (at
   // most FIRST_WAIT) so the wipe uncovers a finished hero.
   const FIRST_WAIT = 1500;
+  // Resolves once the page is uncovered and everything has slid in (the home
+  // page then sweeps its headline highlight)
+  let entered;
+  window.pageEntered = new Promise((resolve) => { entered = resolve; });
   const domReady = new Promise((resolve) => {
     if (document.readyState !== "loading") resolve();
     else document.addEventListener("DOMContentLoaded", resolve, { once: true });
@@ -93,6 +97,7 @@
     if (first) arriving = "up";
     if (!arriving) {
       root.classList.remove("pt-cover");
+      domReady.then(entered);
       return;
     }
     setDir(arriving);
@@ -120,6 +125,7 @@
         root.classList.remove("pt-enter");
         untag();
         window.ScrollTrigger?.refresh();
+        entered();
       }, LAG + EL_IN + 50);
     });
   };

@@ -627,6 +627,32 @@ small {
   top: -8px;
 }
 
+/* The highlight sweeps across "designed" left to right once the page has
+   slid in (script.js sweepHighlight), easing in and out, the right handle
+   appearing last */
+.hero-select .selection::before {
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.hero-select .selection i {
+  opacity: 0;
+}
+
+.hero-select .selection.is-selected::before {
+  transform: none;
+  transition: transform var(--select-dur) cubic-bezier(0.87, 0, 0.13, 1);
+}
+
+.hero-select .selection.is-selected i {
+  opacity: 1;
+  transition: opacity 0.1s;
+}
+
+.hero-select .selection.is-selected i:last-of-type {
+  transition-delay: calc(var(--select-dur) - 0.1s);
+}
+
 .tablet__portrait {
   position: absolute;
   z-index: 4;

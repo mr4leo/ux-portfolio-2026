@@ -35,6 +35,8 @@
     // removes this class again if GSAP fails to load up.
     if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       document.documentElement.classList.add("has-reveal");
+      // The "designed" highlight starts hidden; script.js sweeps it in
+      document.documentElement.classList.add("hero-select");
     }
   </script>
 </head>

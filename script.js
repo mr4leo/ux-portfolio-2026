@@ -37,6 +37,25 @@ const T = {
 // ---- Plain anchor scrolling (fallback when the reveal isn't running) -------
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
+// ---- Hero headline: the "designed" highlight sweeps in -------------------
+// Once the page has slid in, the selection highlight grows across the word
+// left to right, then its handles show. Both headlines (desktop, phone).
+const SELECT_DUR = 0.44; // seconds
+
+function sweepHighlight() {
+  const html = document.documentElement;
+  if (!html.classList.contains("hero-select")) return;
+  html.style.setProperty("--select-dur", `${SELECT_DUR}s`);
+  const go = () => {
+    document.querySelectorAll('[data-anim="hero-headline"] .selection').forEach((el) => el.classList.add("is-selected"));
+    setTimeout(() => html.classList.remove("hero-select"), SELECT_DUR * 1000 + 150);
+  };
+  // page-transition.js resolves this after the slide-in (absent: start now)
+  if (window.pageEntered) window.pageEntered.then(() => requestAnimationFrame(go));
+  else requestAnimationFrame(go);
+}
+sweepHighlight();
+
 function smoothScrollTo(target) {
   target.scrollIntoView({
     behavior: reduceMotion.matches ? "auto" : "smooth",
