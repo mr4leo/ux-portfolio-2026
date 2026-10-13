@@ -340,11 +340,13 @@
     }
 
     /* Coded nav: the bar sits on top, its dropdowns hang over the green band
-       (bar is 50 of the image's 100px height at 1440) */
+       (bar is 50 of the image's 100px height at 1440). The band tucks 1px
+       under the bar so the bar's soft bottom edge never shows the page as a
+       light line. */
     .lv-results-nav {
       position: relative;
       z-index: 1;
-      margin-bottom: -3.472%;
+      margin-bottom: calc(-3.472% - 1px);
     }
 
     /* Design iterations: same height, widths follow each screen */
