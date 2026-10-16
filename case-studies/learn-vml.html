@@ -256,9 +256,17 @@
       --tile: 86.11cqw;
       container-type: inline-size;
       position: relative;
+      display: flex;
+      flex-direction: column;
       aspect-ratio: 1440 / 1024;
       overflow: hidden;
       background: var(--lv-green) url("learn-vml-r/texture-green.webp") center / cover;
+    }
+
+    /* The space below the caption; the gallery centres on it */
+    .lv-stage {
+      position: relative;
+      flex: 1;
     }
 
     .lv-brand .lv-brand-note {
@@ -266,11 +274,26 @@
       z-index: 1;
     }
 
+    /* Same shadow as the Thrive banner: Figma's 0 100 100 50% drawn as a
+       fade just below the caption (200px at 1440, like Thrive's) */
+    .lv-brand .lv-brand-note::after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      height: 13.89cqw;
+      background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.18) 45%, transparent);
+      pointer-events: none;
+    }
+
     .lv-gallery {
       position: absolute;
       top: 50%;
       left: 0;
       width: 100%;
+      /* Centred on the space below the caption (margin is half the height),
+         so the tilt leaves equal gaps in the top right and bottom left */
       height: calc(var(--tile) * 4);
       margin-top: calc(var(--tile) * -2);
       transform: rotate(-30deg);
@@ -298,12 +321,10 @@
     @media (max-width: 900px) {
       .lv-brand {
         aspect-ratio: auto;
-        display: flex;
-        flex-direction: column;
       }
 
-      .lv-brand::after {
-        content: "";
+      .lv-stage {
+        flex: none;
         aspect-ratio: 1440 / 1024;
       }
     }
@@ -718,8 +739,10 @@
 
     <section class="lv-brand" aria-labelledby="lv-brand">
       <p class="lv-brand-note"><strong id="lv-brand">The Brand Couldn’t Look Like Training</strong><br />It had to make people want to click. I started in black and white to avoid color bias, testing textures from paper to foundational bricks. With VML's VP, Global Head of Learning, we landed on elevation: growth, told through map topography and VML's full color palette.</p>
-      <div class="lv-gallery" role="img" aria-label="Learn.VML branding concepts: dozens of title cards in black, grey, textures and green, tilted across the page">
-        <div class="lv-gallery__strip"></div>
+      <div class="lv-stage">
+        <div class="lv-gallery" role="img" aria-label="Learn.VML branding concepts: dozens of title cards in black, grey, textures and green, tilted across the page">
+          <div class="lv-gallery__strip"></div>
+        </div>
       </div>
     </section>
 
