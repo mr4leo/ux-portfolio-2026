@@ -5,6 +5,7 @@
 .DS_Store
 .vscode/
 .vercel/
+*.code-workspace
 
 # ---- Design working files, wherever they land (often hundreds of MB)
 *.psd
@@ -23,6 +24,13 @@ images/laptop-screen-mockup-design/
 case-studies/exports/
 # Loose PNGs (dot-grid.png is committed on purpose)
 case-studies/*.png
+# Loose videos: the pages' own live in case-studies/<slug>-r/
+case-studies/*.mp4
+case-studies/*.mov
+
+# ---- Hover-video sources: full-length originals and alternate cuts, one
+# folder per project (the tiles use images/<slug>-thumb-hero.webm/.mp4)
+video-sources/
 
 # ---- Build tools, page template and working notes
 case-studies/*.py
