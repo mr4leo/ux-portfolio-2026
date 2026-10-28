@@ -98,9 +98,11 @@ if (thumbs.length && !reduceMotion.matches) {
 }
 
 // ---- Hero headline: the "designed" highlight sweeps in -------------------
-// Once the page has slid in, the selection highlight grows across the word
-// left to right, then its handles show. Both headlines (desktop, phone).
-const SELECT_DUR = 0.44; // seconds
+// Two seconds after the page starts loading (and once it has slid in), the
+// selection highlight grows across the word left to right, then its handles
+// show. Both headlines (desktop, phone).
+const SELECT_DUR = 0.88; // seconds
+const SELECT_DELAY = 2000; // ms after page load
 
 function sweepHighlight() {
   const html = document.documentElement;
@@ -110,9 +112,11 @@ function sweepHighlight() {
     document.querySelectorAll('[data-anim="hero-headline"] .selection').forEach((el) => el.classList.add("is-selected"));
     setTimeout(() => html.classList.remove("hero-select"), SELECT_DUR * 1000 + 150);
   };
+  // performance.now() counts from the start of the page load
+  const later = () => setTimeout(() => requestAnimationFrame(go), Math.max(0, SELECT_DELAY - performance.now()));
   // page-transition.js resolves this after the slide-in (absent: start now)
-  if (window.pageEntered) window.pageEntered.then(() => requestAnimationFrame(go));
-  else requestAnimationFrame(go);
+  if (window.pageEntered) window.pageEntered.then(later);
+  else later();
 }
 sweepHighlight();
 
