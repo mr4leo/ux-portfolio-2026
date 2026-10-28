@@ -37,6 +37,66 @@ const T = {
 // ---- Plain anchor scrolling (fallback when the reveal isn't running) -------
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
+// ---- Thumbnail videos: the cover dissolves to the video while it plays ----
+// Hovering the project's card plays it (touch screens: the tile in view). Only one plays at a
+// time, from the start each time; it pauses once the cover has faded back.
+// Reduced motion keeps the cover.
+const DISSOLVE_MS = 600;
+const thumbs = [...document.querySelectorAll(".thumb")].filter((thumb) => thumb.querySelector(".thumb__video"));
+let playingThumb = null;
+
+function stopThumb(thumb) {
+  thumb.classList.remove("is-playing");
+  const video = thumb.querySelector(".thumb__video");
+  clearTimeout(thumb.pauseTimer);
+  thumb.pauseTimer = setTimeout(() => video.pause(), DISSOLVE_MS);
+  if (playingThumb === thumb) playingThumb = null;
+}
+
+function playThumb(thumb) {
+  if (playingThumb === thumb) return;
+  if (playingThumb) stopThumb(playingThumb);
+  playingThumb = thumb;
+  const video = thumb.querySelector(".thumb__video");
+  clearTimeout(thumb.pauseTimer);
+  video.preload = "auto";
+  video.currentTime = 0;
+  // Dissolve once a frame is ready so the cover never fades to a blank box
+  const show = () => playingThumb === thumb && thumb.classList.add("is-playing");
+  video.play().then(show, () => {});
+}
+
+if (thumbs.length && !reduceMotion.matches) {
+  // Load the videos as their tiles come near so the first hover is instant
+  const loader = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      const video = entry.target.querySelector(".thumb__video");
+      video.preload = "auto";
+      video.load();
+      loader.unobserve(entry.target);
+    });
+  }, { rootMargin: "50% 0px" });
+  thumbs.forEach((thumb) => loader.observe(thumb));
+
+  if (window.matchMedia("(hover: hover)").matches) {
+    // Anywhere on the project's card, not just its thumbnail
+    thumbs.forEach((thumb) => {
+      const card = thumb.closest(".case-study") || thumb;
+      card.addEventListener("mouseenter", () => playThumb(thumb));
+      card.addEventListener("mouseleave", () => stopThumb(thumb));
+    });
+  } else {
+    const inView = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) playThumb(entry.target);
+        else if (playingThumb === entry.target) stopThumb(entry.target);
+      });
+    }, { threshold: 0.75 });
+    thumbs.forEach((thumb) => inView.observe(thumb));
+  }
+}
+
 // ---- Hero headline: the "designed" highlight sweeps in -------------------
 // Once the page has slid in, the selection highlight grows across the word
 // left to right, then its handles show. Both headlines (desktop, phone).

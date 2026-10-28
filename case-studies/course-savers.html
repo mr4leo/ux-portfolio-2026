@@ -135,7 +135,8 @@
        slides, and Tailwind's own --font-sans means they can't sit on :root. */
     .viewer-bar,
     .rotate-note,
-    .og-video {
+    .og-video,
+    .footer {
       --color-accent: #3fa3f7;
       --color-bg-dark: #1d1f20;
       --color-border: rgba(255, 255, 255, 0.15);
@@ -147,6 +148,164 @@
       --text-2xs: 0.75rem;
       --text-xs: 0.875rem;
       --weight-medium: 500;
+    }
+
+    /* Site footer: its tokens and rules, copied from styles.css (kept in
+       step with the home page and the other case studies) */
+    .footer {
+      --color-link: var(--color-accent);
+      --space-1: 4px;
+      --space-5: 20px;
+      --space-7: 28px;
+      --space-8: 32px;
+      --space-10: 40px;
+      --space-16: 64px;
+      --text-2xl: 1.875rem;
+      --weight-bold: 700;
+      font-family: var(--font-sans);
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    .footer {
+      padding: var(--space-8) var(--space-16) var(--space-10);
+      color: var(--color-text-inverse);
+      background: var(--color-bg-dark);
+      border-top: 1px solid var(--color-border);
+    }
+
+    .footer__inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer p {
+      margin: 0;
+    }
+
+    .footer__identity > p {
+      padding: var(--space-2) var(--space-3);
+      border: 1px solid var(--color-border);
+      font-size: var(--text-xs);
+    }
+
+    .footer__details {
+      display: flex;
+      align-items: center;
+      border: 1px solid var(--color-border);
+    }
+
+    .footer__details strong {
+      padding: var(--space-3);
+      font-size: var(--text-2xl);
+      font-weight: var(--weight-bold);
+    }
+
+    /* "MA" monogram links home and swells on hover */
+    .footer__home {
+      color: inherit;
+    }
+
+    .footer__home strong {
+      display: inline-block;
+      transition: transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
+    }
+
+    .footer__home:hover strong,
+    .footer__home:focus-visible strong {
+      transform: scale(1.12);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .footer__home strong {
+        transition: none;
+      }
+    }
+
+    .footer__details > div {
+      padding: var(--space-2) var(--space-3);
+      border-left: 1px solid var(--color-border);
+      font-size: var(--text-xs);
+    }
+
+    .footer__details a {
+      text-decoration: none;
+    }
+
+    .footer__link {
+      color: var(--color-link);
+    }
+
+    .footer__link:hover,
+    .footer__link:focus-visible {
+      text-decoration: underline;
+    }
+
+    .footer__details span {
+      display: inline-block;
+      margin: var(--space-1) var(--space-1) 0 0;
+      padding: var(--space-1) var(--space-2);
+      border: 1px solid var(--color-border);
+      border-radius: 10px;
+    }
+
+    .footer__social {
+      text-align: right;
+    }
+
+    .footer__social > p {
+      margin-bottom: var(--space-4);
+    }
+
+    .footer__social > div {
+      display: flex;
+      justify-content: flex-end;
+      /* Offset the 44px tap area so the 25px icons align visually */
+      margin: -9.5px -9.5px -9.5px 0;
+    }
+
+    .footer__social a {
+      display: grid;
+      width: 44px;
+      height: 44px;
+      place-items: center;
+      border-radius: 50%;
+      transition: opacity 0.2s;
+    }
+
+    .footer__social a:hover,
+    .footer__social a:focus-visible {
+      opacity: 0.7;
+    }
+
+    .footer__social img {
+      display: block;
+      width: 25px;
+      height: 25px;
+      filter: invert(1);
+    }
+
+    @media (max-width: 800px) {
+      .footer {
+        padding: var(--space-7) var(--space-5);
+      }
+
+      /* Mobile footer: everything centered */
+      .footer__inner {
+        align-items: center;
+        flex-direction: column;
+        gap: var(--space-8);
+      }
+
+      .footer__social {
+        text-align: center;
+      }
+
+      .footer__social > div {
+        justify-content: center;
+        margin: -9.5px 0;
+      }
     }
 
     .viewer-bar {
@@ -292,6 +451,36 @@
       <div class="ogf-a" style="height:1080px"><div class="bg-[#fcfcfc] relative size-full overflow-hidden" data-node-id="895:39067" data-name="32 Thank you"><div class="absolute contents left-[-4px] top-[-146px]" data-node-id="895:39068" data-name="BG"><div class="absolute h-[1080px] left-0 top-0 w-[1920px]" data-node-id="812:35705" data-name="BG - Gradient"><div class="absolute inset-0" data-node-id="812:35701" style="background-image:url(&quot;data:image/svg+xml;utf8,&lt;svg viewBox=&#x27;0 0 1920 1080&#x27; xmlns=&#x27;http://www.w3.org/2000/svg&#x27; preserveAspectRatio=&#x27;none&#x27;&gt;&lt;rect x=&#x27;0&#x27; y=&#x27;0&#x27; height=&#x27;100%&#x27; width=&#x27;100%&#x27; fill=&#x27;url(%23grad)&#x27; opacity=&#x27;1&#x27;/&gt;&lt;defs&gt;&lt;radialGradient id=&#x27;grad&#x27; gradientUnits=&#x27;userSpaceOnUse&#x27; cx=&#x27;0&#x27; cy=&#x27;0&#x27; r=&#x27;10&#x27; gradientTransform=&#x27;matrix(-6.2654e-15 104.8 -186.31 4.473e-13 960 540)&#x27;&gt;&lt;stop stop-color=&#x27;rgba(255,255,255,1)&#x27; offset=&#x27;0&#x27;/&gt;&lt;stop stop-color=&#x27;rgba(255,255,255,1)&#x27; offset=&#x27;0.44271&#x27;/&gt;&lt;stop stop-color=&#x27;rgba(236,223,252,0.4)&#x27; offset=&#x27;1&#x27;/&gt;&lt;/radialGradient&gt;&lt;/defs&gt;&lt;/svg&gt;&quot;)" data-name="BG - Gradient"></div></div><div class="absolute h-[1226px] left-[-4px] top-[-146px] w-[1928px]" data-node-id="895:39070"><img loading="lazy" alt="" class="absolute block inset-0 max-w-none size-full" src="course-savers-og-r/fig/bb200f7e62fe2dc6f54af1a0f132bd7c7b713141.svg"/></div></div><div class="absolute h-[1120px] left-[-147px] top-[-154px] w-[1248px]" data-node-id="895:39071" data-name="Stripe"><div class="absolute inset-[-3.18%_-7.49%_-3.08%_-7.52%]"><img loading="lazy" alt="" class="block max-w-none size-full" src="course-savers-og-r/fig/408375227c8f34437268cf0a9b1f912bc783000c.svg"/></div></div><div class="-translate-x-1/2 -translate-y-1/2 absolute content-stretch flex gap-[100px] items-end justify-center left-[calc(50%-0.5px)] top-1/2" data-node-id="895:39074" data-name="Text &amp; Pic"><div class="content-stretch flex flex-col gap-[40px] items-center relative shrink-0" data-node-id="895:39075"><div class="grid-cols-[max-content] grid-rows-[max-content] inline-grid leading-[0] place-items-start relative shrink-0" data-node-id="895:39076" data-name="My Pic"><div class="col-1 ml-0 mt-0 relative row-1 size-[270px]" data-node-id="895:39077"><img loading="lazy" alt="" class="absolute block inset-0 max-w-none size-full" src="course-savers-og-r/fig/bdacafef709fc35559459303ceb2125ddcf90135.svg"/></div><div class="col-1 flex items-center justify-center ml-[7.37px] mt-[7.37px] relative row-1 size-[255.259px]" data-node-id="895:39078"><div class="-scale-y-100 flex-none rotate-180"><div class="relative size-[255.259px]"><img loading="lazy" alt="" class="absolute block inset-0 max-w-none size-full" src="course-savers-og-r/fig/7630277ea8ae66860e5b27e3a0ffddeb635d902c.svg"/></div></div></div><div class="col-1 flex items-center justify-center ml-[7.37px] mt-[7.37px] relative row-1 size-[255.259px]" data-node-id="895:39079"><div class="-scale-y-100 flex-none rotate-180"><div class="relative size-[255.259px]"><img loading="lazy" alt="" class="absolute block inset-0 max-w-none size-full" height="255.259" src="course-savers-og-r/fig/df72e9ccc1d5310064bd716cf0d4788b5dd40b8c.webp" width="255.259"/></div></div></div></div><div class="content-stretch flex flex-col items-end relative shrink-0" data-node-id="895:39080"><div class="content-stretch flex flex-col gap-[40px] items-end relative shrink-0" data-node-id="895:39081"><div class="grid-cols-[max-content] grid-rows-[max-content] inline-grid leading-[0] place-items-start relative shrink-0" data-node-id="895:39082"><p class="[text-box-edge:cap_alphabetic] [text-box-trim:trim-both] [word-break:break-word] col-1 font-['Poppins'] font-[700] leading-[normal] ml-0 mt-0 not-italic relative row-1 text-[#470d92] text-[56px] text-right tracking-[5.6px] w-[364px]" data-node-id="895:39083" style="white-space:nowrap">Marve Afo</p></div><div class="content-stretch flex gap-[24px] items-start relative shrink-0" data-node-id="895:39085"><div class="[word-break:break-word] font-['Poppins'] font-[400] leading-[0] not-italic relative shrink-0 text-[30px] text-black text-right w-[270px]" data-node-id="895:39086"><p class="leading-[normal] mb-0">MarvinAfo@Gmail</p><p class="leading-[normal] mb-0">MarveAfo.com</p><p class="leading-[normal]">@MarveAfo</p></div><div class="content-stretch flex flex-col gap-[9px] items-center pt-[6px] relative shrink-0" data-node-id="895:39087"><div class="relative shrink-0 size-[36px]" data-node-id="895:39088" data-name="mdi:email-outline"><img loading="lazy" alt="" class="absolute block inset-0 max-w-none size-full" src="course-savers-og-r/fig/edc15d59384b7bfcf52fc04100a5744d74df23b3.svg"/></div><div class="relative shrink-0 size-[36px]" data-node-id="895:39090" data-name="dashicons:admin-site-alt3"><img loading="lazy" alt="" class="absolute block inset-0 max-w-none size-full" src="course-savers-og-r/fig/04a4c9b6402c13262b95600232ec394863f241b2.svg"/></div><div class="overflow-clip relative shrink-0 size-[36px]" data-node-id="895:39092" data-name="jam:linkedin-square"><div class="absolute inset-[8.33%]" data-node-id="895:39093" data-name="Group"><img loading="lazy" alt="" class="absolute block inset-0 max-w-none size-full" src="course-savers-og-r/fig/24e136cd2f47f3a4474b68ee6d2c656a98aa3976.svg"/></div></div></div></div></div></div></div><div class="grid-cols-[max-content] grid-rows-[max-content] inline-grid leading-[0] place-items-start relative shrink-0" data-node-id="895:39096"><div class="bg-[#470d92] col-1 h-[517px] ml-0 mt-0 relative row-1 w-[516px]" data-node-id="895:39097" data-name="Linked QR 1"></div><div class="col-1 h-[517px] mix-blend-lighten ml-0 mt-0 relative row-1 w-[516px]" data-node-id="895:39098" data-name="Linked QR 2"><img loading="lazy" alt="" class="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="course-savers-og-r/fig/f56e302f028240fc47029773b4ba4419eb79e9dc.webp"/></div></div></div><div class="absolute content-stretch flex gap-[16px] items-center left-[calc(33.33%+412px)] top-[194px]" data-node-id="1215:41417"><p class="[text-box-edge:cap_alphabetic] [text-box-trim:trim-both] [word-break:break-word] font-['Poppins'] font-[300] leading-[normal] not-italic relative shrink-0 text-[#470d92] text-[48px] tracking-[4.8px] whitespace-nowrap" data-node-id="895:39103">Keep in touch.</p></div></div></div>
     </section>
   </main>
+
+  <!-- Same footer as the portfolio home page -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__identity">
+        <p>UX / Brand Design</p>
+
+        <div class="footer__details">
+          <a class="footer__home" href="../" data-home aria-label="Marve Afo, back to the home page"><strong>MA</strong></a>
+          <div>
+            <a class="footer__link" href="mailto:marvinafo@gmail.com">marvinafo@gmail.com</a>
+            <p><a class="footer__link" href="https://docs.google.com/document/d/1WTawhsRUU4jk6PNU6clx0Kiq7-qmPQi9/edit?usp=sharing&amp;ouid=106695809341626137144&amp;rtpof=true&amp;sd=true" target="_blank" rel="noopener">Resume<span class="sr-only"> (opens in new tab)</span></a></p>
+            <span>UX</span><span>Design</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer__social">
+        <p>Connect</p>
+        <div>
+          <a href="mailto:marvinafo@gmail.com" aria-label="Email">
+            <img src="../images/Social%20Icon%20%E2%80%94%20Portfolio.svg" alt="" />
+          </a>
+          <a href="https://www.linkedin.com/in/marvin-afo/" target="_blank" rel="noopener" aria-label="LinkedIn (opens in new tab)">
+            <img src="../images/Social%20Icon%20%E2%80%94%20LinkedIn.svg" alt="" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
   <script>
     // Each 1920-wide slide scales to the page width, phones included
     (() => {
