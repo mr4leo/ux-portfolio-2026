@@ -152,7 +152,7 @@ function updateRuler() {
   // the width its line measures
   document.querySelectorAll(".hero__ruler-line").forEach((line) => {
     if (!line.offsetParent) return;
-    line.parentElement.querySelector(".hero__ruler-value").textContent =
+    line.parentElement.querySelector(".hero__ruler-value").dataset.value =
       `${Math.round(line.getBoundingClientRect().width)}px`;
   });
 }

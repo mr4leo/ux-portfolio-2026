@@ -363,6 +363,12 @@ small {
   font-style: italic;
 }
 
+/* Drawn by CSS, not written as text, so the width stays out of the page's
+   text (crawlers, reader mode, copy and paste); script.js sets data-value */
+.hero__ruler-value::before {
+  content: attr(data-value);
+}
+
 /* Tools, where the stylus used to be: a ruler measuring the row (label on
    top, as the stylus artwork had it) over black app-icon squares with white
    marks */
