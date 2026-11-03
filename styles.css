@@ -866,6 +866,15 @@ small {
   align-items: flex-start;
 }
 
+/* Looser lines inside the title only: the negative margins take back the
+   extra leading above and below, so the gaps around it stay the same */
+.case-study h3 {
+  --title-trim: -0.125em; /* (1 - 1.25) / 2 */
+  margin-top: var(--title-trim);
+  margin-bottom: calc(var(--space-4) + var(--title-trim));
+  line-height: 1.25;
+}
+
 .archive-icon {
   position: relative;
   width: 72px;
@@ -1261,6 +1270,10 @@ small {
   .case-study__rule,
   .case-study__copy > .case-study__metrics {
     margin: 0;
+  }
+
+  .case-study h3 {
+    margin-block: var(--title-trim);
   }
 
   /* Full-width CTA under the image */
