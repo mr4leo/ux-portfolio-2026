@@ -963,6 +963,21 @@ small {
   background: var(--color-bg-white);
 }
 
+/* The thumbnail is a link too (index.html: kept out of the tab order and
+   hidden from screen readers, so each card still has one link). It swells
+   slightly under the mouse */
+.project-visual {
+  display: block;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .project-visual:hover {
+    transform: scale(1.02);
+  }
+}
+
 .project-visual {
   position: relative;
   /* Full thumbnail at its natural shape, never cropped. Bottom edge sits on the
