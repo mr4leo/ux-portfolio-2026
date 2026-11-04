@@ -987,7 +987,7 @@
   display: grid;
   grid-template-columns: minmax(0, 0.7fr) minmax(0, 1fr) minmax(0, 1fr);
   gap: clamp(24px, 3.3vw, 48px);
-  align-items: center;
+  align-items: start;
   padding: clamp(48px, 5.6vw, 80px) var(--cs-gutter);
   border-bottom: 1px solid var(--cs-line);
 }
