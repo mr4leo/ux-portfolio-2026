@@ -992,6 +992,11 @@
   border-bottom: 1px solid var(--cs-line);
 }
 
+/* Text columns line up at the top; the heading sits centred beside them */
+.cs-cols3 > .cs-h2 {
+  align-self: center;
+}
+
 .cs-cols3 strong {
   display: block;
 }
